@@ -1,0 +1,12 @@
+---
+# Defines deployment design and assigns role to server groups
+
+- hosts: worker
+  become: True
+  roles:
+  - gassyfs/deploy/worker
+
+- hosts: master
+  become: True
+  roles:
+  - gassyfs/deploy/master

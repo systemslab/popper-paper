@@ -1,0 +1,14 @@
+---
+# Checks to see if all nodes came up
+
+- hosts: master
+  tasks:
+  - name: check if the master container is up
+    shell: docker ps | grep {{ container_name_master }}
+    changed_when: False
+
+- hosts: worker
+  tasks:
+  - name: check if the worker container is up
+    shell: docker ps | grep {{ container_name_worker }}
+    changed_when: False
