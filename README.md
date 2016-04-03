@@ -15,7 +15,7 @@ These experiments were run on [CloudLab](https://www.cloudlab.us). We have a 3-n
    ```bash
    $ git clone --recursive https://github.com/systemslab/infra.git
    $ cd infra
-   $ bin/bootstrap-infiniband.sh
+   $ sudo bin/bootstrap-infiniband.sh
    ```
 
 3. Check to make sure everything installed smoothly:
