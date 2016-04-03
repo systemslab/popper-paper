@@ -4,9 +4,9 @@
 - hosts: worker
   become: True
   roles:
-  - gassyfs/deploy/worker
+  - gassyfs/worker
 
 - hosts: master
   become: True
   roles:
-  - gassyfs/deploy/master
+  - gassyfs/master

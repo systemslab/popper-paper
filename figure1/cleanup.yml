@@ -6,6 +6,6 @@
       delete:
         - "/tmp/fetch"
         - "/tmp/ssh"
-        #- "/tmp/gassyfs"
+        - "/tmp/gassyfs"
       images:
         - "michaelsevilla/gassyfs:infiniband"

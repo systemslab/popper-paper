@@ -2,7 +2,6 @@
 # Author: Michael Sevilla
 # Subject GassyFS to a sort
 
-- include: cleanup.yml
 - include: site/site.yml
 - include: site/check.yml
 - include: site/client.yml
