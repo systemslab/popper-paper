@@ -34,12 +34,7 @@ Quickstart
 1. Start an experiment master (a container with Ansible v2.0.1.0):
 
    ```bash
-  docker run --rm -it \
-    --name="emaster" \
-    --net=host \
-    -v `pwd`:/experiments \
-    -v ~/.ssh:/root/.ssh \
-    michaelsevilla/emaster
+  ./emaster.sh
    ```
 
 2. Choose an experiment and setup the hosts:
