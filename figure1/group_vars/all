@@ -13,7 +13,7 @@ input: "wgEncodeCaltechRnaSeqGm12878R1x75dSplicesRep1V2.bam"
 ##########
 # DOCKER #
 ##########
-install_docker: True
+install_docker: False
 gassyfs_docker_username: michaelsevilla
 gassyfs_docker_imagename: "gassyfs:infiniband"
 
