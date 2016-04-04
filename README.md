@@ -23,8 +23,8 @@ These experiments were run on [CloudLab](https://www.cloudlab.us). We have a 3-n
 4. Setup up unlimited open files:
 
    ```bash
-   sudo echo "* soft memlock unlimited" >> /etc/security/limits.conf
-   sudo echo "* hard memlock unlimited" >> /etc/security/limits.conf
+   echo "* soft memlock unlimited" | sudo tee -a /etc/security/limits.conf
+   echo "* hard memlock unlimited" | sudo tee -a /etc/security/limits.conf
    ulimit -l unlimited
    ```
 
