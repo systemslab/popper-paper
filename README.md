@@ -12,7 +12,15 @@ These experiments were run on [CloudLab](https://www.cloudlab.us). We have a 3-n
 
 2. Install [Docker](https://docs.docker.com/engine/installation/)
 
-3. Setup up unlimited open files:
+3. Add EPEL
+
+   ```bash
+   wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm 
+   sudo rpm -ivh epel-release-7-5.noarch.rpm
+   sudo yum update -y
+   ```
+
+4. Setup up unlimited open files:
 
    ```bash
    sudo echo "* soft memlock unlimited" >> /etc/security/limits.conf
