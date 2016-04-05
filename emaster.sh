@@ -8,4 +8,5 @@ docker run --rm -it \
   --net=host \
   -v `pwd`:/experiments \
   -v ~/.ssh:/root/.ssh \
+  --workdir=/experiments \
   michaelsevilla/emaster

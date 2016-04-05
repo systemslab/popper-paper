@@ -40,7 +40,7 @@ Quickstart
 2. Choose an experiment and setup the hosts:
 
    ```bash
-   [EXPERIMENT_MASTER] cd /experiments/figure1
+   [EXPERIMENT_MASTER] cd figure1
    [EXPERIMENT_MASTER] cp hosts.template hosts
    [EXPERIMENT_MASTER] vim hosts
    ```

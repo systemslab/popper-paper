@@ -8,4 +8,4 @@
         - "/tmp/ssh"
         - "/tmp/gassyfs"
       images:
-        - "michaelsevilla/gassyfs:infiniband"
+        - "{{ gassyfs_docker_username }}/{{ gassyfs_docker_imagename }}"

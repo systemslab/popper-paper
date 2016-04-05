@@ -14,8 +14,8 @@
         dest: "/tmp/input.bam"
 
     - name: put the input into gassyfs
-      #shell: "time cp /tmp/input.bam /mount/input.bam"
-      shell: "head /tmp/input.bam -c 17k > /mount/test"
+      shell: "time cp /tmp/input.bam /mount/input.bam"
+      #shell: "head /tmp/input.bam -c 17k > /mount/test"
       register: copy
 
     - name: run the sort benchmark

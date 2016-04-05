@@ -1,5 +1,7 @@
 ---
 # Variables here are applicable to all host groups NOT roles
+infiniband: 0 # set to 1 to enable
+mount_args: "-o allow_other -o fsname=gassy -o atomic_o_trunc -o rank0_alloc"
 
 # This MUST be a full path
 fetch_directory: /tmp/fetch/
@@ -14,12 +16,12 @@ input: "wgEncodeCaltechRnaSeqGm12878R1x75dSplicesRep1V2.bam"
 # DOCKER #
 ##########
 install_docker: False
-gassyfs_docker_username: michaelsevilla
-gassyfs_docker_imagename: "gassyfs:infiniband"
+gassyfs_docker_username: "michaelsevilla"
+gassyfs_docker_imagename: "gassyfs"
 
 master_sshd_port: 2222
 worker_sshd_port: 2223
-ssh_servers: "node-0 node-1 node-2"
+ssh_servers: "10.97.0.32 10.97.0.11 10.97.0.12"
 
 container_name_master: "gassyfs-master"
 container_name_worker: "gassyfs-worker"
