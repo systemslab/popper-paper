@@ -1,0 +1,8 @@
+---
+# Author: Michael Sevilla
+# Subject GassyFS to a sort
+
+- include: site/site.yml
+- include: site/check.yml
+- include: site/client.yml
+- include: ../workload.yml
