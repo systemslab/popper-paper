@@ -1,0 +1,4 @@
+starttime, endtime, cmd, file
+{% for x in result %}
+"{{ x.start }}", "{{ x.end }}", "{{ x.item }}", "{{ x.cmd }}"
+{% endfor %}

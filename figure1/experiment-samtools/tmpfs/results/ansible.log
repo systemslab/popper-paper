@@ -1,0 +1,102 @@
+2016-04-06 21:54:04,588 p=1269 u=root |  PLAY ***************************************************************************
+2016-04-06 21:54:04,597 p=1269 u=root |  TASK [setup] *******************************************************************
+2016-04-06 21:54:04,871 p=1269 u=root |  fatal: [node-1]: UNREACHABLE! => {"changed": false, "msg": "SSH encountered an unknown error during the connection. We recommend you re-run the command using -vvvv, which will enable SSH debugging output to help diagnose the issue", "unreachable": true}
+2016-04-06 21:54:04,876 p=1269 u=root |  fatal: [node-0]: UNREACHABLE! => {"changed": false, "msg": "SSH encountered an unknown error during the connection. We recommend you re-run the command using -vvvv, which will enable SSH debugging output to help diagnose the issue", "unreachable": true}
+2016-04-06 21:54:04,937 p=1269 u=root |  fatal: [node-2]: UNREACHABLE! => {"changed": false, "msg": "SSH encountered an unknown error during the connection. We recommend you re-run the command using -vvvv, which will enable SSH debugging output to help diagnose the issue", "unreachable": true}
+2016-04-06 21:54:04,938 p=1269 u=root |  	to retry, use: --limit @site/cleanup.retry
+
+2016-04-06 21:54:04,938 p=1269 u=root |  PLAY RECAP *********************************************************************
+2016-04-06 21:54:04,939 p=1269 u=root |  node-0                     : ok=0    changed=0    unreachable=1    failed=0   
+2016-04-06 21:54:04,939 p=1269 u=root |  node-1                     : ok=0    changed=0    unreachable=1    failed=0   
+2016-04-06 21:54:04,939 p=1269 u=root |  node-2                     : ok=0    changed=0    unreachable=1    failed=0   
+2016-04-06 21:54:10,290 p=1288 u=root |  PLAY ***************************************************************************
+2016-04-06 21:54:10,299 p=1288 u=root |  TASK [setup] *******************************************************************
+2016-04-06 21:54:11,755 p=1288 u=root |  ok: [10.97.0.12]
+2016-04-06 21:54:12,172 p=1288 u=root |  ok: [10.97.0.32]
+2016-04-06 21:54:12,306 p=1288 u=root |  ok: [10.97.0.11]
+2016-04-06 21:54:12,323 p=1288 u=root |  TASK [cleanup : remove containers {{ images }}] ********************************
+2016-04-06 21:54:12,358 p=1288 u=root |  TASK [cleanup : delete user defined files] *************************************
+2016-04-06 21:54:13,009 p=1288 u=root |  ok: [10.97.0.12] => (item=/tmp/fetch)
+2016-04-06 21:54:13,014 p=1288 u=root |  ok: [10.97.0.12] => (item=/tmp/ssh)
+2016-04-06 21:54:13,079 p=1288 u=root |  ok: [10.97.0.32] => (item=/tmp/fetch)
+2016-04-06 21:54:13,085 p=1288 u=root |  ok: [10.97.0.32] => (item=/tmp/ssh)
+2016-04-06 21:54:13,088 p=1288 u=root |  ok: [10.97.0.11] => (item=/tmp/fetch)
+2016-04-06 21:54:13,090 p=1288 u=root |  ok: [10.97.0.11] => (item=/tmp/ssh)
+2016-04-06 21:54:13,092 p=1288 u=root |  PLAY RECAP *********************************************************************
+2016-04-06 21:54:13,092 p=1288 u=root |  10.97.0.11                 : ok=2    changed=0    unreachable=0    failed=0   
+2016-04-06 21:54:13,092 p=1288 u=root |  10.97.0.12                 : ok=2    changed=0    unreachable=0    failed=0   
+2016-04-06 21:54:13,092 p=1288 u=root |  10.97.0.32                 : ok=2    changed=0    unreachable=0    failed=0   
+2016-04-06 15:11:24,244 p=2879776 u=root |   
+2016-04-06 15:11:24,244 p=2879776 u=root |  /usr/bin/ansible-playbook experiment.yml -i inventory
+2016-04-06 15:11:24,244 p=2879776 u=root |   
+2016-04-06 15:11:24,296 p=2879776 u=root |  PLAY [master] ***************************************************************** 
+2016-04-06 15:11:24,296 p=2879776 u=root |  GATHERING FACTS *************************************************************** 
+2016-04-06 15:11:26,200 p=2879776 u=root |  ok: [10.97.0.32]
+2016-04-06 15:11:26,201 p=2879776 u=root |  TASK: [gassyfs/worker | create bootstrap directories] ************************* 
+2016-04-06 15:11:26,215 p=2879776 u=root |  skipping: [10.97.0.32] => (item=/etc/ceph/)
+2016-04-06 15:11:26,218 p=2879776 u=root |  skipping: [10.97.0.32] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-06 15:11:26,220 p=2879776 u=root |  skipping: [10.97.0.32] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-06 15:11:26,222 p=2879776 u=root |  skipping: [10.97.0.32] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-06 15:11:26,223 p=2879776 u=root |  TASK: [gassyfs/worker | install pip and docker on ubuntu] ********************* 
+2016-04-06 15:11:26,235 p=2879776 u=root |  skipping: [10.97.0.32]
+2016-04-06 15:11:26,236 p=2879776 u=root |  TASK: [gassyfs/worker | install pip and docker on debian] ********************* 
+2016-04-06 15:11:26,250 p=2879776 u=root |  skipping: [10.97.0.32]
+2016-04-06 15:11:26,251 p=2879776 u=root |  TASK: [gassyfs/worker | install pip and docker on redhat] ********************* 
+2016-04-06 15:11:26,266 p=2879776 u=root |  skipping: [10.97.0.32]
+2016-04-06 15:11:26,267 p=2879776 u=root |  TASK: [gassyfs/worker | install pip and docker on redhat] ********************* 
+2016-04-06 15:11:26,283 p=2879776 u=root |  skipping: [10.97.0.32]
+2016-04-06 15:11:26,284 p=2879776 u=root |  TASK: [gassyfs/worker | install docker-py] ************************************ 
+2016-04-06 15:11:26,295 p=2879776 u=root |  skipping: [10.97.0.32]
+2016-04-06 15:11:26,296 p=2879776 u=root |  TASK: [gassyfs/worker | run the gassyfs docker image] ************************* 
+2016-04-06 15:11:26,313 p=2879776 u=root |  fatal: [10.97.0.32] => Failed to template {{ authkey }}: Failed to template {{ lookup('file', '{{ ssh_dir }}/id_rsa.pub') }}: could not locate file in lookup: {{ ssh_dir }}/id_rsa.pub
+2016-04-06 15:11:26,314 p=2879776 u=root |  FATAL: all hosts have already failed -- aborting
+2016-04-06 15:11:26,314 p=2879776 u=root |  PLAY RECAP ******************************************************************** 
+2016-04-06 15:11:26,315 p=2879776 u=root |             to retry, use: --limit @/root/experiment.retry
+
+2016-04-06 15:11:26,315 p=2879776 u=root |  10.97.0.32                 : ok=2    changed=0    unreachable=1    failed=0   
+2016-04-06 22:11:52,814 p=1420 u=root |  PLAY ***************************************************************************
+2016-04-06 22:11:52,822 p=1420 u=root |  TASK [setup] *******************************************************************
+2016-04-06 22:11:55,259 p=1420 u=root |  ok: [10.97.0.32]
+2016-04-06 22:11:55,265 p=1420 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-06 22:11:55,305 p=1420 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/main.yml for 10.97.0.32
+2016-04-06 22:11:55,310 p=1420 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-06 22:11:55,345 p=1420 u=root |  skipping: [10.97.0.32]
+2016-04-06 22:11:55,350 p=1420 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-06 22:11:55,400 p=1420 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/start_docker_worker.yml for 10.97.0.32
+2016-04-06 22:11:55,408 p=1420 u=root |  TASK [gassyfs/worker : run the gassyfs docker image] ***************************
+2016-04-06 22:11:56,245 p=1420 u=root |  ok: [10.97.0.32]
+2016-04-06 22:11:56,247 p=1420 u=root |  TASK [add_host] ****************************************************************
+2016-04-06 22:11:56,306 p=1420 u=root |  changed: [10.97.0.32]
+2016-04-06 22:11:56,317 p=1420 u=root |  PLAY ***************************************************************************
+2016-04-06 22:11:56,322 p=1420 u=root |  TASK [setup] *******************************************************************
+2016-04-06 22:11:56,755 p=1420 u=root |  ok: [pa-dl360g9-32]
+2016-04-06 22:11:56,760 p=1420 u=root |  TASK [mount tmpfs] *************************************************************
+2016-04-06 22:11:56,970 p=1420 u=root |  ok: [pa-dl360g9-32]
+2016-04-06 22:11:56,974 p=1420 u=root |  TASK [how big is our tmpfs mount?] *********************************************
+2016-04-06 22:11:57,219 p=1420 u=root |  changed: [pa-dl360g9-32]
+2016-04-06 22:11:57,223 p=1420 u=root |  TASK [debug] *******************************************************************
+2016-04-06 22:11:57,276 p=1420 u=root |  ok: [pa-dl360g9-32] => {
+    "result.stdout_lines": [
+        "Filesystem                                                                                          Size  Used Avail Use% Mounted on", 
+        "/dev/mapper/docker-253:1-48237249-1f4ce8f0b3749be0b854eadb01f0b7ad6a59667fdbc67ad23334896342a6fcd4  9.8G  1.3G  8.0G  14% /", 
+        "tmpfs                                                                                               127G     0  127G   0% /dev", 
+        "/dev/mapper/VolGroup00-lv_root                                                                      2.2T  102G  2.0T   5% /run/shm", 
+        "tmpfs                                                                                               127G     0  127G   0% /dev/shm", 
+        "tmpfs                                                                                               160G  746M  160G   1% /mount"
+    ]
+}
+2016-04-06 22:11:57,285 p=1420 u=root |  PLAY ***************************************************************************
+2016-04-06 22:11:57,291 p=1420 u=root |  TASK [setup] *******************************************************************
+2016-04-06 22:11:59,695 p=1420 u=root |  ok: [10.97.0.32]
+2016-04-06 22:11:59,698 p=1420 u=root |  TASK [wait for the SSH port on the container to become active] *****************
+2016-04-06 22:12:00,153 p=1420 u=root |  ok: [10.97.0.32]
+2016-04-06 22:12:00,158 p=1420 u=root |  TASK [check if the master container is up] *************************************
+2016-04-06 22:12:00,644 p=1420 u=root |  ok: [10.97.0.32]
+2016-04-06 22:12:00,655 p=1420 u=root |  PLAY ***************************************************************************
+2016-04-06 22:12:00,661 p=1420 u=root |  TASK [setup] *******************************************************************
+2016-04-06 22:12:01,008 p=1420 u=root |  ok: [pa-dl360g9-32]
+2016-04-06 22:12:01,014 p=1420 u=root |  TASK [set_fact] ****************************************************************
+2016-04-06 22:12:01,047 p=1420 u=root |  ok: [pa-dl360g9-32]
+2016-04-06 22:12:01,051 p=1420 u=root |  TASK [pull input files from the interwebs] *************************************
+2016-04-06 22:12:09,814 p=1420 u=root |   [ERROR]: User interrupted execution
+

@@ -1,2 +1,0 @@
-  Found some stuff: wgEncodeCaltechRnaSeqGm12878R1x75dSplicesRep1V2.bam
-  Found some stuff: wgEncodeCaltechRnaSeqH1hescR1x75dSplicesRep1V2.bam

@@ -1,6 +1,6 @@
 ---
 # Author: Michael Sevilla
-# Subject GassyFS to a sort
+# Subject GassyFS to some BAMtools
 
 - hosts: client
   tasks:
@@ -8,40 +8,42 @@
         inputs:
           - "wgEncodeCaltechRnaSeqGm12878R1x75dSplicesRep1V2.bam"
           - "wgEncodeCaltechRnaSeqH1hescR1x75dSplicesRep1V2.bam"
-          #- "wgEncodeCaltechRnaSeqGm12878R1x75dAlignsRep1V2.bam"
-          #- "wgEncodeCaltechRnaSeqH1hescR1x75dSplicesRep1V2.bam"
-          #- "wgEncodeCaltechRnaSeqHct116R2x75Il200AlignsRep1V2.bam"
+          - "wgEncodeCaltechRnaSeqGm12878R1x75dAlignsRep1V2.bam"
+          - "wgEncodeCaltechRnaSeqH1hescR1x75dSplicesRep1V2.bam"
+          - "wgEncodeCaltechRnaSeqHct116R2x75Il200AlignsRep1V2.bam"
 
-    #- name: pull input files from the interwebs (40MB, 177MB, 1GB, 10GB)
-    #  get_url:
-    #    url: "http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeCaltechRnaSeq/{{ item }}"
-    #    dest: "/tmp/{{ item }}"
-    #  with_items: inputs
+    - name: pull input files from the interwebs
+      get_url:
+        url: "http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeCaltechRnaSeq/{{ item }}"
+        dest: "/tmp/{{ item }}"
+      with_items: inputs
 
-    #- name: put the input into gassyfs
-    #  shell: "time cp /tmp/{{ item }} /mount/{{ item }}"
-    #  register: copy
-    #  with_items: inputs
+    - name: put the input into the mount
+      shell: "cp /tmp/{{ item }} /mount/{{ item }}"
+      register: copy
+      with_items: inputs
 
-    #- name: run the sort benchmark
-    #  shell: "time samtools sort -@ 16 -m640M -o /mount/output-{{ item }} /mount/{{ item }}"
-    #  register: sort
-    #  with_items: inputs
-
-    #- name: get the sizes
-    #  command: ls -al /mount
-    #  register: size
-    #- name: size of files
-    #  debug: var=size.stdout_lines
-
-    #- name: "TIME copy"
-    #  debug: var={{ item.stderr }}
-    #  with_items: "{{ copy.results }}"
-    - shell: time ls
+    - name: run the sort benchmark
+      shell: "samtools sort -@ 16 -m640M -o /mount/output-{{ item }} /mount/{{ item }}"
       register: sort
       with_items: inputs
-    - name: "TIME sort"
+
+    - name: checkpoint the data back to ext4
+      shell: "cp /mount/output-{{ item }} /tmp/output-{{ item }}"
+      register: checkpoint
+      with_items: inputs
+
+    - set_fact:
+        result: "{{ copy.results + sort.results + checkpoint.results }}"
+
+    - name: "parse results"
       connection: local
-      template: src=host.j2 dest=./messages.txt
-      #debug: msg={{ item.changed }}
-      with_items: "{{ sort.results }}"
+      template: src=workload.j2 dest=./results/output.csv
+      with_items: 
+        - "{{ result }}"
+
+    - name: get the sizes
+      command: ls -al /mount
+      register: size
+    - name: size of files
+      debug: var=size.stdout_lines

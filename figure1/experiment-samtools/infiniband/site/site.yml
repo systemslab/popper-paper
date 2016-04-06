@@ -10,3 +10,6 @@
   become: True
   roles:
   - gassyfs/master
+
+- include: check.yml
+- include: client.yml

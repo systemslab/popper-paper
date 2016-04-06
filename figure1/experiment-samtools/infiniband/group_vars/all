@@ -4,23 +4,9 @@
 ###########
 # GASSYFS #
 ###########
-infiniband: 0
-mount_args: "-o allow_other -o fsname=gassy -o atomic_o_trunc -o rank0_alloc -o heap_size=163840"
+infiniband: 1
+mount_args: "-o allow_other -o fsname=gassy -o atomic_o_trunc"
 gasnet_compile_args: ""
-ssh_servers: "node-0 node-2"
-#mount_args: "-o allow_other -o fsname=gassy -o atomic_o_trunc"
-#gasnet_compile_args: " --prefix=/usr --enable-udp --disable-mpi --enable-segment-large"
-# working
-#" --prefix=/usr --enable-udp --enable-ibv --disable-mpi --enable-par --enable-segment-everything --disable-aligned-segments --disable-pshm --with-segment-mmap-max=160GB"
-
-###########
-# EMASTER # These must be full paths!
-###########
-fetch_directory: /tmp/fetch/
-src_directory: /tmp/gassyfs
-ssh_tmpdir: "/tmp/ssh"
-ssh_dir: "~/.ssh"
-authkey: "{{ lookup('file', '{{ ssh_dir }}/id_rsa.pub') }}"
 
 ##########
 # DOCKER #
@@ -33,3 +19,11 @@ container_name_worker: "gassyfs-worker"
 master_sshd_port: 2222
 worker_sshd_port: 2223
 
+###########
+# EMASTER # These must be full paths!
+###########
+fetch_directory: /tmp/fetch/
+src_directory: /tmp/gassyfs
+ssh_tmpdir: "/tmp/ssh"
+ssh_dir: "~/.ssh"
+authkey: "{{ lookup('file', '{{ ssh_dir }}/id_rsa.pub') }}"

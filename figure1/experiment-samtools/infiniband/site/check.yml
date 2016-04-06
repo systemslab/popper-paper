@@ -16,6 +16,3 @@
   - name: check if the master container is up
     shell: docker ps | grep {{ container_name_master }}
     changed_when: False
-
-- hosts: worker
-  tasks:

@@ -6,7 +6,7 @@ This repository has our experiments for our SuperComputing '16 submission.
 Install
 -------
 
-These experiments were run on [CloudLab](https://www.cloudlab.us). We have a 3-node Centos7.1 baremetal setup, so you can instantiate a cluster from our [GassyFS Profile](https://www.cloudlab.us/p/5fd60b18-f5d0-11e5-b570-99cadac50270). Select the Clemson cluster, since these nodes have infiniband. On all nodes:
+These experiments were run on [CloudLab](https://www.cloudlab.us). We have a 6-node Centos7.1 baremetal setup, so you can instantiate a cluster from our [GassyFS Profile](https://www.cloudlab.us/p/5fd60b18-f5d0-11e5-b570-99cadac50270). Select the Clemson cluster, since these nodes have infiniband. On all nodes:
 
 1. Setup passwordless SSH and sudo
 
@@ -40,22 +40,10 @@ Quickstart
 2. Choose an experiment and setup the hosts:
 
    ```bash
-   [EXPERIMENT_MASTER] cd figure1
-   [EXPERIMENT_MASTER] cp hosts.template hosts
-   [EXPERIMENT_MASTER] vim hosts
+   [EXPERIMENT_MASTER] cd figure1/experiment-bamsort/
+   [EXPERIMENT_MASTER] vim inventory
+   [EXPERIMENT_MASTER] ./run.sh
    ```
-
-3. Configure the `ssh_servers` value in the group variables:
-
-   ```bash
-   [EXPERIMENT_MASTER] vim group_vars/all
-   ```
-
-4. Start your experiment!
-   
-   ```bash
-   [EXPERIMENT_MASTER] ansible-playbook experiment.yml
-   ``` 
 
 Troubleshooting
 ---------------
@@ -69,5 +57,7 @@ Check to make sure everything installed smoothly:
    # Should show no running images
    $ docker ps 
    ```
+
+If you still have problems, checkout the `bootstrap-infiniband.sh` file in the [srl-roles](https://github.com/systemslab/srl-roles) repository.
 
 EOF 
