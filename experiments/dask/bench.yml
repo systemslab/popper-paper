@@ -4,6 +4,16 @@
 - name: pull alpine
   command: docker pull alpine
 
+# TODO: add execution in tmpfs if needed
+
+- name: run benchmark on localfs
+  shell: >
+    docker run --rm \
+      -v {{ item.folder_name }}:/mount \
+      {{ item.image_name }} {{ item.image_args }}
+  when: "{{ item.run_in_local_fs | bool }}"
+  register: docker_output
+
 - name: copy folder into gassyfs
   shell: >
     docker run --rm \
@@ -34,17 +44,8 @@
       --volumes-from gassyfs-master \
       alpine \
         sh -c "rm -r /mount/* "
-  when: "{{ item.copy_folder | bool }}"
-
-# TODO: add execution in tmpfs if needed
-
-- name: run benchmark on localfs
-  shell: >
-    docker run --rm \
-      -v {{ item.folder_name }}:/mount \
-      {{ item.image_name }} {{ item.image_args }}
-  when: "{{ item.run_in_local_fs | bool }}"
-  register: docker_output
+  when:
+  - "{{ item.delete_after | bool }}"
 
 - name: write results to output
   shell: echo "{{ item.id }}, run, local, {{docker_output.delta}}" >> results.csv
