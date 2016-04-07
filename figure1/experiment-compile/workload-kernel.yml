@@ -1,0 +1,30 @@
+---
+# Author: Michael Sevilla
+# Subject GassyFS to a suite of compile workloads
+
+- hosts: client
+  tasks:
+    - name: pull kernel source code
+      get_url:
+        url: "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.4.3.tar.xz"
+        dest: "/mount/linux-4.4.3.tar.xz"
+
+    - name: untar, compile, delete kernel
+      set_fact:
+        job:
+          - "tar xf linux-4.4.3.tar.xz"
+          - "cd linux-4.4.3; make allmodconfig; make -j10"
+          - "rm -r linux-4.4.3"
+
+    - name: run the job 3 times
+      shell: "cd /mount; {{ item }}" 
+      register: result
+      with_items: "[{{ job }}, {{ job }}, {{ job }}]"
+
+    - name: "parse results"
+      connection: local
+      template: src=workload.j2 dest=./results/output-kernel.csv
+      no_log: True
+      with_items: 
+        - "{{ result.results }}"
+

@@ -1,0 +1,27 @@
+---
+# Variables here are applicable to all host groups NOT roles
+
+###########
+# TMPFS   #
+###########
+infiniband: 0
+mount_args: "size=163840m"
+gasnet_compile_args: ""
+
+##########
+# DOCKER # Re-Use the GassyFS image
+##########
+install_docker: True
+gassyfs_docker_username: "michaelsevilla"
+gassyfs_docker_imagename: "gassyfs"
+container_name_worker: "tmpfs-worker"
+worker_sshd_port: 2223
+
+###########
+# EMASTER # These must be full paths!
+###########
+fetch_directory: /tmp/fetch/
+src_directory: /tmp/gassyfs
+ssh_tmpdir: "/tmp/ssh"
+ssh_dir: "~/.ssh"
+authkey: "{{ lookup('file', '{{ ssh_dir }}/id_rsa.pub') }}"

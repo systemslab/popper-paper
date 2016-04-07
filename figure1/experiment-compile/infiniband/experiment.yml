@@ -1,0 +1,13 @@
+---
+- include: site/site.yml
+- include: ../workload-git.yml
+- include: site/cleanup.yml
+
+- include: site/site.yml
+- include: ../workload-kernel.yml
+- include: site/cleanup.yml
+
+- include: site/site.yml
+- include: ../workload-ceph.yml
+- include: site/cleanup.yml
+

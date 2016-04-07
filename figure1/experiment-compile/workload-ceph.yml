@@ -1,0 +1,24 @@
+---
+# Author: Michael Sevilla
+# Subject GassyFS to a suite of compile workloads
+
+- hosts: client
+  tasks:
+    - name: ceph clone, install deps, compile, and remove
+      set_fact:
+        job:
+          - "git clone --recursive --branch=v10.0.3 https://github.com/ceph/ceph.git /mount/ceph"
+          - "cd ceph; ./install-deps.sh; ./autogen.sh; ./configure --with-debug --with-librocksdb-static" 
+          - "cd ceph; make -j10"
+          - "rm -r ceph"
+
+    - name: run the job 3 times
+      shell: "cd /mount; {{ item }}"
+      register: result
+      with_items: "[{{ job }}, {{ job }}, {{ job }}]"
+
+    - name: "parse results"
+      connection: local
+      template: src=workload.j2 dest=./results/output-ceph.csv
+      with_items: 
+        - "{{ result.results }}"

@@ -1,4 +1,4 @@
-starttime, endtime, cmd, file
+delta, cmd, file
 {% for x in result %}
-"{{ x.start }}", "{{ x.end }}", "{{ x.item }}", "{{ x.cmd }}"
+"{{ x.delta }}", "{{ x.item }}", "{{ x.cmd }}"
 {% endfor %}

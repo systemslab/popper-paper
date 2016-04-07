@@ -1,0 +1,4 @@
+delta, cmd
+"0:00:11.396184", "git clone --recursive --branch=v2.7.1 https://github.com/git/git.git /mount/git"
+"0:00:18.032084", "cd git; make -j5"
+"0:00:00.116296", "rm -r git"
