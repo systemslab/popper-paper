@@ -1,0 +1,27 @@
+---
+- hosts: client
+  tasks:
+  - name: ensure args dict exists
+    assert:
+      that:
+      - "args is defined"
+
+  - name: ensure that every item in args dict has all expected variables
+    assert:
+      that:
+      - "item.value.image_name is defined"
+      - "item.value.image_args is defined"
+      - "item.value.copy_folder is defined"
+      - "item.value.folder_name is defined"
+      - "item.value.run_in_local_fs is defined"
+    with_dict: "{{ args }}"
+
+  - name: create csv with headers
+    command: echo "time, workload, op, fs" > results.csv
+
+  - name: run benchmarks
+    include: bench.yml
+    with_dict: "{{ args }}"
+
+  - name: fetch results file
+    fetch: src=results.csv dest=./ flat=yes

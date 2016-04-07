@@ -1,0 +1,47 @@
+# TODO add item.value.repetitions
+- name: pull image
+  command: docker pull {{ item.value.image_name }}
+
+- name: copy folder into gassyfs
+  command: >
+    docker run --rm \
+      --volumes-from gassyfs-master \
+      -v {{ item.value.folder_name }}:/data
+      alpine \
+        sh -c "cp -r /data/* /mount "
+  when: "{{ item.value.copy_folder | bool }}"
+
+- name: write results to output
+  command: echo "{{ item.value.image_name }}, {{docker_output.delta}}, copy, gassy" >> results.csv
+  when: "{{ item.value.copy_folder | bool }}"
+
+- name: run benchmark
+  command: >
+    docker run --rm \
+      --volumes-from gassyfs-master \
+      {{ item.value.image_name }} {{ item.value.image_args }}
+  register: docker_output
+
+- name: write results to output
+  command: echo "{{ item.value.image_name }}, {{docker_output.delta}}, run, gassy" >> results.csv
+
+- name: delete files
+  command: >
+    docker run --rm \
+      --volumes-from gassyfs-master \
+      alpine \
+        sh -c "rm -r /mount/* "
+  when: "{{ item.value.copy_folder | bool }}"
+
+# TODO: add execution in tmpfs if needed
+
+- name: run benchmark on localfs
+  shell: >
+    docker run --rm \
+      -v `pwd`/mount:/mount \
+      {{ item.value.image_name }} {{ item.value.image_args }}
+  when: "{{ item.value.run_in_local_fs | bool }}"
+  register: docker_output
+
+- name: write results to output
+  command: echo "{{ item.value.image_name }}, {{docker_output.delta}}, run, local" >> results.csv

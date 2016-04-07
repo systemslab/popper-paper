@@ -1,0 +1,7 @@
+args:
+  echo:
+    image_name: alpine
+    image_args: 'sh -c "echo foo > /mount/foo"'
+    copy_folder: false
+    folder_name: ""
+    run_in_local_fs: true
