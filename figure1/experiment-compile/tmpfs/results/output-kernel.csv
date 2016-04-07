@@ -1,4 +1,10 @@
 delta, cmd
-"0:00:06.682106", "tar xf linux-4.4.3.tar.xz"
-"0:00:16.578803", "cd linux-4.4.3; make allnoconfig; make -j10"
-"0:00:00.585118", "rm -r linux-4.4.3"
+"0:00:06.586640", "tar xf linux-4.4.3.tar.xz"
+"0:10:44.345111", "cd linux-4.4.3; make allmodconfig; make -j10"
+"0:00:02.222594", "rm -r linux-4.4.3"
+"0:00:06.658574", "tar xf linux-4.4.3.tar.xz"
+"0:10:46.990688", "cd linux-4.4.3; make allmodconfig; make -j10"
+"0:00:02.212749", "rm -r linux-4.4.3"
+"0:00:06.517455", "tar xf linux-4.4.3.tar.xz"
+"0:10:43.845197", "cd linux-4.4.3; make allmodconfig; make -j10"
+"0:00:02.178707", "rm -r linux-4.4.3"

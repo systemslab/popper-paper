@@ -11,15 +11,17 @@
           - "wgEncodeCaltechRnaSeqGm12878R1x75dAlignsRep1V2.bam"
           - "wgEncodeCaltechRnaSeqH1hescR1x75dSplicesRep1V2.bam"
           - "wgEncodeCaltechRnaSeqHct116R2x75Il200AlignsRep1V2.bam"
+        url:
+          - "http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeCaltechRnaSeq"
 
+    # we should use get_url here, but it downloads to temporary files to /tmp... 
+    # and our container doesn't have enough space to handle this
     - name: pull input files from the interwebs
-      get_url:
-        url: "http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeCaltechRnaSeq/{{ item }}"
-        dest: "/tmp/{{ item }}"
+      command: "wget {{ url }}/{{ item }} /home/{{ item }}"
       with_items: inputs
 
     - name: put the input into the mount
-      shell: "cp /tmp/{{ item }} /mount/{{ item }}"
+      shell: "cp /home/{{ item }} /mount/{{ item }}"
       register: copy
       with_items: inputs
 
@@ -29,7 +31,7 @@
       with_items: inputs
 
     - name: checkpoint the data back to ext4
-      shell: "cp /mount/output-{{ item }} /tmp/output-{{ item }}"
+      shell: "cp /mount/output-{{ item }} /home/output-{{ item }}"
       register: checkpoint
       with_items: inputs
 
