@@ -1,7 +1,14 @@
-args:
-  echo:
-    image_name: alpine
-    image_args: 'sh -c "echo foo > /mount/foo"'
-    copy_folder: false
-    folder_name: ""
-    run_in_local_fs: true
+gassy:
+  mount_options:
+  - allow_other
+  - atomic_o_trunc
+  - local_mode
+  - heap_size
+tests:
+- id: echo
+  image_name: alpine
+  image_args: 'sh -c "echo foo > /mount/foo"'
+  copy_folder: false
+  folder_name: "`pwd`/local"
+  run_in_local_fs: true
+  delete_after: true

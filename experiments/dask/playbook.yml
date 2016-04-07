@@ -1,27 +1,38 @@
 ---
 - hosts: client
   tasks:
-  - name: ensure args dict exists
+  - name: ensure tests dict exists
     assert:
       that:
-      - "args is defined"
+      - "tests is defined"
 
-  - name: ensure that every item in args dict has all expected variables
+  - name: ensure that every item in benchmarks dict has all expected variables
     assert:
       that:
-      - "item.value.image_name is defined"
-      - "item.value.image_args is defined"
-      - "item.value.copy_folder is defined"
-      - "item.value.folder_name is defined"
-      - "item.value.run_in_local_fs is defined"
-    with_dict: "{{ args }}"
+      - "item.id is defined"
+      - "item.image_name is defined"
+      - "item.image_args is defined"
+      - "item.copy_folder is defined"
+      - "item.folder_name is defined"
+      - "item.run_in_local_fs is defined"
+      - "item.delete_after is defined"
+    with_items: "{{ tests }}"
+
+  - name: ensure gassyfs is mounted
+    shell: >
+      sleep 5 && \
+      docker run --rm \
+        --volumes-from gassyfs-master \
+        alpine sh -c "mount" | grep gassy | wc -l
+    register: mount_out
+    failed_when: mount_out.stdout == '0'
 
   - name: create csv with headers
-    command: echo "time, workload, op, fs" > results.csv
+    shell: echo "time, workload, op, fs" > results.csv
 
   - name: run benchmarks
     include: bench.yml
-    with_dict: "{{ args }}"
+    with_items: "{{ tests }}"
 
   - name: fetch results file
     fetch: src=results.csv dest=./ flat=yes
