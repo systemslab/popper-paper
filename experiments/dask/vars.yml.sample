@@ -3,7 +3,7 @@ gassy:
   - allow_other
   - atomic_o_trunc
   - local_mode
-  - heap_size
+  - 'heap_size=1024'
 tests:
 - id: echo
   image_name: alpine

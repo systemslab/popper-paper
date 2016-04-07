@@ -18,17 +18,11 @@
       - "item.delete_after is defined"
     with_items: "{{ tests }}"
 
-  - name: ensure gassyfs is mounted
-    shell: >
-      sleep 5 && \
-      docker run --rm \
-        --volumes-from gassyfs-master \
-        alpine sh -c "mount" | grep gassy | wc -l
-    register: mount_out
-    failed_when: mount_out.stdout == '0'
+  - name: start gassy
+    include: start_gassy.yml
 
   - name: create csv with headers
-    shell: echo "time, workload, op, fs" > results.csv
+    shell: echo "workload, op, fs, time" > results.csv
 
   - name: run benchmarks
     include: bench.yml
@@ -36,3 +30,6 @@
 
   - name: fetch results file
     fetch: src=results.csv dest=./ flat=yes
+
+  - name: stop gassy
+    include: stop_gassy.yml

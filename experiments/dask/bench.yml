@@ -1,18 +1,21 @@
 # TODO add support for item.repetitions
 - name: pull image
   command: docker pull {{ item.image_name }}
+- name: pull alpine
+  command: docker pull alpine
 
 - name: copy folder into gassyfs
-  command: >
+  shell: >
     docker run --rm \
       --volumes-from gassyfs-master \
-      -v {{ item.folder_name }}:/data
+      -v {{ item.folder_name }}:/data \
       alpine \
         sh -c "cp -r /data/* /mount "
   when: "{{ item.copy_folder | bool }}"
+  register: docker_output
 
 - name: write results to output
-  shell: echo "{{ item.id }}, {{docker_output.delta}}, copy, gassy" >> results.csv
+  shell: echo "{{ item.id }}, copy, gassy, {{docker_output.delta}}" >> results.csv
   when: "{{ item.copy_folder | bool }}"
 
 - name: run benchmark
@@ -23,7 +26,7 @@
   register: docker_output
 
 - name: write results to output
-  shell: echo "{{ item.id }}, {{docker_output.delta}}, run, gassy" >> results.csv
+  shell: echo "{{ item.id }}, run, gassy, {{docker_output.delta}}" >> results.csv
 
 - name: delete files
   command: >
@@ -44,4 +47,4 @@
   register: docker_output
 
 - name: write results to output
-  shell: echo "{{ item.id }}, {{docker_output.delta}}, run, local" >> results.csv
+  shell: echo "{{ item.id }}, run, local, {{docker_output.delta}}" >> results.csv

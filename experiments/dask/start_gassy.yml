@@ -1,0 +1,38 @@
+- name: stop gassyfs
+  include: stop_gassy.yml
+
+- name: ensure gassy options are given
+  assert:
+    that:
+    - "gassy is defined"
+    - "gassy.mount_options is defined"
+
+- name: share root mount
+  command: mount --make-shared /
+
+- name: delete mount point
+  shell: rm -r `pwd`/mount
+  ignore_errors: true
+
+- name: start gassyfs container
+  shell: >
+    docker run -d \
+      --privileged \
+      --name gassyfs-master \
+      -v `pwd`/mount:/mount:shared \
+      ivotron/gassyfs \
+        /mount \
+        -o allow_other \
+        -o fsname=gassy \
+        -o atomic_o_trunc \
+        -o local_mode \
+        -o heap_size=10240
+
+- name: ensure gassyfs is mounted
+  shell: >
+    sleep 5 && \
+    docker run --rm \
+      --volumes-from gassyfs-master \
+      alpine sh -c "mount" | grep gassy | wc -l
+  register: mount_out
+  failed_when: mount_out.stdout == '0'
