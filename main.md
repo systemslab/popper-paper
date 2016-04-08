@@ -3,7 +3,7 @@ title: "The Popper Convention: Treating Academic Papers as Open Source
 Software Projects"
 author:
 - name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
-  affiliation: "UC Santa Cruz"
+  affiliation: "_UC Santa Cruz_"
   email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
 number-of-authors: 1
 abstract: |
@@ -32,9 +32,9 @@ linkcolor: black
 
 # Introduction
 
+<!--
 > We already have the tools; we need a convention.
 
-<!--
 A lot of related/existing work is reinventing the wheel. Creating 
 "repos" for research stuff.
 -->
@@ -54,13 +54,24 @@ revisit the idea of an executable paper, which poses the integration
 of executables and data with scholarly articles to help facilitate 
 reproducibility. In our work we look at implementing it in today’s 
 cloud-computing world by treating an article as an open source 
-software project and apply software engineering best-practices to to 
+software project and apply software engineering best-practices to 
 manage an article's associated artifacts and maintain the 
 reproducibility of its findings. In particular, we leverage Git, 
 Docker, Ansible and Jupyter notebooks, and use Github, Cloudlab and 
-Binder as our proof-of-concept infrastructure.
+Binder as our proof-of-concept infrastructure. In this paper we 
+describe in greater detail our convention. There are two main goals:
 
-Our approach has been, in short:
+ 1. It should apply to as many research projects as possible, 
+    regardless of their domain.
+ 2. It should "work", regardless of the underlying technologies; if 
+    not, there's a bug in the convention.
+
+We take GassyFS [@watkins_gassyfs_2016] as a research project in which 
+we apply this convention.
+
+# Overview
+
+Our approach:
 
   * An article has a Github repository associated with it, storing the 
     article text, experiments (along with input/output data), 
@@ -95,14 +106,6 @@ working on a project (vio) that allows to store and reference large
 input/output datasets in a generic way (i.e. it works with many cloud 
 providers like Git-lfs, Dropbox, Google Drive, etc.).
 
-The rest of this paper describes in greater detail our convention. 
-There are two main goals:
-
- 1. It should apply to as many research projects as possible, 
-    regardless of their domain.
- 2. It should "work", regardless of the underlying technologies; if 
-    not, there's a bug in the convention.
-
 In the following, we use `git` as the VCS, `docker` as the experiment 
 execution substrate, `ansible` as the orchestrator and the `scipy` 
 stack for analysis/visualization. As stated in goal 2, any of these 
@@ -110,35 +113,35 @@ should be swappable for other tools, for example: VMs instead of
 docker; puppet instead of ansible; R insted of scipy; and so on and so 
 forth.
 
-# The tools
+## The tools
 
-## Docker
+### Docker
 
 Docker automates the deployment of applications inside software 
 containers by providing an additional layer of abstraction and 
 automation of operating-system-level virtualization on Linux.
 
-## Ansible
+### Ansible
 
 Ansible is a configuration management utility for configuring and 
 managing computers, as well as deploying and orchestrating multi-node 
 applications.
 
-## Jupyter
+### Jupyter
 
 Jupyter notebooks are a web-based application allowing creation and 
 sharing of documents containing live code (in Julia, Python or R), 
 equations, visualizations and explanatory text.
 
-# Infrastructure
+## Infrastructure
 
-## Cloudlab
+### Cloudlab
 
 Cloudlab is an NSF-sponsored infrastructure for research on cloud 
 computing that allows users to easily provision bare-metal machines to 
 execute multi-node experiments.
 
-## Binder
+### Binder
 
 Binder is an online service that allows one to turn a GitHub repo into 
 a collection of interactive Jupyter notebooks so that readers don't 
@@ -250,6 +253,57 @@ Input/output files should be also versioned. For small datasets, we
 can can put them in the git repo (as in the example). For large 
 datasets we can use `git-lfs`.
 
+## Obtaining and Reporting Baseline Raw Performance
+
+We have a toolkit that is composed of multiple docker images that 
+measure CPU, memory, I/O and network raw performance of a deployment. 
+We make this part of the results since this is our fingerprint of our 
+systems. This also gives us an idea of the proportionality of the 
+multiple subsystems (e.g. 10:1 of network to IO for example)
+
+![GassyFS has facilities for explicitly managing  persistence to 
+different storage targets. A checkpointing infrastructure gives 
+GassyFS flexible policies for persisting namespaces and federating 
+data.](figures/arch.png)
+
+# GassyFS: a model project for Popper
+
+GassyFS is a new prototype filesystem system that stores files in 
+distributed remote memory and provides support for checkpointing file 
+system state. The architecture of GassyFS is illustrated in Figure 2. 
+The core of the file system is a user-space library that implements a 
+POSIX file interface. File system metadata is managed locally in 
+memory, and file data is distributed across a pool of network-attached 
+RAM managed by worker nodes and accessible over RDMA or Ethernet. 
+Applications access GassyFS through a standard FUSE mount, or may link 
+directly to the library to avoid any overhead that FUSE may introduce.
+
+By default all data in GassyFS is non-persistent. That is, all 
+metadata and file data is kept in memory, and any node failure will 
+result in data loss. In this mode GassyFS can be thought of as a 
+high-volume tmpfs that can be instantiated and destroyed as needed, or 
+kept mounted and used by applications with multiple stages of 
+execution. The differences between GassyFS and tmpfs become apparent 
+when we consider how users deal with durability concerns.
+
+At the bottom of Figure 2 are shown a set of storage targets that can 
+be used for managing persistent checkpoints of GassyFS. **TODO**: talk 
+about volatility. Finally, GassyFS supports a form of file system 
+federation that allows checkpoint content to be accessed remotely to 
+enable efficient data sharing between users over a wide-area network. 
+
+In subsequent sections we describe several experiments and detail how 
+we obtained the baselines. The key in reproducibility is to reproduce 
+the baselines!
+
+## Experiment 1: GassyFS vs. TempFS
+
+## Experiment 2: Scalability
+
+## Experiment 3: UDP vs. Infiniband Performance
+
+## Experiment 4: Analytics on GassyFS
+
 # Discussion
 
 > **NOTE**: these subsections might merge with others or turn into 
@@ -314,11 +368,6 @@ preliminary work.
 
 Our convention can be used to either of these two approaches.
 
-## Examples
-
-  * [VarSys16](https://github.com/ivotron/varsys16) 
-    [@jimenez_characterizing_2016]
-
 # Related Work
 
 In [@dolfi_model_2014], the authors introduce a "paper model" of 
@@ -327,14 +376,17 @@ illustrate how to organize a project. We extend this idea by having
 our convention be centered on version control systems and include the 
 notion of instant replicability by using docker and ansible.
 
+
 **TODO**:
 
   * ReproZip
   * A collaborative approach to computational reproducibility
   * open science framework (OSF)
   * open science
-  * closest to this stuff: [how we make our papers 
+  * similar but limited to just generating the PDF: [how we make our 
+    papers 
     replicable](http://ivory.idyll.org/blog/2014-our-paper-process.html)
+  * should we reference [@jimenez_characterizing_2016]?
 
 # Bibliography
 
