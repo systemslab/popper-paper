@@ -1,5 +1,5 @@
 ---
-- hosts: worker, master
+- hosts: all
   become: True
   roles:
     - role: cleanup
