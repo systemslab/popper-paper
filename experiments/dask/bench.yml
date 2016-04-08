@@ -1,6 +1,5 @@
 # TODO
 #  * add support for item.repetitions
-#  * add support for item.run_in_tmps
 - name: pull image
   shell: docker pull {{ item.image_name }}
 - name: pull alpine

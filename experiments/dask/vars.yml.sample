@@ -14,6 +14,7 @@ tests:
 - id: echo
   image_name: alpine
   image_args: 'sh -c "echo foo > /mount/foo"'
+  docker_flags: '--cpuset-cpus=1'
   copy_folder: false
   folder_name: "`pwd`/local"
   run_in_local_fs: true
