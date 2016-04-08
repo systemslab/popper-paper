@@ -28,7 +28,7 @@
     include: ../common/start_tmpfs.yml
 
   - name: create csv with headers
-    shell: echo "workload,op,fs,time" > results.csv
+    shell: echo "machine,workload,op,fs,time" > results.csv
 
   - name: run benchmarks
     include: bench.yml
