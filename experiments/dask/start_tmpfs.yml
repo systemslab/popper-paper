@@ -1,0 +1,12 @@
+- name: stop tmpfs
+  include: stop_tmpfs.yml
+
+- name: start tmpfs container
+  shell: >
+    docker run -d -ti \
+      --privileged \
+      --name tmpfs-master \
+      -v /dev:/dev \
+      -v `pwd`/mount_tmpfs:/mount:shared \
+      alpine sh -c \
+      "mount -t tmpfs -o {{ tmpfs.mount_options | join(',') }} tmpfs /mount"

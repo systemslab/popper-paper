@@ -12,14 +12,20 @@
       - "item.id is defined"
       - "item.image_name is defined"
       - "item.image_args is defined"
+      - "item.docker_flags is defined"
       - "item.copy_folder is defined"
       - "item.folder_name is defined"
       - "item.run_in_local_fs is defined"
+      - "item.run_in_tmpfs is defined"
+      - "item.run_in_gassyfs is defined"
       - "item.delete_after is defined"
     with_items: "{{ tests }}"
 
   - name: start gassy
     include: start_gassy.yml
+
+  - name: start gassy
+    include: start_tmpfs.yml
 
   - name: create csv with headers
     shell: echo "workload, op, fs, time" > results.csv
@@ -33,3 +39,7 @@
 
   - name: stop gassy
     include: stop_gassy.yml
+
+  - name: stop tmpfs
+    include: stop_tmpfs.yml
+

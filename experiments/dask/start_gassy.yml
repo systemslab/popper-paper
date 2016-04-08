@@ -4,8 +4,8 @@
 - name: ensure gassy options are given
   assert:
     that:
-    - "gassy is defined"
-    - "gassy.mount_options is defined"
+    - "gassyfs is defined"
+    - "gassyfs.mount_options is defined"
 
 - name: share root mount
   command: mount --make-shared /
@@ -19,14 +19,9 @@
     docker run -d \
       --privileged \
       --name gassyfs-master \
+      -v /dev:/dev \
       -v `pwd`/mount:/mount:shared \
-      ivotron/gassyfs \
-        /mount \
-        -o allow_other \
-        -o fsname=gassy \
-        -o atomic_o_trunc \
-        -o local_mode \
-        -o heap_size=10240
+      ivotron/gassyfs /mount -o "{{ gassyfs.mount_options | join(',') }}"
 
 - name: ensure gassyfs is mounted
   shell: >

@@ -4,6 +4,12 @@ gassy:
   - atomic_o_trunc
   - local_mode
   - 'heap_size=1024'
+tmpfs:
+  mount_options:
+  - 'rw'
+  - 'noexec'
+  - 'nosuid'
+  - 'size=5g'
 tests:
 - id: echo
   image_name: alpine
@@ -11,4 +17,6 @@ tests:
   copy_folder: false
   folder_name: "`pwd`/local"
   run_in_local_fs: true
+  run_in_tmpfs: true
+  run_in_gassyfs: true
   delete_after: true
