@@ -22,10 +22,10 @@
     with_items: "{{ tests }}"
 
   - name: start gassy
-    include: start_gassy.yml
+    include: ../common/start_gassy.yml
 
   - name: start gassy
-    include: start_tmpfs.yml
+    include: ../common/start_tmpfs.yml
 
   - name: create csv with headers
     shell: echo "workload, op, fs, time" > results.csv
@@ -38,8 +38,8 @@
     fetch: src=results.csv dest=./ flat=yes
 
   - name: stop gassy
-    include: stop_gassy.yml
+    include: ../common/stop_gassy.yml
 
   - name: stop tmpfs
-    include: stop_tmpfs.yml
+    include: ../common/stop_tmpfs.yml
 
