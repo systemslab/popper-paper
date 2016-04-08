@@ -6,6 +6,9 @@
 - name: pull alpine
   shell: docker pull alpine
 
+- name: drop caches
+  shell: echo 3 > /proc/sys/vm/drop_caches
+
 - name: run benchmark on localfs
   shell: >
     docker run --rm \
