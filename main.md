@@ -69,6 +69,8 @@ describe in greater detail our convention. There are two main goals:
 We take GassyFS [@watkins_gassyfs_2016] as a research project in which 
 we apply this convention.
 
+![Our workflow.](figures/wflow.png)
+
 # Overview
 
 Our approach:
