@@ -266,7 +266,7 @@ multiple subsystems (e.g. 10:1 of network to IO for example)
 ![GassyFS has facilities for explicitly managing  persistence to 
 different storage targets. A checkpointing infrastructure gives 
 GassyFS flexible policies for persisting namespaces and federating 
-data.](figures/arch.png)
+data.](figures/arch.pdf)
 
 # GassyFS: a model project for Popper
 
