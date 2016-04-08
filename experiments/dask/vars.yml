@@ -1,0 +1,65 @@
+gassyfs:
+  enabled: true
+  mount_options:
+  - allow_other
+  - atomic_o_trunc
+  - local_mode
+  - 'heap_size=1024'
+tmpfs:
+  enabled: true
+  mount_options:
+  - 'rw'
+  - 'noexec'
+  - 'nosuid'
+  - 'size=5g'
+tests:
+- id: xarray_metar_1
+  docker_flags: ''
+  image_name: ivotron/xarray
+  image_args: /mount 1
+  copy_folder: true
+  folder_name: "data/metar"
+  run_in_local_fs: true
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: xarray_metar_2
+  docker_flags: ''
+  image_name: ivotron/xarray
+  image_args: /mount 2
+  copy_folder: false
+  folder_name: "data/metar"
+  run_in_local_fs: true
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: xarray_metar_3
+  docker_flags: ''
+  image_name: ivotron/xarray
+  image_args: /mount 3
+  copy_folder: false
+  folder_name: "data/metar"
+  run_in_local_fs: true
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: xarray_metar_4
+  docker_flags: ''
+  image_name: ivotron/xarray
+  image_args: /mount 4
+  copy_folder: false
+  folder_name: "data/metar"
+  run_in_local_fs: true
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: true
+#- id: fio
+  #docker_flags: "-v `pwd`/test.fio:/root/test.fio"
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/test.fio
+  #copy_folder: false
+  #folder_name: "`pwd`/local"
+  #run_in_local_fs: true
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true

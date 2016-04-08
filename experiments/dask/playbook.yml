@@ -24,11 +24,11 @@
   - name: start gassy
     include: ../common/start_gassy.yml
 
-  - name: start gassy
+  - name: start tmpfs
     include: ../common/start_tmpfs.yml
 
   - name: create csv with headers
-    shell: echo "workload, op, fs, time" > results.csv
+    shell: echo "workload,op,fs,time" > results.csv
 
   - name: run benchmarks
     include: bench.yml

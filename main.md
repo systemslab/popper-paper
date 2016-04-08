@@ -1,6 +1,6 @@
 ---
-title: "The Popper Convention: Treating Academic Papers as Open Source 
-Software Projects"
+title: "Popper: A Convention for Facilitating the Validation of 
+Computer Systems Research"
 author:
 - name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
   affiliation: "_UC Santa Cruz_"
@@ -20,7 +20,7 @@ csl: "ieee.csl"
 bibliography: "citations.bib"
 usedefaultspacing: true
 fontfamily: times
-conferencename: VarSys2016
+conferencename: SC2016
 copyrightyear: 2016
 keywords:
  - reproducibility
@@ -39,37 +39,65 @@ A lot of related/existing work is reinventing the wheel. Creating
 "repos" for research stuff.
 -->
 
-Independent validation of experimental results in the field of 
-computer systems research is a challenging task. Recreating an 
-environment that resembles the one where an experiment was originally 
-executed is a challenging endeavour. Even after achieving this, 
-validating the outcome is a subjective task that requires 
-domain-specific expertise in order to consider what differences 
-between original and recreated environments might be the root cause of 
-any discrepancies in the results.
+A key component of the scientific method is the ability to revisit and 
+replicate previous experiments. Registering information about an 
+experiment allows scientists to interpret and understand results, as 
+well as verify that the experiment was performed according to 
+acceptable procedures. Additionally, reproducibility plays a major 
+role in education since the amount of information that a student has 
+to digest increases as the pace of scientific discovery accelerates. 
+By having the ability to repeat experiments, a student can learn by 
+looking at provenance information, re-evaluate the questions that the 
+original experiment answered and thus "stand on the shoulder of 
+giants".
 
-A central issue in reproducibility is how to easily organize an 
+Independently validating experimental results in the field of computer 
+systems research is a challenging task. Recreating an environment that 
+resembles the one where an experiment was originally executed is a 
+challenging endeavour. Version-control systems (VCS) are sometimes 
+used to address some of these problems. By having a particular version 
+ID for the software used for an article's experimental results, 
+reviewers and readers can have access to the same code base 
+[@brown_how_2014]. However, availability of the source code does not 
+guarantee reproducibility [@collberg_repeatability_2015] since the 
+code might not compile and, even if compilable, the results might 
+differ. In this case, validating the outcome is a subjective task that 
+requires domain-specific expertise in order to determine the 
+differences between original and recreated environments that might be 
+the root cause of any discrepancies in the results 
+[@jimenez_tackling_2015-1 ; @freire_computational_2012 ; 
+@donoho_reproducible_2009].
+
+Additionally, reproducing experimental results when the underlying 
+hardware environment changes is challenging mainly due to the 
+inability to predict the effects of such changes in the outcome of an 
+experiment [saavedra-barrera_cpu_1992 ; woo_splash2_1995]. A Virtual 
+Machine (VM) can be used to partially address this issue but the 
+overheads in terms of performance (the hypervisor "tax") and 
+management (creating, storing and transferring) can be high and, in 
+some fields of computer science such as systems research, cannot be 
+accounted for easily [@clark_xen_2004]. OS-level virtualization can 
+help in reducing this [@jimenez_characterizing_2016].
+
+One central issue in reproducibility is how to easily organize an 
 article's experiments for readers or students. In this work, we 
-revisit the idea of an executable paper, which poses the integration 
-of executables and data with scholarly articles to help facilitate 
-reproducibility. In our work we look at implementing it in today’s 
-cloud-computing world by treating an article as an open source 
-software project and apply software engineering best-practices to 
-manage an article's associated artifacts and maintain the 
-reproducibility of its findings. In particular, we leverage Git, 
-Docker, Ansible and Jupyter notebooks, and use Github, Cloudlab and 
-Binder as our proof-of-concept infrastructure. In this paper we 
-describe in greater detail our convention. There are two main goals:
+revisit the idea of an executable paper [@strijkers_executable_2011], 
+which poses the integration of executables and data with scholarly 
+articles to help facilitate its reproducibility, but look at 
+implementing it in today’s cloud-computing world by treating an 
+article as an open source software project. We make the case for using 
+version-contol In particular, we leverage Git, Docker, Ansible and 
+Jupyter notebooks, and use Github, Cloudlab, Binder and Travis as our 
+proof-of-concept infrastructure. In this paper we describe in greater 
+detail our convention. There are two main goals:
 
  1. It should apply to as many research projects as possible, 
     regardless of their domain.
  2. It should "work", regardless of the underlying technologies; if 
     not, there's a bug in the convention.
 
-We take GassyFS [@watkins_gassyfs_2016] as a research project in which 
-we apply this convention.
-
-![Our workflow.](figures/wflow.png)
+We look at GassyFS [@watkins_gassyfs_2016] as a research project to 
+which we apply this convention.
 
 # Overview
 
@@ -86,6 +114,8 @@ Our approach:
   * Every image in an article has a link in its caption that take the 
     reader to a Jupyter notebook that visualizes the experimental 
     results.
+
+![Our workflow.](figures/wflow.png)
 
 Given all the elements listed above, readers of a paper can look at a 
 figure and click the associated link that takes them to a notebook. 
@@ -148,6 +178,10 @@ execute multi-node experiments.
 Binder is an online service that allows one to turn a GitHub repo into 
 a collection of interactive Jupyter notebooks so that readers don't 
 need to deploy web servers themselves.
+
+### Travis
+
+Travis lets you do CI.
 
 # Convention
 
@@ -263,11 +297,6 @@ We make this part of the results since this is our fingerprint of our
 systems. This also gives us an idea of the proportionality of the 
 multiple subsystems (e.g. 10:1 of network to IO for example)
 
-![GassyFS has facilities for explicitly managing  persistence to 
-different storage targets. A checkpointing infrastructure gives 
-GassyFS flexible policies for persisting namespaces and federating 
-data.](figures/arch.pdf)
-
 # GassyFS: a model project for Popper
 
 GassyFS is a new prototype filesystem system that stores files in 
@@ -279,6 +308,11 @@ memory, and file data is distributed across a pool of network-attached
 RAM managed by worker nodes and accessible over RDMA or Ethernet. 
 Applications access GassyFS through a standard FUSE mount, or may link 
 directly to the library to avoid any overhead that FUSE may introduce.
+
+![GassyFS has facilities for explicitly managing  persistence to 
+different storage targets. A checkpointing infrastructure gives 
+GassyFS flexible policies for persisting namespaces and federating 
+data.](figures/arch.pdf)
 
 By default all data in GassyFS is non-persistent. That is, all 
 metadata and file data is kept in memory, and any node failure will 
@@ -305,6 +339,9 @@ the baselines!
 ## Experiment 3: UDP vs. Infiniband Performance
 
 ## Experiment 4: Analytics on GassyFS
+
+![Dask workload on GassyFS.](figures/dask.png)
+
 
 # Discussion
 

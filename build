@@ -6,6 +6,7 @@ docker run \
   -v `pwd`/vendor/ieee.csl:/root/ieee.csl \
   -v `pwd`/vendor/zotero.bib:/root/citations.bib \
   -v `pwd`/main.md:/root/main.md \
+  -v `pwd`/experiments:/root/experiments \
   -v `pwd`/figures:/root/figures \
   -v `pwd`/out:/root/out \
   ivotron/pandoc:1.13.2 \

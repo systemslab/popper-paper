@@ -1,5 +1,6 @@
 - name: stop tmpfs
   include: stop_tmpfs.yml
+  when: "{{ tmpfs.enabled | bool }}"
 
 - name: start tmpfs container
   shell: >
@@ -10,3 +11,4 @@
       -v `pwd`/mount_tmpfs:/mount:shared \
       alpine sh -c \
       "mount -t tmpfs -o {{ tmpfs.mount_options | join(',') }} tmpfs /mount"
+  when: "{{ tmpfs.enabled | bool }}"

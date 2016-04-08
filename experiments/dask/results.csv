@@ -1,0 +1,15 @@
+workload,op,fs,time
+xarray_metar_1,exec,local,0:01:04.051740
+xarray_metar_1,copy,tmpfs,0:00:03.570868
+xarray_metar_1,exec,tmpfs,0:00:05.609725
+xarray_metar_2,exec,local,0:01:05.868933
+xarray_metar_2,exec,tmpfs,0:00:05.819508
+xarray_metar_3,exec,local,0:01:44.908815
+xarray_metar_3,exec,tmpfs,0:00:45.670286
+xarray_metar_4,exec,local,0:02:26.545478
+xarray_metar_4,exec,tmpfs,0:01:25.311635
+xarray_metar_1,copy,gassyfs,0:00:48.969857
+xarray_metar_1,exec,gassyfs,0:00:11.298157
+xarray_metar_2,exec,gassyfs,0:00:12.513605
+xarray_metar_3,exec,gassyfs,0:00:52.773712
+xarray_metar_4,exec,gassyfs,0:01:32.563396
