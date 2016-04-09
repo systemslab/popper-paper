@@ -8,5 +8,5 @@ site: "udp"
 infiniband: 0
 git_url: "https://github.com/noahdesu/gassyfs.git"
 git_commit: "3f98eaee618b3612bb6538cb7be4f5336d335c16"
-mount_args: "-o allow_other -o fsname=gassy -o atomic_o_trunc -o heap_size=163840 -o rank0_alloc"
+mount_args: "-o allow_other -o fsname=gassy -o atomic_o_trunc -o big_writes -o heap_size=163840 -o rank0_alloc"
 gasnet_compile_args: ""
