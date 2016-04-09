@@ -1,0 +1,31 @@
+---
+# Defines deployment design and assigns role to server groups
+
+- hosts: worker
+  become: True
+  roles:
+  - gassyfs/worker
+
+- hosts: master
+  become: True
+  roles:
+  - gassyfs/master
+  tasks:
+    - add_host: 
+        name: "{{ ansible_hostname }}:{{ worker_sshd_port }}"
+        groups: "client"
+        ansible_ssh_user: "root"
+
+- hosts: client
+  tasks:
+    - name: wait for gassyfs to mount
+      shell: mount | grep mount
+      register: result
+      retries: 200
+      until: result.rc == 0
+      no_log: True
+
+    - name: how big is our gassyfs mount?
+      shell: df -h
+      register: result
+    - debug: var=result.stdout_lines

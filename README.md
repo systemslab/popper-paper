@@ -10,40 +10,38 @@ These experiments were run on [CloudLab](https://www.cloudlab.us). We have a 6-n
 
 1. Setup passwordless SSH and sudo
 
-2. Install [Docker](https://docs.docker.com/engine/installation/)
+2. Install [Docker](https://docs.docker.com/engine/installation/) and setup infiniband. For Centos7.1, you can use:
 
-3. Add EPEL
-
-   ```bash
-   wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm 
-   sudo rpm -ivh epel-release-7-5.noarch.rpm
-   sudo yum update -y
-   ```
-
-4. Setup up unlimited open files:
-
-   ```bash
-   echo "* soft memlock unlimited" | sudo tee -a /etc/security/limits.conf
-   echo "* hard memlock unlimited" | sudo tee -a /etc/security/limits.conf
-   ulimit -l unlimited
-   ```
+  ```bash
+  $ ./bootstrap.sh
+  ```
 
 Quickstart
 ----------
 
-1. Start an experiment master (a container with Ansible v2.0.1.0):
+1. Start experiment master (i.e., a container with [Ansible](https://www.ansible.com/how-ansible-works)):
 
    ```bash
-  ./emaster.sh
+   $ ./emaster.sh
    ```
 
-2. Choose an experiment and setup the hosts:
+2. Choose an experiment and setup the cluster inventory:
 
    ```bash
-   [EXPERIMENT_MASTER] cd figure1/experiment-bamsort/
-   [EXPERIMENT_MASTER] vim inventory
+   [EXPERIMENT_MASTER] cd experiment/scalability
+   [EXPERIMENT_MASTER] vim inventory/*
+   ```
+
+3. Start the experiment!
+
+   ```
    [EXPERIMENT_MASTER] ./run.sh
    ```
+
+Results and Logs
+----------------
+
+Inside the experiment directory there is a results and logs directory. These will be overwritten everytime you run an experiment... so you should try to commit the results along with the entire experiment directory before running a new job. This gives you a history of different experiments and helps us understand how small tweaks affect results.
 
 Troubleshooting
 ---------------
@@ -57,7 +55,5 @@ Check to make sure everything installed smoothly:
    # Should show no running images
    $ docker ps 
    ```
-
-If you still have problems, checkout the `bootstrap-infiniband.sh` file in the [srl-roles](https://github.com/systemslab/srl-roles) repository.
 
 EOF 

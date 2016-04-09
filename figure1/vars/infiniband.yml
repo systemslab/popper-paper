@@ -1,0 +1,12 @@
+---
+# Variables here are applicable to all host groups NOT roles
+
+###########
+# GASSYFS #
+###########
+site: "infiniband"
+infiniband: 1
+git_url: "https://github.com/michaelsevilla/gassyfs.git"
+git_commit: "7e2eb122b730557806c2a3115ca9312823797de9"
+mount_args: "-o allow_other -o fsname=gassy -o atomic_o_trunc"
+gasnet_compile_args: "--prefix=/usr --enable-udp --enable-ibv --disable-mpi --enable-par --enable-segment-everything --disable-aligned-segments --disable-pshm --with-segment-mmap-max=160GB"
