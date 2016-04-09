@@ -156,10 +156,8 @@ in their environment. If resources are not available, an alternative
 is to launch a Cloudlab, Chameleon or PRObE instance (one or more 
 docker nodes hosted in Cloudlab) and point Ansible to the assigned IP 
 addresses. An open question is how do we deal with datasets that are 
-too big to fit in Git. We've been recently working on a project (vio) 
-that allows to store and reference large input/output datasets in a 
-generic way (i.e. it works with many cloud providers like Git-lfs, 
-Dropbox, Google Drive, etc.).
+too big to fit in Git. An alternative is to use `git-lfs` to version 
+and store large datasets.
 
 ![End-to-end workflow for an article that follows the Popper 
 convention.](figures/wflow.png)
@@ -214,7 +212,8 @@ need to deploy web servers themselves.
 
 While we use all these, as stated in goal 2, any of these should be 
 swappable for other tools, for example: VMs instead of docker; puppet 
-instead of ansible; R insted of scipy; and so on and so forth.
+instead of ansible; Jenkins instead of Travis CI; and so on and so 
+forth.
 
 # The Popper Convention
 
@@ -359,14 +358,15 @@ execution. The differences between GassyFS and tmpfs become apparent
 when we consider how users deal with durability concerns.
 
 At the bottom of Figure 2 are shown a set of storage targets that can 
-be used for managing persistent checkpoints of GassyFS. **TODO**: talk 
-about volatility. Finally, GassyFS supports a form of file system 
-federation that allows checkpoint content to be accessed remotely to 
-enable efficient data sharing between users over a wide-area network. 
+be used for managing persistent checkpoints of GassyFS. Given the 
+volatility of memory, durability and consistency are handled 
+explicitly by selectively copying data across file system boundaries. 
+Finally, GassyFS supports a form of file system federation that allows 
+checkpoint content to be accessed remotely to enable efficient data 
+sharing between users over a wide-area network. 
 
-In subsequent sections we describe several experiments and detail how 
-we obtained the baselines. The key in reproducibility is to reproduce 
-the baselines!
+In subsequent sections we describe several experiments run on GassyFS 
+and detail how we obtained baselines.
 
 ## Experiment 1: GassyFS vs. TempFS
 
