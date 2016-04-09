@@ -86,3 +86,91 @@
 2016-04-09 05:59:04,340 p=7240 u=root |  changed: [node-0] => (item=/tmp/gassyfs)
 2016-04-09 05:59:04,343 p=7240 u=root |  PLAY RECAP *********************************************************************
 2016-04-09 05:59:04,343 p=7240 u=root |  node-0                     : ok=3    changed=2    unreachable=0    failed=0   
+2016-04-09 14:31:49,010 p=78 u=root |  PLAY ***************************************************************************
+2016-04-09 14:31:49,041 p=78 u=root |  TASK [setup] *******************************************************************
+2016-04-09 14:31:49,478 p=78 u=root |  ok: [node-0]
+2016-04-09 14:31:49,483 p=78 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 14:31:49,517 p=78 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/main.yml for node-0
+2016-04-09 14:31:49,524 p=78 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 14:31:49,599 p=78 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/pre_requisite.yml for node-0
+2016-04-09 14:31:49,618 p=78 u=root |  TASK [gassyfs/worker : create bootstrap directories] ***************************
+2016-04-09 14:31:50,780 p=78 u=root |  ok: [node-0] => (item=/etc/ceph/)
+2016-04-09 14:31:50,797 p=78 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-09 14:31:50,812 p=78 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-09 14:31:50,826 p=78 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-09 14:31:50,829 p=78 u=root |  TASK [gassyfs/worker : install pip and docker on ubuntu] ***********************
+2016-04-09 14:31:50,976 p=78 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 14:31:50,980 p=78 u=root |  TASK [gassyfs/worker : install pip and docker on debian] ***********************
+2016-04-09 14:31:51,114 p=78 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 14:31:51,117 p=78 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-09 14:31:52,711 p=78 u=root |  ok: [node-0] => (item=[u'python-pip', u'docker-engine'])
+2016-04-09 14:31:52,715 p=78 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-09 14:31:52,854 p=78 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 14:31:52,857 p=78 u=root |  TASK [gassyfs/worker : install docker-py] **************************************
+2016-04-09 14:31:54,178 p=78 u=root |  ok: [node-0]
+2016-04-09 14:31:54,182 p=78 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 14:31:54,255 p=78 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/start_docker_worker.yml for node-0
+2016-04-09 14:31:54,291 p=78 u=root |  TASK [gassyfs/worker : run the gassyfs docker image] ***************************
+2016-04-09 14:31:56,128 p=78 u=root |  changed: [node-0]
+2016-04-09 14:31:56,131 p=78 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 14:31:56,208 p=78 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/check.yml for node-0
+2016-04-09 14:31:56,242 p=78 u=root |  TASK [gassyfs/worker : wait for the SSH port on the container to become active] 
+2016-04-09 14:32:06,564 p=78 u=root |  ok: [node-0]
+2016-04-09 14:32:06,569 p=78 u=root |  TASK [add_host] ****************************************************************
+2016-04-09 14:32:06,617 p=78 u=root |  changed: [node-0]
+2016-04-09 14:32:06,627 p=78 u=root |  PLAY ***************************************************************************
+2016-04-09 14:32:06,636 p=78 u=root |  TASK [setup] *******************************************************************
+2016-04-09 14:32:09,333 p=78 u=root |  ok: [node-0]
+2016-04-09 14:32:09,337 p=78 u=root |  TASK [mount tmpfs] *************************************************************
+2016-04-09 14:32:09,678 p=78 u=root |  changed: [node-0]
+2016-04-09 14:32:09,681 p=78 u=root |  TASK [how big is our tmpfs mount?] *********************************************
+2016-04-09 14:32:10,109 p=78 u=root |  changed: [node-0]
+2016-04-09 14:32:10,113 p=78 u=root |  TASK [debug] *******************************************************************
+2016-04-09 14:32:10,160 p=78 u=root |  ok: [node-0] => {
+    "result.stdout_lines": [
+        "Filesystem                                                                                      Size  Used Avail Use% Mounted on", 
+        "/dev/mapper/docker-8:1-951195-bbf311720b7b64ffb4f63294911607f533db7357c2f02a46a99b51ed46290de4   10G  1.2G  8.9G  12% /", 
+        "tmpfs                                                                                            79G     0   79G   0% /dev", 
+        "tmpfs                                                                                            79G     0   79G   0% /sys/fs/cgroup", 
+        "/dev/sda1                                                                                        16G  9.6G  5.3G  65% /home", 
+        "tmpfs                                                                                            79G   18M   79G   1% /run/shm", 
+        "tmpfs                                                                                            79G     0   79G   0% /dev/shm", 
+        "tmpfs                                                                                           160G     0  160G   0% /mount"
+    ]
+}
+2016-04-09 14:32:10,163 p=78 u=root |  PLAY RECAP *********************************************************************
+2016-04-09 14:32:10,163 p=78 u=root |  node-0                     : ok=15   changed=4    unreachable=0    failed=0   
+2016-04-09 14:32:10,179 p=78 u=root |  PLAY ***************************************************************************
+2016-04-09 14:32:10,187 p=78 u=root |  TASK [setup] *******************************************************************
+2016-04-09 14:32:12,221 p=78 u=root |  ok: [node-0]
+2016-04-09 14:32:12,227 p=78 u=root |  TASK [30GB dd microbenchmark] **************************************************
+2016-04-09 14:32:12,274 p=78 u=root |  ok: [node-0]
+2016-04-09 14:32:12,277 p=78 u=root |  TASK [include] *****************************************************************
+2016-04-09 14:32:12,316 p=78 u=root |  included: /experiments/figure1/workloads/compile.yml for node-0
+2016-04-09 14:32:12,322 p=78 u=root |  TASK [run the job n times] *****************************************************
+2016-04-09 14:33:03,961 p=78 u=root |  changed: [node-0] => (item=[0, u'dd if=/dev/zero of=./zero bs=4k count=7864320'])
+2016-04-09 14:33:03,966 p=78 u=root |  changed: [node-0] => (item=[0, u'rm ./zero'])
+2016-04-09 14:33:03,971 p=78 u=root |  changed: [node-0] => (item=[1, u'dd if=/dev/zero of=./zero bs=4k count=7864320'])
+2016-04-09 14:33:03,975 p=78 u=root |  changed: [node-0] => (item=[1, u'rm ./zero'])
+2016-04-09 14:33:03,980 p=78 u=root |  changed: [node-0] => (item=[2, u'dd if=/dev/zero of=./zero bs=4k count=7864320'])
+2016-04-09 14:33:03,984 p=78 u=root |  changed: [node-0] => (item=[2, u'rm ./zero'])
+2016-04-09 14:33:03,988 p=78 u=root |  TASK [parse results] ***********************************************************
+2016-04-09 14:33:04,797 p=78 u=root |  changed: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; dd if=/dev/zero of=./zero bs=4k count=7864320', u'end': u'2016-04-09 14:32:27.019435', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-09 14:32:12.537956', u'delta': u'0:00:14.481479', 'item': [0, u'dd if=/dev/zero of=./zero bs=4k count=7864320'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; dd if=/dev/zero of=./zero bs=4k count=7864320', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u'7864320+0 records in\n7864320+0 records out\n32212254720 bytes (32 GB) copied, 14.3592 s, 2.2 GB/s'})
+2016-04-09 14:33:04,801 p=78 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; rm ./zero', u'end': u'2016-04-09 14:32:29.567164', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-09 14:32:27.207246', u'delta': u'0:00:02.359918', 'item': [0, u'rm ./zero'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; rm ./zero', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u''})
+2016-04-09 14:33:04,805 p=78 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; dd if=/dev/zero of=./zero bs=4k count=7864320', u'end': u'2016-04-09 14:32:44.115221', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-09 14:32:29.730881', u'delta': u'0:00:14.384340', 'item': [1, u'dd if=/dev/zero of=./zero bs=4k count=7864320'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; dd if=/dev/zero of=./zero bs=4k count=7864320', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u'7864320+0 records in\n7864320+0 records out\n32212254720 bytes (32 GB) copied, 14.2701 s, 2.3 GB/s'})
+2016-04-09 14:33:04,810 p=78 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; rm ./zero', u'end': u'2016-04-09 14:32:46.726781', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-09 14:32:44.313806', u'delta': u'0:00:02.412975', 'item': [1, u'rm ./zero'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; rm ./zero', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u''})
+2016-04-09 14:33:04,814 p=78 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; dd if=/dev/zero of=./zero bs=4k count=7864320', u'end': u'2016-04-09 14:33:01.343993', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-09 14:32:46.926433', u'delta': u'0:00:14.417560', 'item': [2, u'dd if=/dev/zero of=./zero bs=4k count=7864320'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; dd if=/dev/zero of=./zero bs=4k count=7864320', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u'7864320+0 records in\n7864320+0 records out\n32212254720 bytes (32 GB) copied, 14.3021 s, 2.3 GB/s'})
+2016-04-09 14:33:04,818 p=78 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; rm ./zero', u'end': u'2016-04-09 14:33:03.924053', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-09 14:33:01.526819', u'delta': u'0:00:02.397234', 'item': [2, u'rm ./zero'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; rm ./zero', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u''})
+2016-04-09 14:33:04,820 p=78 u=root |  PLAY RECAP *********************************************************************
+2016-04-09 14:33:04,820 p=78 u=root |  node-0                     : ok=20   changed=6    unreachable=0    failed=0   
+2016-04-09 14:33:05,058 p=345 u=root |  PLAY ***************************************************************************
+2016-04-09 14:33:05,068 p=345 u=root |  TASK [setup] *******************************************************************
+2016-04-09 14:33:05,467 p=345 u=root |  ok: [node-0]
+2016-04-09 14:33:05,485 p=345 u=root |  TASK [cleanup : remove containers [u'michaelsevilla/gassyfs']] *****************
+2016-04-09 14:33:07,170 p=345 u=root |  changed: [node-0] => (item=michaelsevilla/gassyfs)
+2016-04-09 14:33:07,173 p=345 u=root |  TASK [cleanup : delete user defined files] *************************************
+2016-04-09 14:33:07,919 p=345 u=root |  ok: [node-0] => (item=/tmp/fetch)
+2016-04-09 14:33:07,922 p=345 u=root |  ok: [node-0] => (item=/tmp/ssh)
+2016-04-09 14:33:07,926 p=345 u=root |  changed: [node-0] => (item=/tmp/gassyfs)
+2016-04-09 14:33:07,929 p=345 u=root |  PLAY RECAP *********************************************************************
+2016-04-09 14:33:07,929 p=345 u=root |  node-0                     : ok=3    changed=2    unreachable=0    failed=0   

@@ -4,16 +4,17 @@
     - name: clone the ceph code
       git:
         repo: "https://github.com/ceph/ceph.git"
-        dest: "/tmp/ceph"
+        dest: "/home/ceph"
         version: "v10.0.3"
+      when: download
       
     - name: ceph install deps, compile, and remove
       set_fact:
         job:
-          - "cp -r /tmp/ceph ceph"
+          - "cp -r /home/ceph ceph"
           - "cd ceph; ./install-deps.sh; ./autogen.sh; ./configure --with-debug --with-librocksdb-static" 
           - "cd ceph; make -j10"
           - "rm -r ceph"
         output: "{{ site }}-ceph-{{ nnodes }}.csv"
 
-   - include: compile.yml
+    - include: compile.yml

@@ -1,7 +1,7 @@
 delta, cmd
-"0:00:14.557917", "dd if=/dev/zero of=./zero bs=4k count=7864320"
-"0:00:02.223639", "rm ./zero"
-"0:00:14.260332", "dd if=/dev/zero of=./zero bs=4k count=7864320"
-"0:00:02.242093", "rm ./zero"
-"0:00:14.707624", "dd if=/dev/zero of=./zero bs=4k count=7864320"
-"0:00:02.413102", "rm ./zero"
+"0:00:14.481479", "dd if=/dev/zero of=./zero bs=4k count=7864320"
+"0:00:02.359918", "rm ./zero"
+"0:00:14.384340", "dd if=/dev/zero of=./zero bs=4k count=7864320"
+"0:00:02.412975", "rm ./zero"
+"0:00:14.417560", "dd if=/dev/zero of=./zero bs=4k count=7864320"
+"0:00:02.397234", "rm ./zero"

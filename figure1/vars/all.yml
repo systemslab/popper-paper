@@ -2,6 +2,7 @@
 # These variables are common to all systems (infiniband, udp, tmpfs)
 
 repetitions: "[0, 1, 2]"
+download: False
 
 ##########
 # DOCKER #
@@ -19,6 +20,7 @@ worker_sshd_port: 2223
 ###########
 fetch_directory: "/tmp/fetch/"
 src_directory: "/tmp/gassyfs"
+home_directory: "/users/msevilla"
 ssh_tmpdir: "/tmp/ssh"
 ssh_dir: "~/.ssh"
 authkey: "{{ lookup('file', '{{ ssh_dir }}/id_rsa.pub') }}"

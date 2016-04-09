@@ -1,0 +1,108 @@
+2016-04-09 16:02:01,346 p=1952 u=root |  PLAY ***************************************************************************
+2016-04-09 16:02:01,356 p=1952 u=root |  TASK [setup] *******************************************************************
+2016-04-09 16:02:01,777 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:02:01,781 p=1952 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 16:02:01,816 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/main.yml for node-0
+2016-04-09 16:02:01,824 p=1952 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 16:02:01,893 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/pre_requisite.yml for node-0
+2016-04-09 16:02:01,908 p=1952 u=root |  TASK [gassyfs/worker : create bootstrap directories] ***************************
+2016-04-09 16:02:03,094 p=1952 u=root |  ok: [node-0] => (item=/etc/ceph/)
+2016-04-09 16:02:03,111 p=1952 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-09 16:02:03,126 p=1952 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-09 16:02:03,139 p=1952 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-09 16:02:03,142 p=1952 u=root |  TASK [gassyfs/worker : install pip and docker on ubuntu] ***********************
+2016-04-09 16:02:03,283 p=1952 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 16:02:03,287 p=1952 u=root |  TASK [gassyfs/worker : install pip and docker on debian] ***********************
+2016-04-09 16:02:03,404 p=1952 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 16:02:03,408 p=1952 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-09 16:02:03,886 p=1952 u=root |  ok: [node-0] => (item=[u'python-pip', u'docker-engine'])
+2016-04-09 16:02:03,889 p=1952 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-09 16:02:04,022 p=1952 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 16:02:04,025 p=1952 u=root |  TASK [gassyfs/worker : install docker-py] **************************************
+2016-04-09 16:02:04,566 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:02:04,569 p=1952 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 16:02:04,630 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/start_docker_worker.yml for node-0
+2016-04-09 16:02:04,662 p=1952 u=root |  TASK [gassyfs/worker : run the gassyfs docker image] ***************************
+2016-04-09 16:02:06,121 p=1952 u=root |  changed: [node-0]
+2016-04-09 16:02:06,125 p=1952 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 16:02:06,200 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/check.yml for node-0
+2016-04-09 16:02:06,238 p=1952 u=root |  TASK [gassyfs/worker : wait for the SSH port on the container to become active] 
+2016-04-09 16:02:13,532 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:02:13,542 p=1952 u=root |  PLAY ***************************************************************************
+2016-04-09 16:02:13,553 p=1952 u=root |  TASK [setup] *******************************************************************
+2016-04-09 16:02:13,996 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:02:14,001 p=1952 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-09 16:02:14,057 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/main.yml for node-0
+2016-04-09 16:02:14,064 p=1952 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-09 16:02:14,124 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/pre_requisite.yml for node-0
+2016-04-09 16:02:14,138 p=1952 u=root |  TASK [gassyfs/master : create bootstrap directories] ***************************
+2016-04-09 16:02:15,310 p=1952 u=root |  ok: [node-0] => (item=/etc/ceph/)
+2016-04-09 16:02:15,327 p=1952 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-09 16:02:15,341 p=1952 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-09 16:02:15,355 p=1952 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-09 16:02:15,358 p=1952 u=root |  TASK [gassyfs/master : install pip and docker on ubuntu] ***********************
+2016-04-09 16:02:15,498 p=1952 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 16:02:15,501 p=1952 u=root |  TASK [gassyfs/master : install pip and docker on debian] ***********************
+2016-04-09 16:02:15,637 p=1952 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 16:02:15,641 p=1952 u=root |  TASK [gassyfs/master : install pip and docker on redhat] ***********************
+2016-04-09 16:02:16,143 p=1952 u=root |  ok: [node-0] => (item=[u'python-pip', u'docker-engine'])
+2016-04-09 16:02:16,146 p=1952 u=root |  TASK [gassyfs/master : install pip and docker on redhat] ***********************
+2016-04-09 16:02:16,265 p=1952 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 16:02:16,267 p=1952 u=root |  TASK [gassyfs/master : install docker-py] **************************************
+2016-04-09 16:02:16,882 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:02:16,886 p=1952 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-09 16:02:16,977 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/fetch_configs.yml for node-0
+2016-04-09 16:02:17,014 p=1952 u=root |  TASK [gassyfs/master : remove old keys] ****************************************
+2016-04-09 16:02:17,306 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:02:17,309 p=1952 u=root |  TASK [gassyfs/master : create a new directory for ssh keys] ********************
+2016-04-09 16:02:17,604 p=1952 u=root |  changed: [node-0]
+2016-04-09 16:02:17,609 p=1952 u=root |  TASK [gassyfs/master : set ssh key paths] **************************************
+2016-04-09 16:02:17,685 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:02:17,689 p=1952 u=root |  TASK [gassyfs/master : try to fetch ssh keys] **********************************
+2016-04-09 16:02:18,987 p=1952 u=root |  changed: [node-0] => (item=id_rsa)
+2016-04-09 16:02:19,002 p=1952 u=root |  changed: [node-0] => (item=id_rsa.pub)
+2016-04-09 16:02:19,015 p=1952 u=root |  changed: [node-0] => (item=authorized_keys)
+2016-04-09 16:02:19,018 p=1952 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-09 16:02:19,090 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/start_docker_master.yml for node-0
+2016-04-09 16:02:19,125 p=1952 u=root |  TASK [gassyfs/master : run the gassyfs docker image] ***************************
+2016-04-09 16:02:20,653 p=1952 u=root |  changed: [node-0]
+2016-04-09 16:02:20,657 p=1952 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-09 16:02:20,746 p=1952 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/check.yml for node-0
+2016-04-09 16:02:20,788 p=1952 u=root |  TASK [gassyfs/master : wait for gassyfs to start up] ***************************
+2016-04-09 16:02:20,819 p=1952 u=root |  Pausing for 60 seconds
+2016-04-09 16:02:20,819 p=1952 u=root |  (ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+2016-04-09 16:03:20,862 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:03:20,867 p=1952 u=root |  TASK [gassyfs/master : check if the master container is up] ********************
+2016-04-09 16:03:21,348 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:03:21,352 p=1952 u=root |  TASK [add_host] ****************************************************************
+2016-04-09 16:03:21,399 p=1952 u=root |  changed: [node-0]
+2016-04-09 16:03:21,409 p=1952 u=root |  PLAY ***************************************************************************
+2016-04-09 16:03:21,417 p=1952 u=root |  TASK [setup] *******************************************************************
+2016-04-09 16:03:23,647 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:03:23,652 p=1952 u=root |  TASK [wait for gassyfs to mount] ***********************************************
+2016-04-09 16:03:24,011 p=1952 u=root |  changed: [node-0]
+2016-04-09 16:03:24,015 p=1952 u=root |  TASK [how big is our gassyfs mount?] *******************************************
+2016-04-09 16:03:24,352 p=1952 u=root |  changed: [node-0]
+2016-04-09 16:03:24,356 p=1952 u=root |  TASK [debug] *******************************************************************
+2016-04-09 16:03:24,398 p=1952 u=root |  ok: [node-0] => {
+    "result.stdout_lines": [
+        "Filesystem                                                                                      Size  Used Avail Use% Mounted on", 
+        "/dev/mapper/docker-8:1-951195-214fb4f9e98edfc6468e06d40ef9c221103d01ae0f28bba54af4a3d81b78bd8b   10G  1.2G  8.9G  12% /", 
+        "tmpfs                                                                                            79G     0   79G   0% /dev", 
+        "tmpfs                                                                                            79G     0   79G   0% /sys/fs/cgroup", 
+        "/dev/sda1                                                                                        16G  9.8G  5.2G  66% /home", 
+        "tmpfs                                                                                            79G     0   79G   0% /dev/shm", 
+        "tmpfs                                                                                            79G   18M   79G   1% /run/shm", 
+        "gassy                                                                                           158G     0  158G   0% /mount"
+    ]
+}
+2016-04-09 16:03:24,401 p=1952 u=root |  PLAY RECAP *********************************************************************
+2016-04-09 16:03:24,402 p=1952 u=root |  node-0                     : ok=31   changed=7    unreachable=0    failed=0   
+2016-04-09 16:03:24,418 p=1952 u=root |  PLAY ***************************************************************************
+2016-04-09 16:03:24,428 p=1952 u=root |  TASK [setup] *******************************************************************
+2016-04-09 16:03:26,506 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:03:26,512 p=1952 u=root |  TASK [30GB dd microbenchmark] **************************************************
+2016-04-09 16:03:26,557 p=1952 u=root |  ok: [node-0]
+2016-04-09 16:03:26,561 p=1952 u=root |  TASK [include] *****************************************************************
+2016-04-09 16:03:26,589 p=1952 u=root |  included: /experiments/figure1/workloads/compile.yml for node-0
+2016-04-09 16:03:26,596 p=1952 u=root |  TASK [run the job n times] *****************************************************
