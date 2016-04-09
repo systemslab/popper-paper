@@ -27,19 +27,40 @@
   - name: start tmpfs
     include: ../common/start_tmpfs.yml
 
-  - name: create csv with headers
-    shell: echo "machine,workload,op,fs,time" > results.csv
+  - name: pull image
+    shell: docker pull {{ item.image_name }}
+    with_items: "{{ tests }}"
+
+  - name: pull alpine
+    shell: docker pull alpine
 
   - name: run benchmarks
     include: bench.yml
     with_items: "{{ tests }}"
 
   - name: fetch results file
-    fetch: src=results.csv dest=./ flat=yes
+    fetch: src=results.csv dest=./{{ ansible_hostname }}_results.csv flat=yes
+
+  - name: create csv with headers
+    local_action: shell echo "machine,workload,op,fs,time" > results.csv
+    run_once: true
+    sudo: false
+
+  - name: add results from every machine
+    local_action: shell cat {{ ansible_hostname }}_results.csv >> results.csv
+    sudo: false
+
+  - name: remove file of every machine
+    local_action: shell cat {{ ansible_hostname }}_results.csv
+    sudo: false
+
+  - name: rename file
+    local_action: shell mv results.csv {{ testname }}.csv
+    run_once: true
+    sudo: false
 
   - name: stop gassy
     include: ../common/stop_gassy.yml
 
   - name: stop tmpfs
     include: ../common/stop_tmpfs.yml
-

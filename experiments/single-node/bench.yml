@@ -1,10 +1,5 @@
 # TODO
 #  * add support for item.repetitions
-- name: pull image
-  shell: docker pull {{ item.image_name }}
-- name: pull alpine
-  shell: docker pull alpine
-
 - name: drop caches
   shell: echo 3 > /proc/sys/vm/drop_caches
 

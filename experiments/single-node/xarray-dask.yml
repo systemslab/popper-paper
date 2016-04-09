@@ -4,7 +4,7 @@ gassyfs:
   - allow_other
   - atomic_o_trunc
   - local_mode
-  - 'heap_size=1024'
+  - 'heap_size=5000'
 tmpfs:
   enabled: true
   mount_options:
@@ -18,7 +18,7 @@ tests:
   image_name: ivotron/xarray
   image_args: /mount 1
   copy_folder: true
-  folder_name: "data/metar"
+  folder_name: "`pwd`/data/metar"
   run_in_local_fs: true
   run_in_tmpfs: true
   run_in_gassyfs: true
@@ -28,7 +28,7 @@ tests:
   image_name: ivotron/xarray
   image_args: /mount 2
   copy_folder: false
-  folder_name: "data/metar"
+  folder_name: "`pwd`/data/metar"
   run_in_local_fs: true
   run_in_tmpfs: true
   run_in_gassyfs: true
@@ -38,7 +38,7 @@ tests:
   image_name: ivotron/xarray
   image_args: /mount 3
   copy_folder: false
-  folder_name: "data/metar"
+  folder_name: "`pwd`/data/metar"
   run_in_local_fs: true
   run_in_tmpfs: true
   run_in_gassyfs: true
@@ -48,7 +48,17 @@ tests:
   image_name: ivotron/xarray
   image_args: /mount 4
   copy_folder: false
-  folder_name: "data/metar"
+  folder_name: "`pwd`/data/metar"
+  run_in_local_fs: true
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: xarray_metar_5
+  docker_flags: ''
+  image_name: ivotron/xarray
+  image_args: /mount 5
+  copy_folder: false
+  folder_name: "`pwd`/data/metar"
   run_in_local_fs: true
   run_in_tmpfs: true
   run_in_gassyfs: true
