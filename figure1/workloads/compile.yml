@@ -1,0 +1,13 @@
+---
+- name: run the job n times
+  shell: "cd /mount; {{ item.1 }}"
+  register: result
+  with_nested:
+    - "{{ repetitions }}"
+    - "{{ job }}"
+
+- name: "parse results"
+  connection: local
+  template: src=parse-compile.j2 dest=results/{{ output }}
+  with_items: 
+    - "{{ result.results }}"

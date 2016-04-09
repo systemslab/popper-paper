@@ -1,0 +1,60 @@
+2016-04-09 05:59:04,589 p=7278 u=root |  PLAY ***************************************************************************
+2016-04-09 05:59:04,603 p=7278 u=root |  TASK [setup] *******************************************************************
+2016-04-09 05:59:05,039 p=7278 u=root |  ok: [node-0]
+2016-04-09 05:59:05,044 p=7278 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 05:59:05,078 p=7278 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/main.yml for node-0
+2016-04-09 05:59:05,085 p=7278 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 05:59:05,151 p=7278 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/pre_requisite.yml for node-0
+2016-04-09 05:59:05,167 p=7278 u=root |  TASK [gassyfs/worker : create bootstrap directories] ***************************
+2016-04-09 05:59:06,363 p=7278 u=root |  ok: [node-0] => (item=/etc/ceph/)
+2016-04-09 05:59:06,379 p=7278 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-09 05:59:06,394 p=7278 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-09 05:59:06,408 p=7278 u=root |  ok: [node-0] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-09 05:59:06,411 p=7278 u=root |  TASK [gassyfs/worker : install pip and docker on ubuntu] ***********************
+2016-04-09 05:59:06,551 p=7278 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 05:59:06,555 p=7278 u=root |  TASK [gassyfs/worker : install pip and docker on debian] ***********************
+2016-04-09 05:59:06,689 p=7278 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 05:59:06,693 p=7278 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-09 05:59:07,220 p=7278 u=root |  ok: [node-0] => (item=[u'python-pip', u'docker-engine'])
+2016-04-09 05:59:07,224 p=7278 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-09 05:59:07,360 p=7278 u=root |  skipping: [node-0] => (item=[]) 
+2016-04-09 05:59:07,364 p=7278 u=root |  TASK [gassyfs/worker : install docker-py] **************************************
+2016-04-09 05:59:07,949 p=7278 u=root |  ok: [node-0]
+2016-04-09 05:59:07,953 p=7278 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 05:59:08,025 p=7278 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/start_docker_worker.yml for node-0
+2016-04-09 05:59:08,061 p=7278 u=root |  TASK [gassyfs/worker : run the gassyfs docker image] ***************************
+2016-04-09 05:59:09,602 p=7278 u=root |  changed: [node-0]
+2016-04-09 05:59:09,606 p=7278 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-09 05:59:09,681 p=7278 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/check.yml for node-0
+2016-04-09 05:59:09,719 p=7278 u=root |  TASK [gassyfs/worker : wait for the SSH port on the container to become active] 
+2016-04-09 05:59:17,009 p=7278 u=root |  ok: [node-0]
+2016-04-09 05:59:17,013 p=7278 u=root |  TASK [add_host] ****************************************************************
+2016-04-09 05:59:17,061 p=7278 u=root |  changed: [node-0]
+2016-04-09 05:59:17,070 p=7278 u=root |  PLAY ***************************************************************************
+2016-04-09 05:59:17,079 p=7278 u=root |  TASK [setup] *******************************************************************
+2016-04-09 05:59:19,242 p=7278 u=root |  ok: [node-0]
+2016-04-09 05:59:19,247 p=7278 u=root |  TASK [mount tmpfs] *************************************************************
+2016-04-09 05:59:19,598 p=7278 u=root |  changed: [node-0]
+2016-04-09 05:59:19,602 p=7278 u=root |  TASK [how big is our tmpfs mount?] *********************************************
+2016-04-09 05:59:19,929 p=7278 u=root |  changed: [node-0]
+2016-04-09 05:59:19,933 p=7278 u=root |  TASK [debug] *******************************************************************
+2016-04-09 05:59:19,976 p=7278 u=root |  ok: [node-0] => {
+    "result.stdout_lines": [
+        "Filesystem                                                                                      Size  Used Avail Use% Mounted on", 
+        "/dev/mapper/docker-8:1-951195-130f158a5fc9eb249cb199d7ff6c974864f136096d0e17a92f9109ad19b699d0   10G  1.2G  8.9G  12% /", 
+        "tmpfs                                                                                            79G     0   79G   0% /dev", 
+        "tmpfs                                                                                            79G     0   79G   0% /sys/fs/cgroup", 
+        "/dev/sda1                                                                                        16G  5.4G  9.5G  37% /home", 
+        "tmpfs                                                                                            79G   34M   79G   1% /run/shm", 
+        "tmpfs                                                                                            79G     0   79G   0% /dev/shm", 
+        "tmpfs                                                                                           160G     0  160G   0% /mount"
+    ]
+}
+2016-04-09 05:59:19,978 p=7278 u=root |  PLAY RECAP *********************************************************************
+2016-04-09 05:59:19,979 p=7278 u=root |  node-0                     : ok=15   changed=4    unreachable=0    failed=0   
+2016-04-09 05:59:20,007 p=7278 u=root |  PLAY ***************************************************************************
+2016-04-09 05:59:20,015 p=7278 u=root |  TASK [setup] *******************************************************************
+2016-04-09 05:59:22,259 p=7278 u=root |  ok: [node-0]
+2016-04-09 05:59:22,264 p=7278 u=root |  TASK [set_fact] ****************************************************************
+2016-04-09 05:59:22,300 p=7278 u=root |  ok: [node-0]
+2016-04-09 05:59:22,304 p=7278 u=root |  TASK [pull input files from the interwebs] *************************************

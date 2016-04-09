@@ -1,0 +1,9 @@
+[master]
+node-0 ansible_ssh_user=msevilla
+
+[worker]
+node-0 ansible_ssh_user=msevilla # The master MUST have a worker node
+node-1 ansible_ssh_user=msevilla
+node-2 ansible_ssh_user=msevilla
+node-3 ansible_ssh_user=msevilla
+node-4 ansible_ssh_user=msevilla

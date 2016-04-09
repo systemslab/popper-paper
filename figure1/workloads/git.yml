@@ -1,0 +1,19 @@
+---
+- hosts: client
+  tasks:
+    - name: git the git source code
+      git:
+        repo: "https://github.com/git/git.git"
+        dest: "/tmp/git"
+        version: "v2.7.1"
+
+    - name: git compile and run tests
+      set_fact:
+        job:
+          - "cp -r /tmp/git git"
+          - "cd git; make -j5"
+          #- "cd git; make test"
+          - "rm -r git"
+        output: "{{ site }}-git-{{ nnodes }}.csv"
+
+    - include: compile.yml
