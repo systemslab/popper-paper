@@ -13,7 +13,7 @@ These experiments were run on [CloudLab](https://www.cloudlab.us). We have a 6-n
 2. Install [Docker](https://docs.docker.com/engine/installation/) and setup infiniband. For Centos7.1, you can use:
 
   ```bash
-  $ ./bootstrap.sh
+  $ cd experiments; ./bootstrap.sh
   ```
 
 Quickstart
@@ -22,13 +22,13 @@ Quickstart
 1. Start experiment master (i.e., a container with [Ansible](https://www.ansible.com/how-ansible-works)):
 
    ```bash
-   $ ./emaster.sh
+   $ cd experiments; ./emaster.sh
    ```
 
 2. Choose an experiment and setup the cluster inventory:
 
    ```bash
-   [EXPERIMENT_MASTER] cd experiment/scalability
+   [EXPERIMENT_MASTER] cd experiment/multi-node
    [EXPERIMENT_MASTER] vim inventory/*
    ```
 
