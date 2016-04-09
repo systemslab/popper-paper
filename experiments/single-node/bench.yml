@@ -1,10 +1,5 @@
 # TODO
 #  * add support for item.repetitions
-- name: pull image
-  shell: docker pull {{ item.image_name }}
-- name: pull alpine
-  shell: docker pull alpine
-
 - name: drop caches
   shell: echo 3 > /proc/sys/vm/drop_caches
 
@@ -18,7 +13,7 @@
   register: docker_output
 
 - name: write results to output
-  shell: echo "{{ item.id }}, exec, local, {{docker_output.delta}}" >> results.csv
+  shell: echo "{{ ansible_hostname }},{{ item.id }},exec,local,{{docker_output.delta}}" >> results.csv
   when: "{{ item.run_in_local_fs | bool }}"
 
 # gassyfs
@@ -36,7 +31,7 @@
   register: docker_output
 
 - name: write results to output
-  shell: echo "{{ item.id }}, copy, gassyfs, {{docker_output.delta}}" >> results.csv
+  shell: echo "{{ ansible_hostname }},{{ item.id }},copy,gassyfs,{{docker_output.delta}}" >> results.csv
   when:
   - "{{ item.run_in_gassyfs | bool }}"
   - "{{ item.copy_folder | bool }}"
@@ -51,7 +46,7 @@
   when: "{{ item.run_in_gassyfs | bool }}"
 
 - name: write results to output
-  shell: echo "{{ item.id }}, exec, gassyfs, {{docker_output.delta}}" >> results.csv
+  shell: echo "{{ ansible_hostname }},{{ item.id }},exec,gassyfs,{{docker_output.delta}}" >> results.csv
   when: "{{ item.run_in_gassyfs | bool }}"
 
 - name: delete files
@@ -77,7 +72,7 @@
   register: docker_output
 
 - name: write results to output
-  shell: echo "{{ item.id }}, copy, tmpfs, {{docker_output.delta}}" >> results.csv
+  shell: echo "{{ ansible_hostname }},{{ item.id }},copy,tmpfs,{{docker_output.delta}}" >> results.csv
   when:
   - "{{ item.run_in_tmpfs | bool }}"
   - "{{ item.copy_folder | bool }}"
@@ -92,7 +87,7 @@
   when: "{{ item.run_in_tmpfs | bool }}"
 
 - name: write results to output
-  shell: echo "{{ item.id }}, exec, tmpfs, {{docker_output.delta}}" >> results.csv
+  shell: echo "{{ ansible_hostname }},{{ item.id }},exec,tmpfs,{{docker_output.delta}}" >> results.csv
   when: "{{ item.run_in_tmpfs | bool }}"
 
 - name: delete files

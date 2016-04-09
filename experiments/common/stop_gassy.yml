@@ -1,7 +1,8 @@
 - name: stop gassyfs container
   command: docker stop gassyfs-master
   ignore_errors: true
+  when: "{{ gassyfs.enabled | bool }}"
 - name: remove gassyfs container
   command: docker rm -f gassyfs-master
   ignore_errors: true
-
+  when: "{{ gassyfs.enabled | bool }}"

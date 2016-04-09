@@ -1,5 +1,8 @@
-hosts
+.DS_Store
+build.log
 *.retry
 *.sw?
 .ropeproject/
-experiments/dask/ansible.log
+ansible.log
+out/main.pdf
+.ipynb_checkpoints/

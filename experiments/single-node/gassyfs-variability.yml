@@ -1,0 +1,115 @@
+gassyfs:
+  enabled: true
+  mount_options:
+  - allow_other
+  - atomic_o_trunc
+  - local_mode
+  - 'heap_size=5000'
+tmpfs:
+  enabled: true
+  mount_options:
+  - 'rw'
+  - 'noexec'
+  - 'nosuid'
+  - 'size=5g'
+tests:
+- id: fio_1
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_2
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_3
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_4
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_5
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_6
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_7
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_8
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_9
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false
+- id: fio_10
+  docker_flags: ''
+  image_name: ivotron/fio
+  image_args: --minimal /root/examples/test.fio
+  copy_folder: false
+  folder_name: ''
+  run_in_local_fs: false
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: false

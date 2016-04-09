@@ -1,18 +1,22 @@
-- name: stop gassyfs
-  include: stop_gassy.yml
-
 - name: ensure gassy options are given
   assert:
     that:
     - "gassyfs is defined"
+    - "gassyfs.enabled is defined"
     - "gassyfs.mount_options is defined"
+
+- name: stop gassyfs
+  include: stop_gassy.yml
+  when: "{{ gassyfs.enabled | bool }}"
 
 - name: share root mount
   command: mount --make-shared /
+  when: "{{ gassyfs.enabled | bool }}"
 
 - name: delete mount point
   shell: rm -r `pwd`/mount
   ignore_errors: true
+  when: "{{ gassyfs.enabled | bool }}"
 
 - name: start gassyfs container
   shell: >
@@ -22,6 +26,7 @@
       -v /dev:/dev \
       -v `pwd`/mount:/mount:shared \
       ivotron/gassyfs /mount -o "{{ gassyfs.mount_options | join(',') }}"
+  when: "{{ gassyfs.enabled | bool }}"
 
 - name: ensure gassyfs is mounted
   shell: >
@@ -31,3 +36,4 @@
       alpine sh -c "mount" | grep gassy | wc -l
   register: mount_out
   failed_when: mount_out.stdout == '0'
+  when: "{{ gassyfs.enabled | bool }}"
