@@ -1,2 +1,5 @@
 hosts
 *.retry
+*.sw?
+.ropeproject/
+experiments/dask/ansible.log

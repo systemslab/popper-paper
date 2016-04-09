@@ -1,0 +1,45 @@
+---
+- hosts: client
+  tasks:
+  - name: ensure tests dict exists
+    assert:
+      that:
+      - "tests is defined"
+
+  - name: ensure that every item in benchmarks dict has all expected variables
+    assert:
+      that:
+      - "item.id is defined"
+      - "item.image_name is defined"
+      - "item.image_args is defined"
+      - "item.docker_flags is defined"
+      - "item.copy_folder is defined"
+      - "item.folder_name is defined"
+      - "item.run_in_local_fs is defined"
+      - "item.run_in_tmpfs is defined"
+      - "item.run_in_gassyfs is defined"
+      - "item.delete_after is defined"
+    with_items: "{{ tests }}"
+
+  - name: start gassy
+    include: ../common/start_gassy.yml
+
+  - name: start gassy
+    include: ../common/start_tmpfs.yml
+
+  - name: create csv with headers
+    shell: echo "workload, op, fs, time" > results.csv
+
+  - name: run benchmarks
+    include: bench.yml
+    with_items: "{{ tests }}"
+
+  - name: fetch results file
+    fetch: src=results.csv dest=./ flat=yes
+
+  - name: stop gassy
+    include: ../common/stop_gassy.yml
+
+  - name: stop tmpfs
+    include: ../common/stop_tmpfs.yml
+

@@ -1,0 +1,6 @@
+- name: stop tmpfs container
+  command: docker stop tmpfs-master
+  ignore_errors: true
+- name: remove tmpfs container
+  command: docker rm -f tmpfs-master
+  ignore_errors: true

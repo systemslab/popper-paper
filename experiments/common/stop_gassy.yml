@@ -1,0 +1,7 @@
+- name: stop gassyfs container
+  command: docker stop gassyfs-master
+  ignore_errors: true
+- name: remove gassyfs container
+  command: docker rm -f gassyfs-master
+  ignore_errors: true
+

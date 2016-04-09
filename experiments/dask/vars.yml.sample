@@ -1,0 +1,23 @@
+gassy:
+  mount_options:
+  - allow_other
+  - atomic_o_trunc
+  - local_mode
+  - 'heap_size=1024'
+tmpfs:
+  mount_options:
+  - 'rw'
+  - 'noexec'
+  - 'nosuid'
+  - 'size=5g'
+tests:
+- id: echo
+  image_name: alpine
+  image_args: 'sh -c "echo foo > /mount/foo"'
+  docker_flags: '--cpuset-cpus=1'
+  copy_folder: false
+  folder_name: "`pwd`/local"
+  run_in_local_fs: true
+  run_in_tmpfs: true
+  run_in_gassyfs: true
+  delete_after: true
