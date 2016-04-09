@@ -94,10 +94,10 @@ we revisit the idea of an executable paper
 executables and data with scholarly articles to help facilitate its 
 reproducibility, but look at implementing it in today's 
 cloud-computing world by treating an article as an open source 
-software project. We outline high-level guidelines for organizing an 
-article's artifacts and make all these available with the goal of 
-easing the re-execution of experiments and validation of results. 
-There are two main goals for our convention:
+software (OSS) project. We outline high-level guidelines for 
+organizing an article's artifacts and make all these available with 
+the goal of easing the re-execution of experiments and validation of 
+results. There are two main goals for our convention:
 
  1. It should apply to as many research projects as possible, 
     regardless of their domain. While the use case shown in _Section 
@@ -126,22 +126,25 @@ conclude.
 
 # Overview
 
-Our approach:
+_Popper_ is a convention for treating an article as an OSS project. 
+Our approach can be summarized as follows:
 
   * An article has a Github repository associated with it, storing the 
     article text, experiments (along with input/output data), 
     Dockerfiles, and Ansible playbooks.
-  * Every experiment has one or more Docker images associated with it, 
+  * Every experiment has one or more Docker images associated with it.
   * Every experiment has an Ansible playbook associated with it that 
     is used to setup and execute the experiment.
+  * Every experiment's integrity is tested using Travis.
+  * Every experiment involving performance metrics can be launched in 
+    CloudLab, Chameleon or PRObE.
   * Experimental data is analyzed and visualized using Jupyter 
     notebooks. Every experiment has a notebook associated with it.
-  * Every image in an article has a link in its caption that take the 
+  * Every image in an article has a link in its caption that takes the 
     reader to a Jupyter notebook that visualizes the experimental 
     results.
 
-![Our workflow.](figures/wflow.png)
-
+Figure 1 shows the end-to-end workflow for reviewers and authors. 
 Given all the elements listed above, readers of a paper can look at a 
 figure and click the associated link that takes them to a notebook. 
 Then, if desired, they instantiate a Binder and can analyze the data 
@@ -150,25 +153,19 @@ experiment, which they can do by cloning the github repository and, if
 they have resources available to them (i.e. one or more docker hosts), 
 they just point Ansible to them and re-execute the experiment locally 
 in their environment. If resources are not available, an alternative 
-is to launch a Cloudlab instance (one or more docker nodes hosted in 
-Cloudlab) and point Ansible to the assigned IP addresses (we have 
-performed some WRF-Docker tests this way). Another, even better 
-alternative is to provide a way in which, after clicking a link, an 
-experiment is prepared and configured in other clouds (EC2, GCE, 
-Rackspace, etc). The user is taken to a web form that shows the 
-parameters of the experiment, in case they want to change them, and 
-provides a “Run” button to re-execute it. An open question is how do 
-we deal with data that is too big to fit in Git. We’ve been recently 
-working on a project (vio) that allows to store and reference large 
-input/output datasets in a generic way (i.e. it works with many cloud 
-providers like Git-lfs, Dropbox, Google Drive, etc.).
+is to launch a Cloudlab, Chameleon or PRObE instance (one or more 
+docker nodes hosted in Cloudlab) and point Ansible to the assigned IP 
+addresses. An open question is how do we deal with datasets that are 
+too big to fit in Git. We've been recently working on a project (vio) 
+that allows to store and reference large input/output datasets in a 
+generic way (i.e. it works with many cloud providers like Git-lfs, 
+Dropbox, Google Drive, etc.).
 
-In the following, we use `git` as the VCS, `docker` as the experiment 
-execution substrate, `ansible` as the orchestrator and the `scipy` 
-stack for analysis/visualization. As stated in goal 2, any of these 
-should be swappable for other tools, for example: VMs instead of 
-docker; puppet instead of ansible; R insted of scipy; and so on and so 
-forth.
+![End-to-end workflow for an article that follows the Popper 
+convention.](figures/wflow.png)
+
+Before describing the details of the convention, we briefly look at 
+the tools and infrastructure leveraged by Popper.
 
 ## The tools
 
@@ -192,23 +189,36 @@ equations, visualizations and explanatory text.
 
 ## Infrastructure
 
-### Cloudlab
+### GitHub
 
-Cloudlab is an NSF-sponsored infrastructure for research on cloud 
-computing that allows users to easily provision bare-metal machines to 
-execute multi-node experiments.
+A web-based Git repository hosting service. It offers all of the 
+distributed revision control and source code management (SCM) 
+functionality of Git as well as adding its own features
 
-### Binder
+### Travis CI
+
+A FOSS, hosted, distributed continuous integration service used to 
+build and test software projects hosted at GitHub.
+
+### Cloudlab, Chameleon and PRObE
+
+NSF-sponsored infrastructures for research on cloud computing that 
+allows users to easily provision bare-metal machines to execute 
+multi-node experiments.
+
+### Binder.org
 
 Binder is an online service that allows one to turn a GitHub repo into 
 a collection of interactive Jupyter notebooks so that readers don't 
 need to deploy web servers themselves.
 
-### Travis
+While we use all these, as stated in goal 2, any of these should be 
+swappable for other tools, for example: VMs instead of docker; puppet 
+instead of ansible; R insted of scipy; and so on and so forth.
 
-Travis lets you do CI.
+# The Popper Convention
 
-# Convention
+We now describe in greater detail our convention.
 
 ## Organizing Files
 
