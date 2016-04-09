@@ -1,16 +1,18 @@
 ---
-title: "Popper: A Convention for Facilitating the Validation of 
-Computer Systems Research"
+title: "Popper: Making Reproducible Systems Performance Evaluation 
+Practical"
 author:
 - name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
   affiliation: "_UC Santa Cruz_"
   email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
 number-of-authors: 1
 abstract: |
- We make the case for treating an article as an open source software 
- project and for applying software engineering best-practices to 
- manage its associated artifacts and maintain the reproducibility of 
- its findings.
+ We introduce the _Popper Convention_, in which we aim to make it 
+ easier to generate reproducible research. Concretely, we make the 
+ case for treating an article as an open source software project and 
+ for applying software engineering best-practices to manage its 
+ associated artifacts and maintain the reproducibility of its 
+ findings.
 documentclass: ieeetran
 classoption: conference
 ieeetran: true
@@ -31,13 +33,6 @@ linkcolor: black
 ---
 
 # Introduction
-
-<!--
-> We already have the tools; we need a convention.
-
-A lot of related/existing work is reinventing the wheel. Creating 
-"repos" for research stuff.
--->
 
 A key component of the scientific method is the ability to revisit and 
 replicate previous experiments. Registering information about an 
@@ -334,19 +329,123 @@ the baselines!
 
 ## Experiment 1: GassyFS vs. TempFS
 
-## Experiment 2: Scalability
+The goal of this experiment is to compare the performance of GassyFS 
+with respect to that of TempFS on a single node. As mentioned before, 
+GassyFS surges from the need to be able to scale tmpfs to multiple 
+nodes. Figure 3 shows the results of this test. We can see that 
+GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
+performance.
 
-## Experiment 3: UDP vs. Infiniband Performance
+The corresponding experiment folder in the paper repository contains 
+the necessary ansible files to re-execute this experiment with minimum 
+effort. The only assumption is docker +1.10 and root access on the 
+remote machine where this runs. The validation statements for this 
+experiments are the following:
 
-## Experiment 4: Analytics on GassyFS
+```
+for
+  workload=*
+expect
+  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+```
 
 ![Dask workload on GassyFS.](figures/dask.png)
 
+## Experiment 2: Scalability
+
+The goal of this experiment is to compare the performance of GassyFS 
+with respect to that of TempFS on a single node. As mentioned before, 
+GassyFS surges from the need to be able to scale tmpfs to multiple 
+nodes. Figure 3 shows the results of this test. We can see that 
+GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
+performance.
+
+The corresponding experiment folder in the paper repository contains 
+the necessary ansible files to re-execute this experiment with minimum 
+effort. The only assumption is docker +1.10 and root access on the 
+remote machine where this runs. The validation statements for this 
+experiments are the following:
+
+```
+for
+  workload=*
+expect
+  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+```
+
+this is going to talk about perf results
+
+![Dask workload on GassyFS.](figures/dask.png)
+
+The goal of this experiment is to compare the performance of GassyFS 
+with respect to that of TempFS on a single node. As mentioned before, 
+GassyFS surges from the need to be able to scale tmpfs to multiple 
+nodes. Figure 3 shows the results of this test. We can see that 
+GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
+performance.
+
+The corresponding experiment folder in the paper repository contains 
+the necessary ansible files to re-execute this experiment with minimum 
+effort. The only assumption is docker +1.10 and root access on the 
+remote machine where this runs. The validation statements for this 
+experiments are the following:
+
+```
+for
+  workload=*
+expect
+  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+```
+
+## Experiment 3: UDP vs. Infiniband Performance
+
+The goal of this experiment is to compare the performance of GassyFS 
+with respect to at of TempFS on a single node. As mentioned before, 
+GassyFS surges from the need to be able to scale tmpfs to multiple 
+nodes. Figure 3 shows the results of this test. We can see that 
+GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
+performance.
+
+The corresponding experiment folder in the paper repository contains 
+the necessary ansible files to re-execute this experiment with minimum 
+effort. The only assumption is docker +1.10 and root access on the 
+remote machine where this runs. The validation statements for this 
+experiments are the following:
+
+```
+for
+  workload=*
+expect
+  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+```
+
+![Dask workload on GassyFS.](figures/dask.png)
+
+## Experiment 4: Analytics on GassyFS
+
+The goal of this experiment is to compare the performance of GassyFS 
+with respect to that of TempFS on a single node. As mentioned before, 
+GassyFS surges from the need to be able to scale tmpfs to multiple 
+nodes. Figure 3 shows the results of this test. We can see that 
+GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
+performance.
+
+The corresponding experiment folder in the paper repository contains 
+the necessary ansible files to re-execute this experiment with minimum 
+effort. The only assumption is docker +1.10 and root access on the 
+remote machine where this runs. The validation statements for this 
+experiments are the following:
+
+```
+for
+  workload=*
+expect
+  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+```
+
+![Dask workload on GassyFS.](figures/dask.png)
 
 # Discussion
-
-> **NOTE**: these subsections might merge with others or turn into 
-sections of their own.
 
 ## More Analogies
 
@@ -409,16 +508,49 @@ Our convention can be used to either of these two approaches.
 
 # Related Work
 
+The challenging task of evaluating experimental results in applied 
+computer science has been long recognized [@ignizio_establishment_1971 
+; @ignizio_validating_1973 ; @crowder_reporting_1979]. This issue has 
+recently received a significant amount of attention from the 
+computational research community [@freire_computational_2012 ; 
+@neylon_changing_2012 ; @leveqije_reproducible_2012 ; 
+@stodden_implementing_2014], where the focus is more on numerical 
+reproducibility rather than performance evaluation. Similarly, efforts 
+such as _The Recomputation Manifesto_ [@gent_recomputation_2013] and 
+the _Software Sustainability Institute_ [@crouch_software_2013] have 
+reproducibility as a central part of their endeavour but leave runtime 
+performance as a secondary problem. In systems research, runtime 
+performance _is_ the subject of study, thus we need to look at it as a 
+primary issue. By obtaining profiles of executions and making them 
+part of the results, we allow researchers to validate experiments with 
+performance in mind.
+
+In [@chirigati_collaborative_2016] A collaborative approach to 
+computational reproducibility
+
 In [@dolfi_model_2014], the authors introduce a "paper model" of 
 reproducible research which consists of an MPI application used to 
 illustrate how to organize a project. We extend this idea by having 
 our convention be centered on version control systems and include the 
 notion of instant replicability by using docker and ansible.
 
+In [@collberg_measuring_2014] the authors took 613 articles published 
+in 13 top-tier systems research conferences and found that 25% of the 
+articles are reproducible (under their reproducibility criteria). The 
+authors did not analyze performance. In our case, we are interested 
+not only in being able to rebuild binaries and run them but also in 
+evaluating the performance characteristics of the results.
+
+Containers, and specifically docker, have been the subject of recent 
+efforts that try to alleviate some of the reproducibility problems in 
+data science [@boettiger_introduction_2014]. Existing tools such as 
+Reprozip [@chirigati_reprozip_2013] package an experiment in a 
+container without having to initially implement it in one (i.e. 
+automates the creation of a container from an "non-containerized" 
+environment).
 
 **TODO**:
 
-  * ReproZip
   * A collaborative approach to computational reproducibility
   * open science framework (OSF)
   * open science
