@@ -1,18 +1,29 @@
 ---
-title: "Popper: Making Reproducible Systems Performance Evaluation 
-Practical"
+title: "Popper: Making Systems Performance Evaluation Practical"
 author:
 - name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
   affiliation: "_UC Santa Cruz_"
   email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
 number-of-authors: 1
 abstract: |
- We introduce the _Popper Convention_, in which we aim to make it 
- easier to generate reproducible research. Concretely, we make the 
- case for treating an article as an open source software project and 
- for applying software engineering best-practices to manage its 
- associated artifacts and maintain the reproducibility of its 
- findings.
+  Independent validation of experimental results in the field of 
+  parallel and distributed systems research is a challenging task, 
+  mainly due to changes and differences in software and hardware in 
+  computational environments. In particular, recreating an environment 
+  that resembles the original is difficult and time-consuming. In this 
+  paper we introduce the _Popper Convention_, a set of principles for 
+  producing computational research that is easy to validate. 
+  Concretely, we make the case for treating an article as an open 
+  source software (OSS) project and for applying software engineering 
+  best-practices to manage its associated artifacts and maintain the 
+  reproducibility of its findings. The main idea behind Popper it's to 
+  leverage existing cloud-computing infrastructure and modern OSS 
+  development tools in order to produce academic articles that are 
+  easy to validate. We present a use case in the area of distributed 
+  storage systems to illustrate the usefulness of this approach. We 
+  show how, by following Popper, re-executing experiments becomes a 
+  less daunting task and a reviewer can quickly get to the point of 
+  getting results with minimal intervention.
 documentclass: ieeetran
 classoption: conference
 ieeetran: true
@@ -61,38 +72,57 @@ requires domain-specific expertise in order to determine the
 differences between original and recreated environments that might be 
 the root cause of any discrepancies in the results 
 [@jimenez_tackling_2015-1 ; @freire_computational_2012 ; 
-@donoho_reproducible_2009].
-
-Additionally, reproducing experimental results when the underlying 
-hardware environment changes is challenging mainly due to the 
-inability to predict the effects of such changes in the outcome of an 
-experiment [saavedra-barrera_cpu_1992 ; woo_splash2_1995]. A Virtual 
-Machine (VM) can be used to partially address this issue but the 
-overheads in terms of performance (the hypervisor "tax") and 
-management (creating, storing and transferring) can be high and, in 
-some fields of computer science such as systems research, cannot be 
-accounted for easily [@clark_xen_2004]. OS-level virtualization can 
-help in reducing this [@jimenez_characterizing_2016].
+@donoho_reproducible_2009]. Additionally, reproducing experimental 
+results when the underlying hardware environment changes is 
+challenging mainly due to the inability to predict the effects of such 
+changes in the outcome of an experiment [saavedra-barrera_cpu_1992 ; 
+woo_splash2_1995]. A Virtual Machine (VM) can be used to partially 
+address this issue but the overheads in terms of performance (the 
+hypervisor "tax") and management (creating, storing and transferring) 
+can be high and, in some fields of computer science such as systems 
+research, cannot be accounted for easily [@clark_xen_2004]. OS-level 
+virtualization can help in reducing this 
+[@jimenez_characterizing_2016].
 
 One central issue in reproducibility is how to easily organize an 
-article's experiments for readers or students. In this work, we 
-revisit the idea of an executable paper [@strijkers_executable_2011], 
-which poses the integration of executables and data with scholarly 
-articles to help facilitate its reproducibility, but look at 
-implementing it in today’s cloud-computing world by treating an 
-article as an open source software project. We make the case for using 
-version-contol In particular, we leverage Git, Docker, Ansible and 
-Jupyter notebooks, and use Github, Cloudlab, Binder and Travis as our 
-proof-of-concept infrastructure. In this paper we describe in greater 
-detail our convention. There are two main goals:
+article's experiments so that readers or students can easily repeat 
+them. The current practice is to make the code available in a public 
+repository and leave readers with the daunting task of recompiling, 
+reconfiguring, deploying and re-executing an experiment. In this work, 
+we revisit the idea of an executable paper 
+[@strijkers_executable_2011], which poses the integration of 
+executables and data with scholarly articles to help facilitate its 
+reproducibility, but look at implementing it in today's 
+cloud-computing world by treating an article as an open source 
+software project. We outline high-level guidelines for organizing an 
+article's artifacts and make all these available with the goal of 
+easing the re-execution of experiments and validation of results. 
+There are two main goals for our convention:
 
  1. It should apply to as many research projects as possible, 
-    regardless of their domain.
- 2. It should "work", regardless of the underlying technologies; if 
-    not, there's a bug in the convention.
+    regardless of their domain. While the use case shown in _Section 
+    IV_ pertains to the area of distributed storage systems, our goal 
+    is to embody any project with a computational component.
+ 2. It should be applicable, regardless of the underlying 
+    technologies. In general, Popper relies on software-engineering 
+    practices like continuous integration (CI) which are implemented 
+    in multiple existing tools. Applying this convention should work, 
+    for example, regardless of what CI tool is being used.
 
-We look at GassyFS [@watkins_gassyfs_2016] as a research project to 
-which we apply this convention.
+By using version-control systems, lightweight OS-level virtualization, 
+multi-node orchestration, continuous integration and web-based data 
+visualization, re-executing and validating an experiment becomes 
+practical. In particular, we make the case for using Git, Docker, 
+Ansible and Jupyter notebooks, and use Github, Cloudlab, Binder and 
+Travis as our proof-of-concept infrastructure.
+
+The rest of the paper is organized as follows. _Section II_ gives an 
+overview of the high-level workflow that a researcher goes through 
+when writing an article following the Popper convention. _Section III_ 
+describes _Popper_ in greater detail. In _Section IV_ we present a use 
+case of a project following Popper. We discuss some of the central 
+issues in _Section V_, review related work on _Section VI_ and 
+conclude.
 
 # Overview
 
@@ -294,15 +324,16 @@ multiple subsystems (e.g. 10:1 of network to IO for example)
 
 # GassyFS: a model project for Popper
 
-GassyFS is a new prototype filesystem system that stores files in 
-distributed remote memory and provides support for checkpointing file 
-system state. The architecture of GassyFS is illustrated in Figure 2. 
-The core of the file system is a user-space library that implements a 
-POSIX file interface. File system metadata is managed locally in 
-memory, and file data is distributed across a pool of network-attached 
-RAM managed by worker nodes and accessible over RDMA or Ethernet. 
-Applications access GassyFS through a standard FUSE mount, or may link 
-directly to the library to avoid any overhead that FUSE may introduce.
+GassyFS [@watkins_gassyfs_2016] is a new prototype filesystem system 
+that stores files in distributed remote memory and provides support 
+for checkpointing file system state. The architecture of GassyFS is 
+illustrated in Figure 2. The core of the file system is a user-space 
+library that implements a POSIX file interface. File system metadata 
+is managed locally in memory, and file data is distributed across a 
+pool of network-attached RAM managed by worker nodes and accessible 
+over RDMA or Ethernet. Applications access GassyFS through a standard 
+FUSE mount, or may link directly to the library to avoid any overhead 
+that FUSE may introduce.
 
 ![GassyFS has facilities for explicitly managing  persistence to 
 different storage targets. A checkpointing infrastructure gives 
@@ -331,10 +362,9 @@ the baselines!
 
 The goal of this experiment is to compare the performance of GassyFS 
 with respect to that of TempFS on a single node. As mentioned before, 
-GassyFS surges from the need to be able to scale tmpfs to multiple 
-nodes. Figure 3 shows the results of this test. We can see that 
-GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
-performance.
+the idea of GassyFS is to serve as a distributed version of TmpFS.
+Figure 3 shows the results of this test. We can see that GassyFS, due 
+to the FUSE overhead, performs within 90% of TmpFS's performance.
 
 The corresponding experiment folder in the paper repository contains 
 the necessary ansible files to re-execute this experiment with minimum 
@@ -343,68 +373,25 @@ remote machine where this runs. The validation statements for this
 experiments are the following:
 
 ```
-for
-  workload=*
+when
+  workload=*, size=*
 expect
   time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+
+when
+  workload=1
 ```
 
-![Dask workload on GassyFS.](figures/dask.png)
+![GassyFS vs tmpfs variability.](figures/gassyfs-variability.png)
 
 ## Experiment 2: Scalability
 
-The goal of this experiment is to compare the performance of GassyFS 
-with respect to that of TempFS on a single node. As mentioned before, 
-GassyFS surges from the need to be able to scale tmpfs to multiple 
-nodes. Figure 3 shows the results of this test. We can see that 
-GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
-performance.
+## Experiment 3: Analytics on GassyFS
 
-The corresponding experiment folder in the paper repository contains 
-the necessary ansible files to re-execute this experiment with minimum 
-effort. The only assumption is docker +1.10 and root access on the 
-remote machine where this runs. The validation statements for this 
-experiments are the following:
+One of the use cases of tmpfs is in the analysis of data. When data is 
+too big to fit in memory, alternatives resort to either scale-out or 
+do
 
-```
-for
-  workload=*
-expect
-  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
-```
-
-this is going to talk about perf results
-
-![Dask workload on GassyFS.](figures/dask.png)
-
-The goal of this experiment is to compare the performance of GassyFS 
-with respect to that of TempFS on a single node. As mentioned before, 
-GassyFS surges from the need to be able to scale tmpfs to multiple 
-nodes. Figure 3 shows the results of this test. We can see that 
-GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
-performance.
-
-The corresponding experiment folder in the paper repository contains 
-the necessary ansible files to re-execute this experiment with minimum 
-effort. The only assumption is docker +1.10 and root access on the 
-remote machine where this runs. The validation statements for this 
-experiments are the following:
-
-```
-for
-  workload=*
-expect
-  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
-```
-
-## Experiment 3: UDP vs. Infiniband Performance
-
-The goal of this experiment is to compare the performance of GassyFS 
-with respect to at of TempFS on a single node. As mentioned before, 
-GassyFS surges from the need to be able to scale tmpfs to multiple 
-nodes. Figure 3 shows the results of this test. We can see that 
-GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
-performance.
 
 The corresponding experiment folder in the paper repository contains 
 the necessary ansible files to re-execute this experiment with minimum 
@@ -421,29 +408,7 @@ expect
 
 ![Dask workload on GassyFS.](figures/dask.png)
 
-## Experiment 4: Analytics on GassyFS
-
-The goal of this experiment is to compare the performance of GassyFS 
-with respect to that of TempFS on a single node. As mentioned before, 
-GassyFS surges from the need to be able to scale tmpfs to multiple 
-nodes. Figure 3 shows the results of this test. We can see that 
-GassyFS, due to the FUSE overhead, performs within 90% of TmpFS's 
-performance.
-
-The corresponding experiment folder in the paper repository contains 
-the necessary ansible files to re-execute this experiment with minimum 
-effort. The only assumption is docker +1.10 and root access on the 
-remote machine where this runs. The validation statements for this 
-experiments are the following:
-
-```
-for
-  workload=*
-expect
-  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
-```
-
-![Dask workload on GassyFS.](figures/dask.png)
+## Experiment 4: Checkpointing
 
 # Discussion
 
@@ -551,7 +516,6 @@ environment).
 
 **TODO**:
 
-  * A collaborative approach to computational reproducibility
   * open science framework (OSF)
   * open science
   * similar but limited to just generating the PDF: [how we make our 
