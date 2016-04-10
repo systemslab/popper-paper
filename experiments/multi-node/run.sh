@@ -3,6 +3,12 @@
 set -e
 set -x
 
+# cleanup with inventory specified by CLEANUP env
+if [ -z $CLEANUP ]; then
+  ansible-playbook -e "@vars/all.yml" -i $CLEANUP site/cleanup.yml
+  exit 0
+fi
+
 # run all tmpfs tests
 for w in dd git ceph kernel samtools; do
     export ANSIBLE_LOG_PATH="logs/ansible-tmpfs-${w}.log"
