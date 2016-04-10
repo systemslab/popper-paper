@@ -127,7 +127,105 @@ case of a project following Popper. We discuss some of the central
 issues in _Section V_, review related work on _Section VI_ and 
 conclude.
 
-# Overview
+# An article as an OSS project
+
+
+## Version Control
+
+The idea of keeping an article's source in a version-controlled 
+repository is not new and in fact many people follow this practice. 
+What we propose is not only to have the source of an article in 
+version control but to treat all the artifacts in a repository, 
+treating it as a monolithic ball. This has several advantages. Take a 
+look to a project and break it down into its components w.r.t. the 
+development parts (code, tests, artifacts, 3rd party libs).
+
+  * code: the latex file
+  * artifacts: figures, input/output data
+  * 3rd party libraries: code from us that we've developed for the 
+    article or stuff we make use of
+  * tests:
+      * unit tests: check that PDF/figures are generated correctly
+      * integration tests: experiments are runnable, e.g. all the 
+        dependencies
+      * regression tests: we ensure that the claims made in the paper 
+        are valid, e.g. after a change on the associated code base or 
+        by adding a new "supported platform"
+
+A CI tool needs to be available, e.g. if we have Travis or Jenkins 
+then we can make sure that we don't "break" the paper. For example in 
+CloudLab, we might have multiple experiments that might be broken 
+after a new site gets upgraded.
+
+### GitHub
+
+A web-based Git repository hosting service. It offers all of the 
+distributed revision control and source code management (SCM) 
+functionality of Git as well as adding its own features. It gives 
+new users the ability to look at the entire history of the authors' 
+scientific method.
+
+## Configuration Management and Multi-node Orchestration
+
+### Ansible
+
+Ansible is a configuration management utility for configuring and 
+managing computers, as well as deploying and orchestrating multi-node 
+applications.
+
+## Continuous Integration
+
+### Travis CI
+
+An open-source, hosted, distributed continuous integration service 
+used to build and test software projects hosted at GitHub.
+
+## Package Management and Application Deployment
+
+Docker is usually viewed as an alternative to virtualization but can 
+also be viewed as an enhancement on package management, where an app 
+is ready to run without having to worry about packages and specific OS 
+versions.
+
+Docker automates the deployment of applications inside software 
+containers by providing an additional layer of abstraction and 
+automation of operating-system-level virtualization on Linux. 
+Alternatives to docker are modern package managers such as Nix or 
+Spack, or virtualmachines.
+
+## Data Visualization
+
+### Jupyter
+
+Jupyter notebooks run on a web-based application. It facilitates the 
+sharing of documents containing live code (in Julia, Python or R), 
+equations, visualizations and explanatory text.
+
+### Binder.org
+
+Binder is an online service that allows one to turn a GitHub repository into 
+a collection of interactive Jupyter notebooks so that readers don't 
+need to deploy web servers themselves.
+
+While we use all these, as stated in goal 2, any of these should be 
+swappable for other tools, for example: VMs instead of Docker; Puppet 
+instead of Ansible; Jenkins instead of Travis CI; and so on and so 
+forth.
+Yeah
+
+## Bare-metal as a Service
+
+### Cloudlab, Chameleon and PRObE
+
+NSF-sponsored infrastructures for research on cloud computing that 
+allows users to easily provision bare-metal machines to execute 
+multi-node experiments.
+
+## Automated Performance Regression Testing
+
+There are not much out there but we have a tool for this called aver.
+
+# The Popper Convention
 
 _Popper_ is a convention for treating an article as an OSS project. 
 Our approach can be summarized as follows:
@@ -137,7 +235,8 @@ Our approach can be summarized as follows:
   * Docker images capture the experimental environment, packages and tunables.
   * Ansible playbook deploy and execute the experiments.
   * Travis tests the integrity of all experiments.
-  * Jupyter notebooks analyze and visualize experimental data produced by the authors.  
+  * Jupyter notebooks analyze and visualize experimental data produced 
+  * by the authors.
   * Every experiment involving performance metrics can be launched in 
     CloudLab, Chameleon or PRObE.
   * Every image in an article has a link in its caption that takes the 
@@ -162,72 +261,17 @@ and store large datasets.
 ![End-to-end workflow for an article that follows the Popper 
 convention.](figures/wflow.png)
 
-Before describing the details of the convention, we briefly look at 
-the tools and infrastructure leveraged by Popper.
-
-## The tools
-
-### Docker
-
-Docker automates the deployment of applications inside software 
-containers by providing an additional layer of abstraction and 
-automation of operating-system-level virtualization on Linux.
-
-### Ansible
-
-Ansible is a configuration management utility for configuring and 
-managing computers, as well as deploying and orchestrating multi-node 
-applications.
-
-### Jupyter
-
-Jupyter notebooks run on a web-based application. It facilitates the 
-sharing of documents containing live code (in Julia, Python or R), 
-equations, visualizations and explanatory text.
-
-## Infrastructure
-
-### GitHub
-
-A web-based Git repository hosting service. It offers all of the 
-distributed revision control and source code management (SCM) 
-functionality of Git as well as adding its own features. It gives 
-new users the ability to look at the entire history of the authors' 
-scientific method.
-
-### Travis CI
-
-A FOSS (????), hosted, distributed continuous integration service used to 
-build and test software projects hosted at GitHub.
-
-### Cloudlab, Chameleon and PRObE
-
-NSF-sponsored infrastructures for research on cloud computing that 
-allows users to easily provision bare-metal machines to execute 
-multi-node experiments.
-
-### Binder.org
-
-Binder is an online service that allows one to turn a GitHub repository into 
-a collection of interactive Jupyter notebooks so that readers don't 
-need to deploy web servers themselves.
-
-While we use all these, as stated in goal 2, any of these should be 
-swappable for other tools, for example: VMs instead of Docker; Puppet 
-instead of Ansible; Jenkins instead of Travis CI; and so on and so 
-forth.
-
-# The Popper Convention
-
 We now describe in greater detail our convention. As mentioned before, 
-the main idea is to treat a paper like an OSS project
+the main idea is to treat a paper like an OSS project.
 
 ## Organizing Files
 
-The structure of a "paper repo" is the following:
+The structure of a "paper repo" is shown in Figure 3. 
 
-![End-to-end workflow for an article that follows the Popper 
-convention.](figures/experiment-metadata.png)
+![Structure of a folder for a project following the Popper convention. 
+The red markers correpond to dependencies for the generation of the 
+PDF, while the blue ones mark files used for the 
+experiment.](figures/experiment-metadata.png)
 
 We note the following:
 
@@ -410,33 +454,7 @@ expect
 
 ![Dask workload on GassyFS.](figures/dask.png)
 
-## Experiment 4: Checkpointing
-
-f
-
-# Discussion
-
-## More Analogies
-
-Take a look to a project and break it down into its components w.r.t. 
-the development parts (code, tests, artifacts, 3rd party libs).
-
-  * code: the latex file
-  * artifacts: figures, input/output data
-  * 3rd party libraries: code from us that we've developed for the 
-    article or stuff we make use of
-  * tests:
-      * unit tests: check that PDF/figures are generated correctly
-      * integration tests: experiments are runnable, e.g. all the 
-        dependencies
-      * regression tests: we ensure that the claims made in the paper 
-        are valid, e.g. after a change on the associated code base or 
-        by adding a new "supported platform"
-
-A CI tool needs to be available, e.g. if we have Travis or Jenkins 
-then we can make sure that we don't "break" the paper. For example in 
-CloudLab, we might have multiple experiments that might be broken 
-after a new site gets upgraded.
+# Lessons Learned
 
 ## Numerical vs. Performance Reproducibility
 
@@ -538,6 +556,20 @@ container without having to initially implement it in one (i.e.
 automates the creation of a container from an "non-containerized" 
 environment). This tool can be useful for researchers that aren't 
 familiar with tools
+
+# Conclusion
+
+In the words of Karl Popper: "_the criterion of the scientific status 
+of a theory is its falsifiability, or refutability, or testability_". 
+By providing a way to specify the high-level components of an 
+experiment and validation clauses for observed metrics we effectively 
+incorporate falsifiability to the field of experimental storage 
+systems. We are in the process of studying the viability of the ESF on 
+experiments from other areas of systems research. While we envision 
+our findings to be applicable in the area of systems research, we plan 
+to evaluate its suitability on other areas of computer science.
+
+**Acknowledgements:** We would like to thank all the good people.
 
 # Bibliography
 
