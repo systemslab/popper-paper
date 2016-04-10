@@ -8,6 +8,7 @@ echo "* soft memlock unlimited" | sudo tee -a /etc/security/limits.conf
 echo "* hard memlock unlimited" | sudo tee -a /etc/security/limits.conf
 
 # install EPEL and Docker
+sudo yum install -y wget
 wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm 
 sudo rpm -ivh epel-release-7-5.noarch.rpm
 sudo yum update -y

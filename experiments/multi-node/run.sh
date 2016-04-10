@@ -15,7 +15,7 @@ for w in dd git ceph kernel samtools; do
     export INVENTORY="inventory/1-node"
     export ARGS="-e @vars/all.yml -e @vars/tmpfs.yml -e nnodes=1 -i $INVENTORY"
     ansible-playbook $ARGS site/tmpfs.yml workloads/${w}.yml
-    ./cleanup.sh
+    CLEANUP=inventory/1-node ./run.sh
 done
 
 # run scalability tests
@@ -26,7 +26,7 @@ for w in dd git ceph kernel samtools; do
       export INVENTORY="inventory/${i}-node"
       export ARGS="-e @vars/all.yml -e @vars/${s}.yml -e nnodes=${i} -i $INVENTORY"
       ansible-playbook $ARGS site/${s}.yml workloads/${w}.yml
-      ./cleanup.sh
+      CLEANUP=inventory/${i}-node ./run.sh
     done
   done
 done
