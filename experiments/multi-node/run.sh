@@ -4,7 +4,7 @@ set -e
 set -x
 
 # cleanup with inventory specified by CLEANUP env
-if [ -z $CLEANUP ]; then
+if [ ! -z $CLEANUP ]; then
   ansible-playbook -e "@vars/all.yml" -i $CLEANUP site/cleanup.yml
   exit 0
 fi
