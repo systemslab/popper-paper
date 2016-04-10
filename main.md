@@ -568,6 +568,30 @@ expect
 
 # Discussion
 
+## Drawing the line between deploy and packaging
+
+Figuring out where something should be in the deploy framework (e.g., Ansible) or in the package framework (e.g., Docker) must be standardized by the users of the project. One could implement Popper entirely with Ansible but this introduces complicated playbooks and permantently installs packages on the host. Alternatively, one could use Docker to orchestrate services but this requires "chaining" images together. This process is hard to develop since containers must be recompiled and shared around the cluster.
+
+## Usability is the key to this working
+
+Things that piss people off:
+- number files in the paper rpo
+- lines of code in the paper repo
+- number of submodules
+
+## Containers are not Virtualization
+
+- no performance hit
+- no network port remapping
+- no layers of indirection
+
+## Containers are not baremetal
+- can't ssh into them to start services (which is how most services start daemons)
+- need to have a service per image
+- 
+## Container state must be immutable
+- you can't sudo apt-get install stuff into them
+
 ## Adoption barriers
 
 Not everybody knows git
