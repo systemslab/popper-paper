@@ -28,7 +28,7 @@ Quickstart
 2. Choose an experiment and setup the cluster inventory:
 
    ```bash
-   [EXPERIMENT_MASTER] cd experiment/multi-node
+   [EXPERIMENT_MASTER] cd multi-node
    [EXPERIMENT_MASTER] vim inventory/*
    ```
 

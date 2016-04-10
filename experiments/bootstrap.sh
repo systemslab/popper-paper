@@ -3,6 +3,10 @@
 set -e
 set -x
 
+# make sure that we have all the code
+cd ..
+git submodule update --init --recursive
+
 # setup ulimits for infininband
 echo "* soft memlock unlimited" | sudo tee -a /etc/security/limits.conf
 echo "* hard memlock unlimited" | sudo tee -a /etc/security/limits.conf
