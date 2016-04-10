@@ -1,0 +1,10 @@
+delta, cmd
+"0:00:01.178372", "cp -r /home/git git"
+"0:01:07.754209", "cd git; make -j5"
+"0:00:00.413912", "rm -r git"
+"0:00:01.087789", "cp -r /home/git git"
+"0:01:04.455755", "cd git; make -j5"
+"0:00:00.371937", "rm -r git"
+"0:00:01.319290", "cp -r /home/git git"
+"0:01:06.178675", "cd git; make -j5"
+"0:00:00.391304", "rm -r git"
