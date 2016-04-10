@@ -32,6 +32,7 @@ substitute-hyperref: true
 csl: "ieee.csl"
 bibliography: "citations.bib"
 usedefaultspacing: true
+links-as-notes: true
 fontfamily: times
 conferencename: SC2016
 copyrightyear: 2016
@@ -60,6 +61,14 @@ and learning the paper author's ad-hoc experimental setups, the
 student can immediately run the original experiments and build on the 
 results in the paper, thus allowing them to "stand on the shoulder of 
 giants".
+
+![The OSS development model. A version-control system is used to 
+maintain the changes to code. The software is packaged and those 
+packages are used in either testing or deployment. The testing 
+environment ensures that the software behaves as expected. When the 
+software is deployed in production, or when in needs to be checked for 
+performance integrity, it is monitored and metrics are analyzed in 
+order to determine any problems.](figures/ossmodel.png)
 
 Independently validating experimental results in the field of computer 
 systems research is a challenging task. Recreating an environment that 
@@ -146,14 +155,9 @@ we review related work on _Section VI_ and conclude.
 In practice, the OSS development process is applied to software 
 projects (Figure 1). Our goal in our work is to repurpose it to 
 academic articles in order to enjoy from the same benefits. In this 
-section we look briefly at the main components of the OSS methodology 
-[^oss-vs-softwareengineering]. For each subsection, we include a 
-_Tools and Services_ section that describes tools and services used in 
-practice.
-
-[^oss-vs-softwareengineering]: One might argue that these components 
-correspond more to software engineering practice, but the OSS 
-development model _is_ software engineering.
+section we look briefly at the main components of the OSS methodology. 
+For each subsection, we include a _Tools and Services_ section that 
+describes tools and services used in practice.
 
 ## Version Control
 
@@ -174,23 +178,15 @@ repository is analogous to how large cloud companies maintain
 monolithic repositories to manage their internal infrastructure 
 [@tang_holistic_2015 ; @metz_google_2015] but at a lower scale.
 
-[^difficult-platforms]: Large-scale experiments or those that run on 
-specialized platforms, the repetition of an experiment might be 
-difficult, but this doesn't exclude such research projects from 
-version-control the article's associated assets.
-
-![The OSS development model. A version-control system is used to 
-maintain the changes to code. The software is packaged and those 
-packages are used in either testing or deployment. The testing 
-environment ensures that the software behaves as expected. When the 
-software is deployed in production, or when in needs to be checked for 
-performance integrity, it is monitored and metrics are analyzed in 
-order to determine any problems.](figures/ossmodel.png)
+[^difficult-platforms]: For large-scale experiments or those that run 
+on specialized platforms, re-executing an experiment might be 
+difficult. However, this doesn't exclude such research projects from 
+being able to version-control the article's associated assets.
 
 <!--
 To illustrate the usefulness of a VCS to manage an article's 
 dependencies, consider an article's experiments and how they evolve 
-throughout the life-cycle of an article. Figure 1 shows a timeline...
+throughout the life-cycle of an article. Figure 2 shows a timeline...
 
 **TODO**: Add diagram of a timeline with results being affected by 
 changes in the.
@@ -252,7 +248,7 @@ for configuring and managing computers, as well as deploying and
 orchestrating multi-node applications. Similar tools include Puppet, 
 Chef, Salt, among others.
 
-## Bare-metal as a Service
+## Bare-metal-as-a-Service
 
 For experiments that cannot run on consolidated infrastructures due to 
 noisy-neighborhood phenomena, bare-metal as a service is an 
@@ -272,11 +268,15 @@ testing [@intel_linux_2016] to ensure that newer version don't
 introduce any problems. Performance regression testing is usually an 
 ad-hoc activity but can be automated using high-level languages or 
 [@jimenez_aver_2016] or statistical techniques 
-[@nguyen_automated_2012]
+[@nguyen_automated_2012]. Another important aspect of performance 
+testing is making sure that baselines are reproducible, since if they 
+are not, then there is no point in re-executing an experiment.
 
-**Tools and services**: aver [@jimenez_aver_2016] is a tool that 
-allows authors to express and validate statements on top of metrics 
-gathered at runtime.
+**Tools and services**: [Aver](https://github.com/ivotron/aver) is 
+language and tool that allows authors to express and validate 
+statements on top of metrics gathered at runtime. For obtaining 
+baselines [baseliner](https://github.com/ivotron/baseliner) is a tool 
+that can be used for this purpose.
 
 ## Data Visualization
 
@@ -287,15 +287,19 @@ results. This is a task that is usually not done in OSS projects.
 application. It facilitates the sharing of documents containing live 
 code (in Julia, Python or R), equations, visualizations and 
 explanatory text. Other domain-specific visualization tools can also 
-fit into this category. Binder is an online service that allows one to 
-turn a GitHub repository into a collection of interactive Jupyter 
-notebooks so that readers don't need to deploy web servers themselves.
+fit into this category. [Binder](mybinder.org) is an online service 
+that allows one to turn a GitHub repository into a collection of 
+interactive Jupyter notebooks so that readers don't need to deploy web 
+servers themselves.
 
 # The Popper Convention
 
-_Popper_ is a convention for treating an article as an OSS project.
-In the remaining of this paper we use GitHub, Docker, Binder, 
-CloudLab, Travis CI and aver as the tools/services for every component 
+![End-to-end workflow for an article that follows the Popper 
+convention.](figures/wflow.png)
+
+_Popper_ is a convention for articles that are developed as an OSS 
+project. In the remaining of this paper we use GitHub, Docker, Binder, 
+CloudLab, Travis CI and Aver as the tools/services for every component 
 described in the previous section. As stated in goal 2, any of these 
 should be swappable for other tools, for example: VMs instead of 
 Docker; Puppet instead of Ansible; Jenkins instead of Travis CI; and 
@@ -307,14 +311,17 @@ so on and so forth. Our approach can be summarized as follows:
   * Ansible playbook deploy and execute the experiments.
   * Travis tests the integrity of all experiments.
   * Jupyter notebooks analyze and visualize experimental data produced 
-  * by the authors.
-  * Every experiment involving performance metrics can be launched in 
-    CloudLab, Chameleon or PRObE.
+    by the authors.
   * Every image in an article has a link in its caption that takes the 
     reader to a Jupyter notebook that visualizes the experimental 
     results.
+  * Every experiment involving performance metrics can be launched in 
+    CloudLab, Chameleon or PRObE.
+  * The reproducibility of every experiment can be checked by running 
+    assertions of the aver language on top of the newly obtained 
+    results.
 
-Figure 1 shows the end-to-end workflow for reviewers and authors. 
+Figure 2 shows the end-to-end workflow for reviewers and authors. 
 Given all the elements listed above, readers of a paper can look at a 
 figure and click the associated link that takes them to a notebook. 
 Then, if desired, they instantiate a Binder and can analyze the data 
@@ -329,116 +336,127 @@ addresses. An open question is how do we deal with datasets that are
 too big to fit in Git. An alternative is to use `git-lfs` to version 
 and store large datasets.
 
-![End-to-end workflow for an article that follows the Popper 
-convention.](figures/wflow.png)
-
 ## Organizing Files
 
-The structure of an example "paper repo" is shown in Figure 3. 
+The structure of an example "paper repo" is shown in Figure 3. A paper 
+is written in any desired format. Here we use markdown as an example 
+(`main.md` file). There is a `build.sh` command that generates the 
+output format (e.g. `PDF`). Every experiment in the paper has a 
+corresponding folder in the repo. For example, for a `scalability` 
+experiment referred in the paper, there is a 
+`experiments/scalability/` folder in the repository.
+
+Inside each experiment folder there is a Jupyter notebook that, at the 
+very least, displays the figures for the experiment that appear in the 
+paper. It can serve as an extended version of what figures in the 
+paper display, including other figures that contain analysis that show 
+similar results. If readers wants to do more analysis on the results 
+data, they can instantiate a Binder by pointing to the github 
+repository. Alternatively, If the repository is checked out locally 
+into another person's machine, it's a nice way of having readers play 
+with the result's data (although they need to know how to instantiate 
+a local notebook server). Every figure in the paper has a `[source]` 
+link in its caption that points to the URL of the corresponding 
+notebook in GitHub[^github-ipy].
+
+[^github-ipy]: GitHub has the ability to render jupyter notebooks on 
+its web interface. This is a static view of the notebook (as produced 
+by the original author). In order to have a live version of the 
+notebook, one has to instantiate a Binder or run a local notebook 
+server.
+
+For every experiment, there is an ansible playbook that can be used to 
+re-execute the experiment. In order to do so, readers clone the 
+repository, edit the `inventory` file by adding the IP addresses or 
+hostnames of the machines they have available. The absolutely 
+necessary files for an experiment are `run.sh` which bootstraps the 
+experiment (by invoking a containerized ansible); `inventory`, 
+`playbook.yml` and `vars.yml` which are given to ansible. The 
+execution of the experiment will produce output that is either 
+consumed by a postprocessing script, or directly by the notebook. The 
+output can be in any format (CSVs, HDF, NetCDF, etc.). `output.csv` is 
+the ultimate output of the experiment and what it gets displayed in 
+the notebook. An important component of the experiment playbook is 
+that it should assert the environment and corroborate as much as 
+possible the assumptions made by the original (e.g. via the `assert` 
+task, check that the Linux kernel is the required one). `vars.yml` 
+contains the parametrization of the experiment.
+
+At the root of the project, there is a `.travis.yml` file that Travis 
+CI uses to run unit tests on every commit of the repository. For 
+example, if an experiment playbook is changed, say, by adding a new 
+variable, Travis will ensure that, at the very least, the experiments 
+can be launched without any issues.
+
+Aver can be used for checking that the original findings of an 
+experiment are valid for new re-executions. An `assertions.aver` file 
+contains assertions in the Aver language. This file is is given to 
+Aver's assertion checking engine, which also takes as input the files 
+corresponding to the output of the experiment. Aver then checks that 
+the given assertions hold on the given performance metrics. This 
+allows to automatically check that high-level statements about the 
+outcome of an experiment are true.
 
 ![Structure of a folder for a project following the Popper convention. 
 The red markers correpond to dependencies for the generation of the 
 PDF, while the blue ones mark files used for the 
 experiment.](figures/experiment-metadata.png)
 
-We note the following:
-
-  * A paper is written in any desired format. Here we use markdown as 
-    an example (`main.md`).
-
-  * There is a `build.sh` command that generates the output format 
-    (e.g. `PDF`).
-
-  * Every experiment in the paper has a corresponding folder in the 
-    repo. For example, `exp1` referred in a paper, there is a 
-    `experiments/exp1/` folder in the repo.
-
-  * Every figure in the paper has a `[source]` link in its caption 
-    that points to the URL of the corresponding experiment folder in 
-    the web interface of the VCS (e.g. github).
-
-  * `notebook.ipynb` contains the notebook that, at the very least, 
-    displays the figures for the experiment. It can serve as an 
-    "extended" version of what figures in the paper display, including 
-    other figures that contain analysis that show similar results. If 
-    the repo is checked out locally into another person's machine, 
-    it's a nice way of having readers play with the result's data 
-    (although they need to know how to instantiate a local notebook 
-    server).
-
-  * If desired, the experiment can be re-executed. The high-level data 
-    flow is the following:
-
-    ```
-      edit(inventory) -> invoke(run.sh) ->
-        ansible(pull_docker_images) ->
-        ansible(run_docker_images) ->
-        fetch(output, facts, etc) ->
-        postprocess ->
-        genarate_image ->
-        aver_assertions
-    ```
-
-    Thus, the absolutely necessary files are `run.sh` which bootstraps 
-    the experiment (by invoking a containerized ansible); `inventory`, 
-    `playbook.yml` and `vars.yml` which are given to ansible.
-
-    The execution of the experiment will produce output that is either 
-    consumed by a postprocessing script, or directly by the notebook. 
-    The output can be in any format (CSVs, HDF, NetCDF, etc.).
-
-  * `output.csv` is the ultimate output of the experiment and what it 
-    gets displayed in the notebook.
-
-  * `playbook.yml`, `inventory`, `vars.yml`. Files for `ansible`. An 
-    important component of the playbook is that it should `assert` the 
-    environment and corroborate as much assumptions as possible (e.g. 
-    via the `assert` task). `vars.yml` contains the parametrization of 
-    the experiment.
-
-  * `assertions.aver`. An optional file that contains assertions on 
-    the output data in the _aver_ language.
+**TODO (improve wording)**: When validating performance, an important 
+component is to see the baseline performance of the experimental 
+environment we are running on. Ansible has a way of obtaining "facts" 
+about machines that is useful to have when validating results. Also, 
+baseliner profiles that are associated to experimental results are a 
+great way of asserting assumptions about the environment. baseliner is 
+composed of multiple docker images that measure CPU, memory, I/O and 
+network raw performance of a set of nodes. We execute baseliner on 
+multi-node setups and make the profiles part of the results since this 
+is the fingerprint of our execution. This also gives us an idea of the 
+relationship among the multiple subsystems (e.g. 10:1 of network to 
+IO).
 
 ## Organizing Dependencies
 
+A paper repo is mainly composed of the article text and experiment 
+orchestration logic. The actual code that gets executed by an 
+experiment is not part of the paper repository. Similarly for any 
+datasets that are used as input to an experiment. These dependencies 
+should reside in their own repositories and be referenced in an 
+experiment playbook.
+
 ### Executables
 
-For every execution element in the high-level script, there is a repo 
-that has the source code of the executables, and an artifact repo that 
-holds the output of the "pointed-to" version. In our example, we use 
-git and docker. So, let's say the execution that resulted in `fig1` 
-refers to code of a `foo` codebase. Then:
+For every execution element in the experiment playbook, there is a 
+repository that has the source code of the executables, and an 
+artifact repository (package manager or software image repository) 
+that holds the executables for referenced versions. In our example, we 
+use git and docker. Assume the execution of an scalability experiment 
+refers to code of a `mysystem` codebase. Then:
 
-  * there's a git repo for `foo` and there's a tag/sha1 that we refer 
-    to in the paper repo. This can optionally be also 
-    referenced/tracked via git submodules (e.g. placed in the 
+  * there's a git repo for `mysystem` that holds its source code and 
+    there's a tag/sha1 that we refer to in our experiment. This can 
+    optionally be also tracked via git submodules (e.g. placed in a 
     `vendor/` folder).
 
   * for the version that we are pointing to, there is a docker image 
-    in the docker hub. E.g. if foo#tag1 is what we refer to, then 
-    there's a docker image <repo>/foo:tag1. We can optionally track 
-    the image's source (dockerfile) with submodules.
+    in the docker hub. For example, if we reference version `v3.0.3` 
+    of `mysystem` in our experiment, then there's a docker image 
+    `mysystem#v3.0.3` in the docker hub repository. We can also 
+    optionally track the docker image's source (the `Dockerfile`) with 
+    git submodules in the paper repository (`vendor/` folder).
 
 ### Datasets
 
 Input/output files should be also versioned. For small datasets, we 
-can can put them in the git repo (as in the example). For large 
+can can put them in the git repository of the paper. For large 
 datasets we can use `git-lfs`.
-
-## Obtaining and Reporting Baseline Raw Performance
-
-We have a toolkit that is composed of multiple docker images that 
-measure CPU, memory, I/O and network raw performance of a deployment. 
-We make this part of the results since this is our fingerprint of our 
-systems. This also gives us an idea of the proportionality of the 
-multiple subsystems (e.g. 10:1 of network to IO for example)
 
 # GassyFS: a model project for Popper
 
 GassyFS [@watkins_gassyfs_2016] is a new prototype filesystem system 
 that stores files in distributed remote memory and provides support 
 for checkpointing file system state. The architecture of GassyFS is 
-illustrated in Figure 2. The core of the file system is a user-space 
+illustrated in Figure 4. The core of the file system is a user-space 
 library that implements a POSIX file interface. File system metadata 
 is managed locally in memory, and file data is distributed across a 
 pool of network-attached RAM managed by worker nodes and accessible 
@@ -459,7 +477,7 @@ kept mounted and used by applications with multiple stages of
 execution. The differences between GassyFS and tmpfs become apparent 
 when we consider how users deal with durability concerns.
 
-At the bottom of Figure 2 are shown a set of storage targets that can 
+At the bottom of Figure 4 are shown a set of storage targets that can 
 be used for managing persistent checkpoints of GassyFS. Given the 
 volatility of memory, durability and consistency are handled 
 explicitly by selectively copying data across file system boundaries. 
