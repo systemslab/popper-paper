@@ -9,21 +9,21 @@ abstract: |
   Independent validation of experimental results in the field of 
   parallel and distributed systems research is a challenging task, 
   mainly due to changes and differences in software and hardware in 
-  computational environments. Recreating an environment 
-  that resembles the original is difficult and time-consuming. In this 
-  paper we introduce the _Popper Convention_, a set of principles for 
-  producing computational research that is easy to validate. 
-  Concretely, we make the case for treating an article as an open 
-  source software (OSS) project and for applying software engineering 
-  best-practices to manage its associated artifacts and maintain the 
-  reproducibility of its findings. We propose 
-  leverage existing cloud-computing infrastructure and modern OSS 
-  development tools to produce academic articles that are 
-  easy to validate. We present a use case in the area of distributed 
-  storage systems to illustrate the usefulness of this approach. We 
-  show how, by following Popper, re-executing experiments becomes a 
-  less daunting task and a reviewer can quickly get to the point of 
-  getting results without relying on the author's invention.
+  computational environments. Recreating an environment that resembles 
+  the original is difficult and time-consuming. In this paper we 
+  introduce the _Popper Convention_, a set of principles for producing 
+  computational research that is easy to validate. Concretely, we make 
+  the case for treating an article as an open source software (OSS) 
+  project and for applying software engineering best-practices to 
+  manage its associated artifacts and maintain the reproducibility of 
+  its findings. We propose leveraging existing cloud-computing 
+  infrastructure and modern OSS development tools to produce academic 
+  articles that are easy to validate. We present a use case in the 
+  area of distributed storage systems to illustrate the usefulness of 
+  this approach. We show how, by following Popper, re-executing 
+  experiments on multiple platforms becomes a less daunting task, 
+  allowing reviewers and students to quickly get to the point of 
+  getting results without relying on the author's intervention.
 documentclass: ieeetran
 classoption: conference
 ieeetran: true
@@ -77,30 +77,31 @@ the root cause of any discrepancies in the results
 @donoho_reproducible_2009]. Additionally, reproducing experimental 
 results when the underlying hardware environment changes is 
 challenging mainly due to the inability to predict the effects of such 
-changes in the outcome of an experiment [saavedra-barrera_cpu_1992 ; 
-woo_splash2_1995]. A Virtual Machine (VM) can be used to partially 
+changes in the outcome of an experiment [@saavedra-barrera_cpu_1992 ; 
+@woo_splash2_1995]. A Virtual Machine (VM) can be used to partially 
 address this issue but the overheads in terms of performance (the 
 hypervisor "tax") and management (creating, storing and transferring) 
 can be high and, in some fields of computer science such as systems 
 research, cannot be accounted for easily [@clark_xen_2004 ; 
 @klimeck_nanohuborg_2008]. OS-level virtualization can help in 
 mitigating the performance penalties associated with VMs 
-[@jimenez_woc_2015].
+[@jimenez_role_2015].
 
-One central issue in reproducibility is how to easily organize an 
-article's experiments so that readers or students can easily repeat 
-them. The current practice is to make the code available in a public 
-repository and leave readers with the daunting task of recompiling, 
+One central issue in reproducibility is how to organize an article's 
+experiments so that readers or students can easily repeat them. The 
+current practice is to make the code available in a public repository 
+and leave readers with the daunting task of recompiling, 
 reconfiguring, deploying and re-executing an experiment. In this work, 
 we revisit the idea of an executable paper 
 [@strijkers_executable_2011], which poses the integration of 
 executables and data with scholarly articles to help facilitate its 
 reproducibility, but look at implementing it in today's 
 cloud-computing world by treating an article as an open source 
-software (OSS) project. We outline high-level guidelines for 
-organizing an article's artifacts and make all these publicly 
+software (OSS) project. We introduce _Popper_, a convention for 
+organizing an article's artifacts following the OSS development model 
+that allows researchers to make all the associated artifacts publicly 
 available with the goal of easing the re-execution of experiments and 
-validation of results. There are two main goals for our convention:
+validation of results. There are two main goals for this convention:
 
  1. It should apply to as many research projects as possible, 
     regardless of their domain. While the use case shown in _Section 
@@ -112,123 +113,193 @@ validation of results. There are two main goals for our convention:
     in multiple existing tools. Applying this convention should work, 
     for example, regardless of what CI tool is being used.
 
-By using version-control systems, lightweight OS-level virtualization, 
+If, from an article's inception, researchers make use of 
+version-control systems, lightweight OS-level virtualization, 
 automated multi-node orchestration, continuous integration and 
 web-based data visualization, re-executing and validating an 
-experiment becomes practical. In particular, we make the case for 
-using Git, Docker, Ansible and Jupyter notebooks, and use Github, 
-Cloudlab, Binder and Travis as our proof-of-concept infrastructure.
+experiment becomes practical. This paper makes the following 
+contributions:
 
-The rest of the paper is organized as follows. _Section II_ gives an 
+  * An analysis of how the OSS development process can be repurposed 
+    to an academic article;
+  * Popper: a convention for writing academic articles and associated 
+    experiments following the OSS model; and
+  * A use case detailing the application of Popper to a research 
+    project in the distributed storage systems domain.
+
+Our use case highlights the ability of re-executing experiments on 
+multiple platforms with minimal effort, and how automated performance 
+regression testing helps in maintaining the reproducibility integrity 
+of experiments.
+
+The rest of the paper is organized as follows. _Section II_ analyzes 
+the traditional OSS development model and how it applies to academic 
+articles. _Section III_ describes _Popper_ in detail and gives an 
 overview of the high-level workflow that a researcher goes through 
-when writing an article following the Popper convention. _Section III_ 
-describes _Popper_ in greater detail. In _Section IV_ we present a use 
-case of a project following Popper. We discuss some of the central 
-issues in _Section V_, review related work on _Section VI_ and 
-conclude.
+when writing an article following the convention. In _Section IV_ we 
+present a use case of a project following Popper. We discuss some of 
+the limitations of Popper and lessons learned in _Section V_. Lastly, 
+we review related work on _Section VI_ and conclude.
 
-# An article as an OSS project
+# Applying the OSS Development Model to Academic Articles
 
+In practice, the OSS development process is applied to software 
+projects (Figure 1). Our goal in our work is to repurpose it to 
+academic articles in order to enjoy from the same benefits. In this 
+section we look briefly at the main components of the OSS methodology 
+[^oss-vs-softwareengineering]. For each subsection, we include a 
+_Tools and Services_ section that describes tools and services used in 
+practice.
+
+[^oss-vs-softwareengineering]: One might argue that these components 
+correspond more to software engineering practice, but the OSS 
+development model _is_ software engineering.
 
 ## Version Control
 
-The idea of keeping an article's source in a version-controlled 
-repository is not new and in fact many people follow this practice. 
-What we propose is not only to have the source of an article in 
-version control but to treat all the artifacts in a repository, 
-treating it as a monolithic ball. This has several advantages. Take a 
-look to a project and break it down into its components w.r.t. the 
-development parts (code, tests, artifacts, 3rd party libs).
+Traditionally the content managed in a version-control system (VCS) is 
+the project's source code; for an academic article the equivalent is 
+the article's content: article text, experiments (code and data) and 
+figures. The idea of keeping an article's source in a VCS is not new 
+and in fact many people follow this practice [@brown_how_2014 ; 
+@dolfi_model_2014]. However, this only considers automating the 
+generation of the article in its final format (usually PDF). Ideally, 
+one would like to version-control the entire end-to-end pipeline for 
+all the experiments contained in an article. With the advent of 
+cloud-computing, this is possible for most research 
+articles[^difficult-platforms]. One of the mantras of the DevOps 
+movement [@wiggins_twelvefactor_2011] is to make "infrastructure as 
+code". In a sense, having all the article's dependencies in the same 
+repository is analogous to how large cloud companies maintain 
+monolithic repositories to manage their internal infrastructure 
+[@tang_holistic_2015 ; @metz_google_2015] but at a lower scale.
 
-  * code: the latex file
-  * artifacts: figures, input/output data
-  * 3rd party libraries: code from us that we've developed for the 
-    article or stuff we make use of
-  * tests:
-      * unit tests: check that PDF/figures are generated correctly
-      * integration tests: experiments are runnable, e.g. all the 
-        dependencies
-      * regression tests: we ensure that the claims made in the paper 
-        are valid, e.g. after a change on the associated code base or 
-        by adding a new "supported platform"
+[^difficult-platforms]: Large-scale experiments or those that run on 
+specialized platforms, the repetition of an experiment might be 
+difficult, but this doesn't exclude such research projects from 
+version-control the article's associated assets.
 
-A CI tool needs to be available, e.g. if we have Travis or Jenkins 
-then we can make sure that we don't "break" the paper. For example in 
-CloudLab, we might have multiple experiments that might be broken 
-after a new site gets upgraded.
+![The OSS development model. A version-control system is used to 
+maintain the changes to code. The software is packaged and those 
+packages are used in either testing or deployment. The testing 
+environment ensures that the software behaves as expected. When the 
+software is deployed in production, or when in needs to be checked for 
+performance integrity, it is monitored and metrics are analyzed in 
+order to determine any problems.](figures/ossmodel.png)
 
-### GitHub
+<!--
+To illustrate the usefulness of a VCS to manage an article's 
+dependencies, consider an article's experiments and how they evolve 
+throughout the life-cycle of an article. Figure 1 shows a timeline...
 
-A web-based Git repository hosting service. It offers all of the 
-distributed revision control and source code management (SCM) 
-functionality of Git as well as adding its own features. It gives 
-new users the ability to look at the entire history of the authors' 
-scientific method.
+**TODO**: Add diagram of a timeline with results being affected by 
+changes in the.
+-->
 
-## Configuration Management and Multi-node Orchestration
+**Tools and services**: git, svn and mercurial are popular VCS tools. 
+GitHub and BitBucket are a web-based Git repository hosting services. 
+They offer all of the distributed revision control and source code 
+management (SCM) functionality of Git as well as adding their own 
+features. They give new users the ability to look at the entire 
+history of the authors' scientific method.
 
-### Ansible
+## Package Management
 
-Ansible is a configuration management utility for configuring and 
-managing computers, as well as deploying and orchestrating multi-node 
-applications.
+Availability of code doesn't guarantee reproducibility of results 
+[@collberg_repeatability_2015]. The second main component on the OSS 
+development model is the packaging of applications so that users don't 
+have to. Software containers (e.g. Docker, OpenVZ or FreeBSD's jails) 
+complement package managers by packaging all the dependencies of an 
+application in an entire filesystem snapshot that can be deployed in 
+systems "as is" without having to worry about problems such as package 
+dependencies or specific OS versions. From the point of view of an 
+academic article, these tools can be leveraged to package the 
+dependencies of an experiment. Software containers like Docker have 
+the great potential for being of great use in computational sciences 
+[@boettiger_introduction_2014].
+
+**Tools and services**: Docker [@merkel_docker_2014] automates the 
+deployment of applications inside software containers by providing an 
+additional layer of abstraction and automation of 
+operating-system-level virtualization on Linux. Alternatives to docker 
+are modern package managers such as Nix [@dolstra_nixos_2008] or Spack 
+[@gamblin_spack_2015], or even virtual machines.
 
 ## Continuous Integration
 
-### Travis CI
+Continuous Integration (CI) is a development practice that requires 
+developers to integrate code into a shared repository frequently with 
+the purpose of catching errors as early as possible. An experiment is 
+not absent of this type of issues. If an experiment's findings can be 
+codified in the form of a unit test, this can be verified on every 
+change to the article's repository.
 
-An open-source, hosted, distributed continuous integration service 
-used to build and test software projects hosted at GitHub.
+**Tools and services**: Travis CI is an open-source, hosted, 
+distributed continuous integration service used to build and test 
+software projects hosted at GitHub. Alternatives to Travis CI are 
+CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
 
-## Package Management and Application Deployment
+## Multi-node Orchestration
 
-Docker is usually viewed as an alternative to virtualization but can 
-also be viewed as an enhancement on package management, where an app 
-is ready to run without having to worry about packages and specific OS 
-versions.
+For experiments that need to be deployed on multiple nodes, existing 
+CI services don't offer that service. In this scenario, there are 
+tools that address the need of having software packages (including 
+containers) automatically installed in remote servers. This is usually 
+done in production systems but can also be used for testing purposes.
 
-Docker automates the deployment of applications inside software 
-containers by providing an additional layer of abstraction and 
-automation of operating-system-level virtualization on Linux. 
-Alternatives to docker are modern package managers such as Nix or 
-Spack, or virtualmachines.
-
-## Data Visualization
-
-### Jupyter
-
-Jupyter notebooks run on a web-based application. It facilitates the 
-sharing of documents containing live code (in Julia, Python or R), 
-equations, visualizations and explanatory text.
-
-### Binder.org
-
-Binder is an online service that allows one to turn a GitHub repository into 
-a collection of interactive Jupyter notebooks so that readers don't 
-need to deploy web servers themselves.
-
-While we use all these, as stated in goal 2, any of these should be 
-swappable for other tools, for example: VMs instead of Docker; Puppet 
-instead of Ansible; Jenkins instead of Travis CI; and so on and so 
-forth.
-Yeah
+**Tools and services**: Ansible is a configuration management utility 
+for configuring and managing computers, as well as deploying and 
+orchestrating multi-node applications. Similar tools include Puppet, 
+Chef, Salt, among others.
 
 ## Bare-metal as a Service
 
-### Cloudlab, Chameleon and PRObE
+For experiments that cannot run on consolidated infrastructures due to 
+noisy-neighborhood phenomena, bare-metal as a service is an 
+alternative.
 
-NSF-sponsored infrastructures for research on cloud computing that 
-allows users to easily provision bare-metal machines to execute 
-multi-node experiments.
+**Tools and services**: Cloudlab [@ricci_introducing_2014], Chameleon 
+and PRObE [@gibson_probe_2013] are NSF-sponsored infrastructures for 
+research on cloud computing that allows users to easily provision 
+bare-metal machines to execute multi-node experiments. Some cloud 
+service providers such as Amazon allow users to deploy applications on 
+bare-metal instances.
 
 ## Automated Performance Regression Testing
 
-There are not much out there but we have a tool for this called aver.
+OSS projects such as the Linux kernel go through rigorous performance 
+testing [@intel_linux_2016] to ensure that newer version don't 
+introduce any problems. Performance regression testing is usually an 
+ad-hoc activity but can be automated using high-level languages or 
+[@jimenez_aver_2016] or statistical techniques 
+[@nguyen_automated_2012]
+
+**Tools and services**: aver [@jimenez_aver_2016] is a tool that 
+allows authors to express and validate statements on top of metrics 
+gathered at runtime.
+
+## Data Visualization
+
+Once an experiment runs, the next task is to analyze and visualize 
+results. This is a task that is usually not done in OSS projects. 
+
+**Tools and services**: Jupyter notebooks run on a web-based 
+application. It facilitates the sharing of documents containing live 
+code (in Julia, Python or R), equations, visualizations and 
+explanatory text. Other domain-specific visualization tools can also 
+fit into this category. Binder is an online service that allows one to 
+turn a GitHub repository into a collection of interactive Jupyter 
+notebooks so that readers don't need to deploy web servers themselves.
 
 # The Popper Convention
 
-_Popper_ is a convention for treating an article as an OSS project. 
-Our approach can be summarized as follows:
+_Popper_ is a convention for treating an article as an OSS project.
+In the remaining of this paper we use GitHub, Docker, Binder, 
+CloudLab, Travis CI and aver as the tools/services for every component 
+described in the previous section. As stated in goal 2, any of these 
+should be swappable for other tools, for example: VMs instead of 
+Docker; Puppet instead of Ansible; Jenkins instead of Travis CI; and 
+so on and so forth. Our approach can be summarized as follows:
 
   * Github repository stores all details for the paper. It stores the 
     metadata necessary to build the paper and re-run experiments. 
@@ -261,12 +332,9 @@ and store large datasets.
 ![End-to-end workflow for an article that follows the Popper 
 convention.](figures/wflow.png)
 
-We now describe in greater detail our convention. As mentioned before, 
-the main idea is to treat a paper like an OSS project.
-
 ## Organizing Files
 
-The structure of a "paper repo" is shown in Figure 3. 
+The structure of an example "paper repo" is shown in Figure 3. 
 
 ![Structure of a folder for a project following the Popper convention. 
 The red markers correpond to dependencies for the generation of the 
@@ -402,6 +470,32 @@ sharing between users over a wide-area network.
 In subsequent sections we describe several experiments run on GassyFS 
 and detail how we obtained baselines.
 
+## Experimental Setup
+
+Each experiment ran on each of these machines.
+
+\begin{table}[ht]
+\caption{Components of base and target machines used in our study. All 
+machines run Ubuntu Server 14.04.3 and Linux 3.13. Complete details 
+about these systems can be found in the article's github repository.}
+
+\scriptsize
+\centering
+\begin{tabular}{@{} c c c c @{}}
+\toprule
+
+Machine ID & CPU Model              & Memory BW & Release Date \\\midrule
+base       & Xeon E5-310 @1.6GHz   & 4x2GB DDR2   & Q4-2006 \\
+$T_1$         & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
+$T_2$         & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
+$T_3$         & Xeon E5-2630 @2.3GHz   & 8x8GB DDR3   & Q1-2012 \\
+$T_4$         & Opteron 6320 @2.8GHz   & 8x8GB DDR3   & Q3-2012 \\
+$T_5$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
+
+\end{tabular}
+\end{table}
+
+
 ## Experiment 1: GassyFS vs. TempFS
 
 The goal of this experiment is to compare the performance of GassyFS 
@@ -430,7 +524,25 @@ when
 
 ## Experiment 2: Scalability
 
-f
+One of the use cases of tmpfs is in the analysis of data. When data is 
+too big to fit in memory, alternatives resort to either scale-out or 
+do
+
+
+The corresponding experiment folder in the paper repository contains 
+the necessary ansible files to re-execute this experiment with minimum 
+effort. The only assumption is docker +1.10 and root access on the 
+remote machine where this runs. The validation statements for this 
+experiments are the following:
+
+```
+for
+  workload=*
+expect
+  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+```
+
+![Dask workload on GassyFS.](figures/dask.png)
 
 ## Experiment 3: Analytics on GassyFS
 
@@ -454,7 +566,11 @@ expect
 
 ![Dask workload on GassyFS.](figures/dask.png)
 
-# Lessons Learned
+# Discussion
+
+## Adoption barriers
+
+Not everybody knows git
 
 ## Numerical vs. Performance Reproducibility
 
