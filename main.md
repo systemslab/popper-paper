@@ -53,11 +53,13 @@ acceptable procedures. Additionally, reproducibility plays a major
 role in education since the amount of information that a student has 
 to digest increases as the pace of scientific discovery accelerates. 
 By having the ability to repeat experiments, a student learns by 
-looking at provenance information about the experiment, which allows them to re-evaluate the questions that the 
-original experiment addressed. Instead of wasting time managing package conflicts
-and learning the paper author's ad-hoc experimental setups, the student can immediately 
-run the original experiments and build on the results in the paper, thus allowing them to 
-"stand on the shoulder of giants".
+looking at provenance information about the experiment, which allows 
+them to re-evaluate the questions that the original experiment 
+addressed. Instead of wasting time managing package conflicts
+and learning the paper author's ad-hoc experimental setups, the 
+student can immediately run the original experiments and build on the 
+results in the paper, thus allowing them to "stand on the shoulder of 
+giants".
 
 Independently validating experimental results in the field of computer 
 systems research is a challenging task. Recreating an environment that 
@@ -72,11 +74,18 @@ requires domain-specific expertise in order to determine the
 differences between original and recreated environments that might be 
 the root cause of any discrepancies in the results 
 [@jimenez_tackling_2015-1 ; @freire_computational_2012 ; 
-@donoho_reproducible_2009]. A Virtual Machine (VM) can be used to reproduce experimental 
-results when the underlying hardware environment changes
-but the inability to predict the effects of such 
-changes (_e.g._, hypervisor "tax", managine data movement [saavedra-barrera_cpu_1992 ; woo_splash2_1995 ; @clark_xen_2004], etc.) makes VMs less appealing.
-OS-level virtualization can help in reducing this [@jimenez_characterizing_2016] but the technology for limiting resources is still relatively unexplored (cite your memory bandwidth work).
+@donoho_reproducible_2009]. Additionally, reproducing experimental 
+results when the underlying hardware environment changes is 
+challenging mainly due to the inability to predict the effects of such 
+changes in the outcome of an experiment [saavedra-barrera_cpu_1992 ; 
+woo_splash2_1995]. A Virtual Machine (VM) can be used to partially 
+address this issue but the overheads in terms of performance (the 
+hypervisor "tax") and management (creating, storing and transferring) 
+can be high and, in some fields of computer science such as systems 
+research, cannot be accounted for easily [@clark_xen_2004 ; 
+@klimeck_nanohuborg_2008]. OS-level virtualization can help in 
+mitigating the performance penalties associated with VMs 
+[@jimenez_woc_2015].
 
 One central issue in reproducibility is how to easily organize an 
 article's experiments so that readers or students can easily repeat 
@@ -89,14 +98,14 @@ executables and data with scholarly articles to help facilitate its
 reproducibility, but look at implementing it in today's 
 cloud-computing world by treating an article as an open source 
 software (OSS) project. We outline high-level guidelines for 
-organizing an article's artifacts and make all these available with 
-the goal of easing the re-execution of experiments and validation of 
-results. There are two main goals for our convention:
+organizing an article's artifacts and make all these publicly 
+available with the goal of easing the re-execution of experiments and 
+validation of results. There are two main goals for our convention:
 
  1. It should apply to as many research projects as possible, 
     regardless of their domain. While the use case shown in _Section 
     IV_ pertains to the area of distributed storage systems, our goal 
-    is to embody any project with a computational component.
+    is to embody any project with a computational component in it.
  2. It should be applicable, regardless of the underlying 
     technologies. In general, Popper relies on software-engineering 
     practices like continuous integration (CI) which are implemented 
@@ -104,11 +113,11 @@ results. There are two main goals for our convention:
     for example, regardless of what CI tool is being used.
 
 By using version-control systems, lightweight OS-level virtualization, 
-multi-node orchestration, continuous integration and web-based data 
-visualization, re-executing and validating an experiment becomes 
-practical. In this paper, we use Git, Docker, 
-Ansible, Jupyter notebooks, Github, Cloudlab, Binder, and 
-Travis.
+automated multi-node orchestration, continuous integration and 
+web-based data visualization, re-executing and validating an 
+experiment becomes practical. In particular, we make the case for 
+using Git, Docker, Ansible and Jupyter notebooks, and use Github, 
+Cloudlab, Binder and Travis as our proof-of-concept infrastructure.
 
 The rest of the paper is organized as follows. _Section II_ gives an 
 overview of the high-level workflow that a researcher goes through 
@@ -210,7 +219,8 @@ forth.
 
 # The Popper Convention
 
-We now describe in greater detail our convention.
+We now describe in greater detail our convention. As mentioned before, 
+the main idea is to treat a paper like an OSS project
 
 ## Organizing Files
 
@@ -376,6 +386,8 @@ when
 
 ## Experiment 2: Scalability
 
+f
+
 ## Experiment 3: Analytics on GassyFS
 
 One of the use cases of tmpfs is in the analysis of data. When data is 
@@ -399,6 +411,8 @@ expect
 ![Dask workload on GassyFS.](figures/dask.png)
 
 ## Experiment 4: Checkpointing
+
+f
 
 # Discussion
 
@@ -480,14 +494,34 @@ primary issue. By obtaining profiles of executions and making them
 part of the results, we allow researchers to validate experiments with 
 performance in mind.
 
-In [@chirigati_collaborative_2016] A collaborative approach to 
-computational reproducibility
+Recent efforts have looked at creating open science portals or 
+repositories [@bhardwaj_datahub_2014 ; @king_introduction_2007 ; 
+@stodden_researchcompendiaorg_2015 ; @centerforopenscience_open_2014] 
+that hold all (or a subset of) the artifacts associated to an article. 
+In our case, by treating an article as an OSS project, we benefit from 
+existing tools and web services such as git-lfs without having to 
+implement domain-specific tools. In the same realm, some services 
+provide researchers with the option of generating and absorving the 
+cost of a digital object identifier (DOI). Github projects can have a 
+DOI associated with it [@smith_improving_2014], which is one of the 
+main reasons why we use it as the VCS in _Popper_
 
-In [@dolfi_model_2014], the authors introduce a "paper model" of 
-reproducible research which consists of an MPI application used to 
-illustrate how to organize a project. We extend this idea by having 
-our convention be centered on version control systems and include the 
-notion of instant replicability by using docker and ansible.
+A related issue is the publication model. In 
+[@chirigati_collaborative_2016] the authors propose to incentivize the 
+reproduction of published results by adding reviewers as co-authors of 
+a subsequent publication. We see the Popper convention as a 
+complementary effort that can be used to make the facilitate the work 
+of the reviewers.
+
+The issue of structuring an articles associated files has been 
+discussed in [@dolfi_model_2014], where the authors introduce a "paper 
+model" of reproducible research which consists of an MPI application 
+used to illustrate how to organize a project. In [@brown_how_2014], 
+the authors propose a similar approach based on the use of `make`, 
+with the purpose of automating the generation of a PDF file. We extend 
+these ideas by having our convention be centered around OSS 
+development practices and include the notion of instant replicability 
+by using docker and ansible.
 
 In [@collberg_measuring_2014] the authors took 613 articles published 
 in 13 top-tier systems research conferences and found that 25% of the 
@@ -502,16 +536,8 @@ data science [@boettiger_introduction_2014]. Existing tools such as
 Reprozip [@chirigati_reprozip_2013] package an experiment in a 
 container without having to initially implement it in one (i.e. 
 automates the creation of a container from an "non-containerized" 
-environment).
-
-**TODO**:
-
-  * open science framework (OSF)
-  * open science
-  * similar but limited to just generating the PDF: [how we make our 
-    papers 
-    replicable](http://ivory.idyll.org/blog/2014-our-paper-process.html)
-  * should we reference [@jimenez_characterizing_2016]?
+environment). This tool can be useful for researchers that aren't 
+familiar with tools
 
 # Bibliography
 
@@ -519,6 +545,6 @@ environment).
 
 \noindent
 \vspace{-2em}
-\setlength{\parindent}{-0.2in}
+\setlength{\parindent}{-0.22in}
 \setlength{\leftskip}{0.2in}
 \setlength{\parskip}{8pt}
