@@ -486,10 +486,16 @@ Finally, GassyFS supports a form of file system federation that allows
 checkpoint content to be accessed remotely to enable efficient data 
 sharing between users over a wide-area network. 
 
-In subsequent sections we describe several experiments run on GassyFS 
-and detail how we obtained baselines.
+In subsequent sections we describe several experiments that evaluate 
+the performance of GassyFS. We note that while the performance numbers 
+obtained are relevant, they are not our main focus. Instead, we put 
+more emphasis on how we obtained the baselines for our experiments, 
+how we organize them in the paper repository and how we can reproduce 
+results on multiple environments with minimal effort.
 
 ## Experimental Setup
+
+Thanks
 
 Each experiment ran on each of these machines.
 
@@ -514,6 +520,8 @@ $T_5$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
 \end{tabular}
 \end{table}
 
+
+For every experiment, we have two main components
 
 ## Experiment 1: GassyFS vs. TempFS
 
@@ -541,7 +549,7 @@ when
 
 ![GassyFS vs tmpfs variability.](figures/gassyfs-variability.png)
 
-## Experiment 2: Scalability
+## Experiment 2: Analytics on GassyFS
 
 One of the use cases of tmpfs is in the analysis of data. When data is 
 too big to fit in memory, alternatives resort to either scale-out or 
@@ -563,7 +571,7 @@ expect
 
 ![Dask workload on GassyFS.](figures/dask.png)
 
-## Experiment 3: Analytics on GassyFS
+## Experiment 3: Scalability
 
 One of the use cases of tmpfs is in the analysis of data. When data is 
 too big to fit in memory, alternatives resort to either scale-out or 
@@ -599,6 +607,13 @@ docker/ansible as a lingua franca for researches, and Popper to guide
 them in how to structure their paper repos, we can expedite 
 collaboration and at the same time benefit from all the new advances 
 done in the cloud-computing/DevOps world.
+
+## Something will always break
+
+No matter how hard we try, there will always be something that goes 
+wrong. We don't aim at perfect repeatability but to minimize the 
+issues we face and (see above) have a common language that can be used 
+while collaborating to fix all these reproducibility issues.
 
 ## Drawing the line between deploy and packaging
 
@@ -679,6 +694,25 @@ virtualization. [@jimenez_characterizing_2016] reports some
 preliminary work.
 
 Our convention can be used to either of these two approaches.
+
+## New Categories For Experimental Evaluations
+
+We envision two new categories for reporting performance results in 
+academic articles: controlled experiments vs. statistical studies. Our 
+work fits on the former, where a great amount of effort is devoted to 
+ensure that all the relevant factors that influence performance are 
+carefully accounted for. However, this does not correspond to 
+real-world scenarios thus, in the latter, applications run without 
+constraints so that they can take advantage of all the resources 
+available to them but sound statistical analysis 
+[@hoefler_scientific_2015] is applied to the experimental design and 
+analysis of results.
+
+## Providing Performance Profiles Alongside Experimental Results
+
+This allows to preserve the performance characteristics of the 
+underlying hardware that an experiment executed on and facilitates the 
+interpretation of results in the future.
 
 # Related Work
 
