@@ -4,26 +4,26 @@ author:
 - name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
   affiliation: "_UC Santa Cruz_"
   email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
-number-of-authors: 1
+number-of-authors: 4
 abstract: |
   Independent validation of experimental results in the field of 
   parallel and distributed systems research is a challenging task, 
   mainly due to changes and differences in software and hardware in 
-  computational environments. In particular, recreating an environment 
+  computational environments. Recreating an environment 
   that resembles the original is difficult and time-consuming. In this 
   paper we introduce the _Popper Convention_, a set of principles for 
   producing computational research that is easy to validate. 
   Concretely, we make the case for treating an article as an open 
   source software (OSS) project and for applying software engineering 
   best-practices to manage its associated artifacts and maintain the 
-  reproducibility of its findings. The main idea behind Popper it's to 
+  reproducibility of its findings. We propose 
   leverage existing cloud-computing infrastructure and modern OSS 
-  development tools in order to produce academic articles that are 
+  development tools to produce academic articles that are 
   easy to validate. We present a use case in the area of distributed 
   storage systems to illustrate the usefulness of this approach. We 
   show how, by following Popper, re-executing experiments becomes a 
   less daunting task and a reviewer can quickly get to the point of 
-  getting results with minimal intervention.
+  getting results without relying on the author's invention.
 documentclass: ieeetran
 classoption: conference
 ieeetran: true
@@ -46,43 +46,37 @@ linkcolor: black
 # Introduction
 
 A key component of the scientific method is the ability to revisit and 
-replicate previous experiments. Registering information about an 
+replicate previous experiments. Managing information about an 
 experiment allows scientists to interpret and understand results, as 
 well as verify that the experiment was performed according to 
 acceptable procedures. Additionally, reproducibility plays a major 
 role in education since the amount of information that a student has 
 to digest increases as the pace of scientific discovery accelerates. 
-By having the ability to repeat experiments, a student can learn by 
-looking at provenance information, re-evaluate the questions that the 
-original experiment answered and thus "stand on the shoulder of 
-giants".
+By having the ability to repeat experiments, a student learns by 
+looking at provenance information about the experiment, which allows them to re-evaluate the questions that the 
+original experiment addressed. Instead of wasting time managing package conflicts
+and learning the paper author's ad-hoc experimental setups, the student can immediately 
+run the original experiments and build on the results in the paper, thus allowing them to 
+"stand on the shoulder of giants".
 
 Independently validating experimental results in the field of computer 
 systems research is a challenging task. Recreating an environment that 
 resembles the one where an experiment was originally executed is a 
-challenging endeavour. Version-control systems (VCS) are sometimes 
-used to address some of these problems. By having a particular version 
-ID for the software used for an article's experimental results, 
-reviewers and readers can have access to the same code base 
-[@brown_how_2014]. However, availability of the source code does not 
-guarantee reproducibility [@collberg_repeatability_2015] since the 
-code might not compile and, even if compilable, the results might 
+challenging endeavour. Version-control systems give authors,
+reviewers and readers access to the same code base 
+[@brown_how_2014] but the availability of source code does not 
+guarantee reproducibility [@collberg_repeatability_2015]; code may not
+compile, and even it does, the results may 
 differ. In this case, validating the outcome is a subjective task that 
 requires domain-specific expertise in order to determine the 
 differences between original and recreated environments that might be 
 the root cause of any discrepancies in the results 
 [@jimenez_tackling_2015-1 ; @freire_computational_2012 ; 
-@donoho_reproducible_2009]. Additionally, reproducing experimental 
-results when the underlying hardware environment changes is 
-challenging mainly due to the inability to predict the effects of such 
-changes in the outcome of an experiment [saavedra-barrera_cpu_1992 ; 
-woo_splash2_1995]. A Virtual Machine (VM) can be used to partially 
-address this issue but the overheads in terms of performance (the 
-hypervisor "tax") and management (creating, storing and transferring) 
-can be high and, in some fields of computer science such as systems 
-research, cannot be accounted for easily [@clark_xen_2004]. OS-level 
-virtualization can help in reducing this 
-[@jimenez_characterizing_2016].
+@donoho_reproducible_2009]. A Virtual Machine (VM) can be used to reproduce experimental 
+results when the underlying hardware environment changes
+but the inability to predict the effects of such 
+changes (_e.g._, hypervisor "tax", managine data movement [saavedra-barrera_cpu_1992 ; woo_splash2_1995 ; @clark_xen_2004], etc.) makes VMs less appealing.
+OS-level virtualization can help in reducing this [@jimenez_characterizing_2016] but the technology for limiting resources is still relatively unexplored (cite your memory bandwidth work).
 
 One central issue in reproducibility is how to easily organize an 
 article's experiments so that readers or students can easily repeat 
@@ -112,9 +106,9 @@ results. There are two main goals for our convention:
 By using version-control systems, lightweight OS-level virtualization, 
 multi-node orchestration, continuous integration and web-based data 
 visualization, re-executing and validating an experiment becomes 
-practical. In particular, we make the case for using Git, Docker, 
-Ansible and Jupyter notebooks, and use Github, Cloudlab, Binder and 
-Travis as our proof-of-concept infrastructure.
+practical. In this paper, we use Git, Docker, 
+Ansible, Jupyter notebooks, Github, Cloudlab, Binder, and 
+Travis.
 
 The rest of the paper is organized as follows. _Section II_ gives an 
 overview of the high-level workflow that a researcher goes through 
@@ -129,17 +123,14 @@ conclude.
 _Popper_ is a convention for treating an article as an OSS project. 
 Our approach can be summarized as follows:
 
-  * An article has a Github repository associated with it, storing the 
-    article text, experiments (along with input/output data), 
-    Dockerfiles, and Ansible playbooks.
-  * Every experiment has one or more Docker images associated with it.
-  * Every experiment has an Ansible playbook associated with it that 
-    is used to setup and execute the experiment.
-  * Every experiment's integrity is tested using Travis.
+  * Github repository stores all details for the paper. It stores the 
+    metadata necessary to build the paper and re-run experiments. 
+  * Docker images capture the experimental environment, packages and tunables.
+  * Ansible playbook deploy and execute the experiments.
+  * Travis tests the integrity of all experiments.
+  * Jupyter notebooks analyze and visualize experimental data produced by the authors.  
   * Every experiment involving performance metrics can be launched in 
     CloudLab, Chameleon or PRObE.
-  * Experimental data is analyzed and visualized using Jupyter 
-    notebooks. Every experiment has a notebook associated with it.
   * Every image in an article has a link in its caption that takes the 
     reader to a Jupyter notebook that visualizes the experimental 
     results.
@@ -181,7 +172,7 @@ applications.
 
 ### Jupyter
 
-Jupyter notebooks are a web-based application allowing creation and 
+Jupyter notebooks run on a web-based application. It facilitates the 
 sharing of documents containing live code (in Julia, Python or R), 
 equations, visualizations and explanatory text.
 
@@ -191,11 +182,13 @@ equations, visualizations and explanatory text.
 
 A web-based Git repository hosting service. It offers all of the 
 distributed revision control and source code management (SCM) 
-functionality of Git as well as adding its own features
+functionality of Git as well as adding its own features. It gives 
+new users the ability to look at the entire history of the authors' 
+scientific method.
 
 ### Travis CI
 
-A FOSS, hosted, distributed continuous integration service used to 
+A FOSS (????), hosted, distributed continuous integration service used to 
 build and test software projects hosted at GitHub.
 
 ### Cloudlab, Chameleon and PRObE
@@ -206,13 +199,13 @@ multi-node experiments.
 
 ### Binder.org
 
-Binder is an online service that allows one to turn a GitHub repo into 
+Binder is an online service that allows one to turn a GitHub repository into 
 a collection of interactive Jupyter notebooks so that readers don't 
 need to deploy web servers themselves.
 
 While we use all these, as stated in goal 2, any of these should be 
-swappable for other tools, for example: VMs instead of docker; puppet 
-instead of ansible; Jenkins instead of Travis CI; and so on and so 
+swappable for other tools, for example: VMs instead of Docker; Puppet 
+instead of Ansible; Jenkins instead of Travis CI; and so on and so 
 forth.
 
 # The Popper Convention
@@ -223,21 +216,8 @@ We now describe in greater detail our convention.
 
 The structure of a "paper repo" is the following:
 
-```
-paper/
-  experiments/
-    exp1/
-      assertions.aver
-      fig1.png
-      inventory
-      notebook.ipynb
-      output.csv
-      playbook.yml
-      vars.yml
-      run.sh
-  build.sh
-  main.md
-```
+![End-to-end workflow for an article that follows the Popper 
+convention.](figures/experiment-metadata.png)
 
 We note the following:
 

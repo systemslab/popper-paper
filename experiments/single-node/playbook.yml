@@ -22,10 +22,10 @@
     with_items: "{{ tests }}"
 
   - name: start gassy
-    include: ../common/start_gassy.yml
+    include: common/start_gassy.yml
 
   - name: start tmpfs
-    include: ../common/start_tmpfs.yml
+    include: common/start_tmpfs.yml
 
   - name: pull image
     shell: docker pull {{ item.image_name }}
@@ -60,7 +60,7 @@
     sudo: false
 
   - name: stop gassy
-    include: ../common/stop_gassy.yml
+    include: common/stop_gassy.yml
 
   - name: stop tmpfs
-    include: ../common/stop_tmpfs.yml
+    include: common/stop_tmpfs.yml
