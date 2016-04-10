@@ -1,9 +1,10 @@
 ---
 title: "Popper: Making Systems Performance Evaluation Practical"
 author:
-- name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
-  affiliation: "_UC Santa Cruz_"
-  email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
+- name: ""
+#- name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
+  #affiliation: "_UC Santa Cruz_"
+  #email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
 number-of-authors: 4
 abstract: |
   Independent validation of experimental results in the field of 
@@ -588,31 +589,46 @@ expect
 
 ## Drawing the line between deploy and packaging
 
-Figuring out where something should be in the deploy framework (e.g., Ansible) or in the package framework (e.g., Docker) must be standardized by the users of the project. One could implement Popper entirely with Ansible but this introduces complicated playbooks and permantently installs packages on the host. Alternatively, one could use Docker to orchestrate services but this requires "chaining" images together. This process is hard to develop since containers must be recompiled and shared around the cluster.
+Figuring out where something should be in the deploy framework (e.g., 
+Ansible) or in the package framework (e.g., Docker) must be 
+standardized by the users of the project. One could implement Popper 
+entirely with Ansible but this introduces complicated playbooks and 
+permantently installs packages on the host. Alternatively, one could 
+use Docker to orchestrate services but this requires "chaining" images 
+together. This process is hard to develop since containers must be 
+recompiled and shared around the cluster.
 
-## Usability is the key to this working
+## Usability is the key to make this work
 
-Things that piss people off:
-- number files in the paper rpo
-- lines of code in the paper repo
-- number of submodules
+There are some entry-level barriers for this to work.
 
-## Containers are not Virtualization
+### Things that piss people off
 
-- no performance hit
-- no network port remapping
-- no layers of indirection
+  * Not everybody knows git
+  - number files in the paper rpo
+  - lines of code in the paper repo
+  - number of submodules
 
-## Containers are not baremetal
-- can't ssh into them to start services (which is how most services start daemons)
-- need to have a service per image
-- 
-## Container state must be immutable
-- you can't sudo apt-get install stuff into them
+### Containers are not Virtualization
 
-## Adoption barriers
+People usually misunderstand how OS-level virtualization works.
 
-Not everybody knows git
+  - no performance hit
+  - no network port remapping
+  - no layers of indirection
+
+### Containers are not baremetal
+
+First encounters with docker require a paradigm shift. Docker is 
+immutable infrastructure.
+
+  * need to login as if it were a regular linux server
+  - can't ssh into them to start services (which is how most services 
+    start daemons)
+  - need to have a service per image
+  * container state must be immutable: you can't sudo apt-get install 
+    stuff into them and expect those packages to be installed after 
+    you relaunch the container
 
 ## Numerical vs. Performance Reproducibility
 
@@ -680,7 +696,7 @@ implement domain-specific tools. In the same realm, some services
 provide researchers with the option of generating and absorving the 
 cost of a digital object identifier (DOI). Github projects can have a 
 DOI associated with it [@smith_improving_2014], which is one of the 
-main reasons why we use it as the VCS in _Popper_
+main reasons we use it as our VCS service.
 
 A related issue is the publication model. In 
 [@chirigati_collaborative_2016] the authors propose to incentivize the 
@@ -719,15 +735,11 @@ familiar with tools
 
 In the words of Karl Popper: "_the criterion of the scientific status 
 of a theory is its falsifiability, or refutability, or testability_". 
-By providing a way to specify the high-level components of an 
-experiment and validation clauses for observed metrics we effectively 
-incorporate falsifiability to the field of experimental storage 
-systems. We are in the process of studying the viability of the ESF on 
-experiments from other areas of systems research. While we envision 
-our findings to be applicable in the area of systems research, we plan 
-to evaluate its suitability on other areas of computer science.
-
-**Acknowledgements:** We would like to thank all the good people.
+The OSS development model has proven to be an extraordinary way for 
+people around the world to collaborate in software projects. In this 
+work, we apply it in an academic setting. By writing articles 
+following the _Popper_ convention, authors can generate research that 
+is easier to validate and replicate.
 
 # Bibliography
 
