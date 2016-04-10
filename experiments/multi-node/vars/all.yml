@@ -2,7 +2,7 @@
 # These variables are common to all systems (infiniband, udp, tmpfs)
 
 repetitions: "[0, 1, 2]"
-download: False
+download: True
 
 ##########
 # DOCKER #
