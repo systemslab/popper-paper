@@ -587,6 +587,19 @@ expect
 
 # Discussion
 
+## Convention over Technology
+
+The value of docker is not the technology but that helps people agree 
+on a complex issue. One could argue the same about Ansible, but for 
+"distributed bash" (many people has tried to done this in the past 
+unsuccessfully but Ansible is being adopted everywhere).
+
+We want to have the same effect in the academic realm. By having 
+docker/ansible as a lingua franca for researches, and Popper to guide 
+them in how to structure their paper repos, we can expedite 
+collaboration and at the same time benefit from all the new advances 
+done in the cloud-computing/DevOps world.
+
 ## Drawing the line between deploy and packaging
 
 Figuring out where something should be in the deploy framework (e.g., 
