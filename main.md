@@ -601,7 +601,7 @@ experiments should run on any Linux kernel that is supported by Docker
 (3.2+), we ran on kernels 3.19 and 4.2. Version 3.13 on Ubuntu has a 
 known bug that impedes docker containers to launch sshd daemons, thus 
 our experiments don't run on this version. Besides this, the only 
-requirement is to have the Docker engine version 1.10 (or newer).
+requirement is to have the Docker 1.10 or newer.
 
 ![GassyFS has facilities for explicitly managing  persistence to 
 different storage targets. A checkpointing infrastructure gives 
@@ -660,16 +660,16 @@ Figure 3 shows the results of this test. The overhead of GassyFS over
 TmpFS is attributed to two main components: FUSE and GASNet. The 
 validation statements for this experiments are the following:
 
-```
-when
-  workload=*
-expect
-  time(fs=gassyfs) > 1.75 * time(fs=tmpfs)
+```sql
+  when
+    workload=*
+  expect
+    time(fs='gassyfs') < 1.75 * time(fs='tmpfs')
 ```
 
 The above assertion codifies the condition that, regardless of the 
-workload. GassyFS should not be oopback on single node. This number is 
-taken from empirical evidence and from work published in 
+workload, GassyFS should not be less than 75% worse than TmpFS. This 
+number is taken from empirical evidence and from work published in 
 [@tarasov_terra_2015].
 
 ![GassyFS vs tmpfs variability.](figures/gassyfs-variability.png)
@@ -691,58 +691,54 @@ While this works fine for single-node scenarios, an alternative is to
 load a large array into GassyFS, and then let Dask take advantage of 
 the larger memory size.
 
-In this experiment, we show. The following assertion is used to test 
-the integrity of this result.
+In this experiment, we show that as the number of routines that Dask 
+executes increases, the performance of GassyFS gets closer to that of 
+executing Dask up to a certain threshold. The following assertions are 
+used to test the integrity of this result.
 
-```
-when
-  fs=gassyfs
-expect
-  time(analytic_routines = 1) < time(analytic_routines > 1)
-when
-  analytic_routines=*
-expect
-  time(fs=gassyfs) > time(fs=local)
+```sql
+  when
+    fs='gassyfs'
+  expect
+    time(num_analytic_routines = 1) < time(num_analytic_routines = 2)
+  ;
+  when
+    num_analytic_routines=*
+  expect
+    time(fs='gassyfs') > time(fs='local')
 ```
 
-The first condition asserts that, the first time that GassyFS runs an 
-analytic routine in Dask, it has to pay the upfront cost of copying 
-files into GassyFS. The second statement expresses that, regardless of 
-the number of analytic routines, it is always faster to execute Dask 
-on GassyFS than on the local filesystem.
+The first condition asserts that the first time that Dask runs the 
+first analytic routine on GassyFS, the upfront cost of copying files 
+into GassyFS has to be payed. The second statement expresses that, 
+regardless of the number of analytic routines, it is always faster to 
+execute Dask on GassyFS than on the local filesystem.
 
 ![Dask workload on GassyFS.](figures/dask.png)
 
 ## Experiment 3: Scalability
 
-One of the use cases of tmpfs is in the analysis of data. When data is 
-too big to fit in memory, alternatives resort to either scale-out or 
-do.
+In this experiment we aim to show how GassyFS performs when we 
+increase the number of nodes in the underlying GASNet-backed FUSE 
+mount. Figure 7 shows the results of compiling `git` on GassyFS. We 
+observe that once the cluster gets to 2 nodes, performance degrades 
+sublinearly with the number of nodes. This is expected for workloads 
+such as the one in question. The following assertion is used to test 
+this result:
 
-The corresponding experiment folder in the paper repository contains 
-the necessary ansible files to re-execute this experiment with minimum 
-effort. The only assumption is docker +1.10 and root access on the 
-remote machine where this runs. The validation statements for this 
-experiments are the following:
-
-```
-for
-  workload=*
-expect
-  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+```sql
+  when
+    workload=* and machine=*
+  expect
+    sublinear(time)
 ```
 
-![Multinode experiment.](figures/dd-multinode.png)
+The above expresses our expectation of GassyFS performing sublinearly 
+with the number of nodes.
 
 ![Multinode experiment.](figures/git-multinode.png)
 
 # Discussion
-
-<!-- Should use \paragraph{title} ... instead of sections -->
-
-# Discussion
-
-<!-- Should use \paragraph{title} ... instead of sections -->
 
 ## We did well for 50 years. Why fix it?
 
@@ -853,11 +849,13 @@ This allows to preserve the performance characteristics of the
 underlying hardware that an experiment executed on and facilitates the 
 interpretation of results in the future.
 
+<!--
 ## Handling of results
 
 We might need to find another way of managing experimental results. 
 Putting results on git won't scale. There's also the issue of naming 
 and experiment metadata.
+-->
 
 # Related Work
 
