@@ -151,6 +151,91 @@ present a use case of a project following Popper. We discuss some of
 the limitations of Popper and lessons learned in _Section V_. Lastly, 
 we review related work on _Section VI_ and conclude.
 
+# Reproducibility Needs More than Source Code
+
+Software projects use sophisticated tools to ensure the integrity of 
+their source code. Collaborating, sharing, and maintaining a history
+of code is easy. Unfortunately, running the code in new environments
+is difficult because the source code does not include sufficient 
+details about the developer's software environment, hardware, workload 
+paramaters, and experimental/benchmarking setup(s).
+
+This innefficiencies make reproducibility difficult and even the 
+most diligent developer must make trade-offs in how they report 
+their methodologies. Over documentation can be overwhelming for 
+new users while insufficient documentation makes it impossible
+for anyone to reproduce results. Furthermore, these ad-hoc 
+methologies make it difficult to adapt to new software projects
+and communities -- what is needed is a standard for packaging, 
+deploying, and monitoring your system.
+
+## Software Enviroment
+
+- packages, distros, compilers, deployment, tunables
+
+The software environment is the software the surrounds the source code. It
+includes the binaries on the host system (packages, distros, compilers) and 
+pre-flight setup. Obviously, there are many ways of deploying these systems.
+For example, for the experiments in this paper, we use GASNet. For our
+version of GASNet, there are 64 flags for additional packages and 138 
+flags for additional features. We use:
+```
+./configure \
+  --prefix=/usr \
+  --enable-udp \
+  --enable-ibv \
+  --disable-mpi \
+  --enable-par \
+  --enable-segment-everything \
+  --disable-aligned-segments \
+  --disable-pshm \
+  --with-segment-mmap-max=160GB
+```
+
+To mount GassyFS, we use FUSE. In addition to the 3 flags we add for our 
+file system, there are about 30 options for mounting FUSE. We use:
+
+```
+/usr/local/bin/amudprun -np 2 /gassy mount 
+  -o allow_other -o fsname=gassy -o atomic_o_trunc -o rank0_alloc
+```
+
+Although GassyFS is a simple system, the code snippets above illustrate
+the complexity of deploying, tuning, and configuring it. Furthermore, it is
+unreasonable to ask the developer to list and test every enviroments packages, 
+distros, and compilers. Merely listing these in a notebook or email is 
+insufficient for sharing, colloborating, and distributing experimentl results
+and the methodology for sharing these environments is specific to each developer
+
+## Hardware
+
+- specifications (network speed, processor architectures, storage media),
+cluster configuration, system integrity (slow disk, overloaded network, etc.)
+
+Example: GassyFS runs in infiniband which takes tuning and file handle limits
+
+
+## Workload Paramters
+
+- talk about hadoop mappers/reducers and auxiliary systems that are used.
+
+## Experimental/Benchmarking Setup(s)
+
+- talk about running the jobs (e.g., what kind of `dd` tests we do)
+
+Stuff that makes reproducibility harder:
+
+## Call to action!
+
+Systems are much more complicated than source code and each component
+of an experimental setup should be treated with the same care that 
+give software. In this work, we take the ultimate achievement in 
+science, a published academic paper, and use software tools to ensure 
+that others cans run the same experiments and draw the same, and 
+hopefully new, conclusions. We argue that existing software tools, 
+when combined correctly, provide all the technology necessary for 
+reproducing experiments.
+
 # Applying the OSS Development Model to Academic Articles
 
 In practice, the OSS development process is applied to software 
