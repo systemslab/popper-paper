@@ -70,7 +70,7 @@ giants".
 maintain the changes to code. The software is packaged and those 
 packages are used in either testing or deployment. The testing 
 environment ensures that the software behaves as expected. When the 
-software is deployed in production, or when in needs to be checked for 
+software is deployed in production, or when it needs to be checked for 
 performance integrity, it is monitored and metrics are analyzed in 
 order to determine any problems.](figures/ossmodel.png)
 
@@ -400,7 +400,7 @@ servers themselves.
 # The Popper Convention
 
 ![End-to-end workflow for an article that follows the Popper 
-convention. All figures and results from the paper must be accessible.](figures/wflow.png)
+convention.](figures/wflow.png)
 
 _Popper_ is a convention for articles that are developed as an OSS 
 project. In the remaining of this paper we use GitHub, Docker, Binder, 
@@ -586,11 +586,15 @@ checkpoint content to be accessed remotely to enable efficient data
 sharing between users over a wide-area network.
 
 In subsequent sections we describe several experiments that evaluate 
-the performance of GassyFS. We note that while the performance numbers 
-obtained are relevant, they are not our main focus. Instead, we put 
-more emphasis on how we obtained the baselines for our experiments, 
-how we organize them in the paper repository and how we can reproduce 
-results on multiple environments with minimal effort.
+the performance of GassyFS[^note-to-reviewers]. We note that while the 
+performance numbers obtained are relevant, they are not our main 
+focus. Instead, we put more emphasis on the goals of the experiments, 
+how we can reproduce results on multiple environments with minimal 
+effort and how we can ensure the validity of the results.
+
+[^note-to-reviewers]: Due to time constraints we had to limit the 
+amount of experiments that we include. We will expand the number of 
+experiments, as well as the number of platforms we test on.
 
 ## Experimental Setup
 
@@ -677,8 +681,10 @@ number is taken from empirical evidence and from work published in
 notebooks (as we propose in this convention) due to double-blind 
 review.
 
-![\[[source](https://github.com)\] GassyFS vs TmpFS 
-variability.](figures/gassyfs-variability.png)
+![\[[source](https://github.com)\] Boxplots comparing the variability 
+of GassyFS vs TmpFS on distinct `fio` workloads. Every test was 
+executed 3 times on machine $M_4$ from Table 
+1.](figures/gassyfs-variability.png)
 
 ## Experiment 2: Analytics on GassyFS
 
@@ -697,7 +703,8 @@ While this works fine for single-node scenarios, an alternative is to
 load a large array into GassyFS, and then let Dask take advantage of 
 the larger memory size.
 
-Figure 6 shows the results of this experiment. We see that as the 
+Figure 6 shows the results of an experiment where Dask analyzes 5 GB 
+worth of NetCDF files of an n-dimensional array. We see that as the 
 number of routines that Dask executes increases, the performance of 
 GassyFS gets closer to that of executing Dask, but up to a certain 
 threshold. The following assertions are used to test the integrity of 
@@ -715,14 +722,19 @@ this result.
     time(fs='gassyfs') > time(fs='local')
 ```
 
-The first condition asserts that the first time that Dask runs the 
-first analytic routine on GassyFS, the upfront cost of copying files 
-into GassyFS has to be payed. The second statement expresses that, 
+The first condition asserts that the first time that Dask runs an 
+analytic routine on GassyFS, the upfront cost of copying files into 
+GassyFS has to be payed. The second statement expresses that, 
 regardless of the number of analytic routines, it is always faster to 
 execute Dask on GassyFS than on the local filesystem.
 
-![\[[source](https://github.com)\] Dask workload on 
-GassyFS.](figures/dask.png)
+![\[[source](https://github.com)\] Performance of Dask on GassyFS vs. 
+on the local disk. Dask is used to break the memory barrier for large 
+datasets. Having GassyFS, users can scale-up DRAM by aggregating the 
+memory of multiple nodes, which is an alternative to the conventional 
+way in which that Dask is used. We show that even though Dask is 
+efficient, having NetCDF datasets in GassyFS improves the performance 
+significantly.](figures/dask.png)
 
 ## Experiment 3: Scalability
 
@@ -738,11 +750,11 @@ this result:
   when
     workload=* and machine=*
   expect
-    sublinear(time)
+    sublinear(nodes,time)
 ```
 
 The above expresses our expectation of GassyFS performing sublinearly 
-with the number of nodes.
+with respect to the number of nodes.
 
 # Discussion
 
@@ -772,8 +784,9 @@ researchers, and Popper to guide them in how to structure their paper repos, we 
 expedite collaboration and at the same time benefit from all the new advances done in
 the cloud-computing/DevOps world.
 
-![\[[source](https://github.com)\] Multinode 
-experiment.](figures/git-multinode.png)
+![\[[source](https://github.com)\] Scalability of GassyFS as the 
+number of nodes in the GASNet network increases. The workload in 
+question compiles `git`.](figures/git-multinode.png)
 
 ## Perfect is the enemy of good
 
