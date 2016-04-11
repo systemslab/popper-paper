@@ -11,18 +11,18 @@ abstract: |
   parallel and distributed systems research is a challenging task, 
   mainly due to changes and differences in software and hardware in 
   computational environments. Recreating an environment that resembles 
-  the original is difficult and time-consuming. In this paper we 
+  the original systems research is difficult and time-consuming. In this paper we 
   introduce the _Popper Convention_, a set of principles for producing 
-  computational research that is easy to validate. Concretely, we make 
+  useful research and scientific publications that are easy to validate. Concretely, we make 
   the case for treating an article as an open source software (OSS) 
   project and for applying software engineering best-practices to 
   manage its associated artifacts and maintain the reproducibility of 
   its findings. We propose leveraging existing cloud-computing 
   infrastructure and modern OSS development tools to produce academic 
-  articles that are easy to validate. We present a use case in the 
-  area of distributed storage systems to illustrate the usefulness of 
+  articles that are easy to validate. We present our prototype file 
+  system, GassyFS, as a use case for illustrating the usefulness of 
   this approach. We show how, by following Popper, re-executing 
-  experiments on multiple platforms becomes a less daunting task, 
+  experiments on multiple platforms is more practical,
   allowing reviewers and students to quickly get to the point of 
   getting results without relying on the author's intervention.
 documentclass: ieeetran
@@ -134,8 +134,8 @@ contributions:
     to an academic article;
   * Popper: a convention for writing academic articles and associated 
     experiments following the OSS model; and
-  * A use case detailing the application of Popper to a research 
-    project in the distributed storage systems domain.
+  * GasssyFS: a scalable in-memory file system that adheres to the 
+    Popper convention.
 
 Our use case highlights the ability of re-executing experiments on 
 multiple platforms with minimal effort, and how automated performance 
@@ -225,7 +225,7 @@ Example: GassyFS runs in infiniband which takes tuning and file handle limits
 
 Stuff that makes reproducibility harder:
 
-## Call to action!
+## Requirements of Writing Reproducible Papers 
 
 Systems are much more complicated than source code and each component
 of an experimental setup should be treated with the same care that 
@@ -236,14 +236,22 @@ hopefully new, conclusions. We argue that existing software tools,
 when combined correctly, provide all the technology necessary for 
 reproducing experiments.
 
-# Applying the OSS Development Model to Academic Articles
+Writing scientific papers is amenable to OSS methologies because both 
+processes require:
 
-In practice, the OSS development process is applied to software 
-projects (Figure 1). Our goal in our work is to repurpose it to 
-academic articles in order to enjoy from the same benefits. In this 
-section we look briefly at the main components of the OSS methodology. 
-For each subsection, we include a _Tools and Services_ section that 
-describes tools and services used in practice.
+1. maintaining a history of work
+
+2. sharing and collaborating
+
+3. testing and verification
+
+# OSS Development Model for Academic Articles
+
+In the following section, we look at software tools for maintaining 
+code and describe how they can help make scientific papers reproducible.
+By using these tools for maintaining experiments in the paper, the authors
+enjoy the same benefits that the tools provide for software. We use the 
+generic OSS workflow in Figure 1 to guide our discussion.
 
 ## Version Control
 
@@ -253,7 +261,12 @@ the article's content: article text, experiments (code and data) and
 figures. The idea of keeping an article's source in a VCS is not new 
 and in fact many people follow this practice [@brown_how_2014 ; 
 @dolfi_model_2014]. However, this only considers automating the 
-generation of the article in its final format (usually PDF). Ideally, 
+generation of the article in its final format (usually PDF). While this 
+is useful, here we make the distinction between changing the prose of the paper 
+and changing the parameters of the experiment (both its components and 
+its configuration).
+
+Ideally,
 one would like to version-control the entire end-to-end pipeline for 
 all the experiments contained in an article. With the advent of 
 cloud-computing, this is possible for most research 
@@ -279,15 +292,15 @@ changes in the.
 -->
 
 **Tools and services**: git, svn and mercurial are popular VCS tools. 
-GitHub and BitBucket are a web-based Git repository hosting services. 
+GitHub and BitBucket are web-based Git repository hosting services. 
 They offer all of the distributed revision control and source code 
 management (SCM) functionality of Git as well as adding their own 
 features. They give new users the ability to look at the entire 
-history of the authors' scientific method.
+history of the authors' development process.
 
 ## Package Management
 
-Availability of code doesn't guarantee reproducibility of results 
+Availability of code does not guarantee reproducibility of results 
 [@collberg_repeatability_2015]. The second main component on the OSS 
 development model is the packaging of applications so that users don't 
 have to. Software containers (e.g. Docker, OpenVZ or FreeBSD's jails) 
@@ -323,11 +336,12 @@ CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
 
 ## Multi-node Orchestration
 
-For experiments that need to be deployed on multiple nodes, existing 
-CI services don't offer that service. In this scenario, there are 
-tools that address the need of having software packages (including 
-containers) automatically installed in remote servers. This is usually 
-done in production systems but can also be used for testing purposes.
+Experiments that require a cluster need a tool that automatically 
+manages binaries and updates packages across machines. Serializing this
+by having an administrator manage all the nodes in a cluser is 
+impossible in HPC settings. Traditionally, this is done with an ad-hoc
+bash script but for experiments that are continually tested there needs
+to be an automated solution.
 
 **Tools and services**: Ansible is a configuration management utility 
 for configuring and managing computers, as well as deploying and 
