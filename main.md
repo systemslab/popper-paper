@@ -694,68 +694,64 @@ expect
 
 # Discussion
 
-## Convention over Technology
+<!-- Should use \paragraph{title} ... instead of sections -->
 
-The value of docker is not the technology but that helps people agree 
-on a complex issue. One could argue the same about Ansible, but for 
-"distributed bash" (many people has tried to done this in the past 
-unsuccessfully but Ansible is being adopted everywhere).
+# Discussion
 
-We want to have the same effect in the academic realm. By having 
-docker/ansible as a lingua franca for researches, and Popper to guide 
-them in how to structure their paper repos, we can expedite 
-collaboration and at the same time benefit from all the new advances 
-done in the cloud-computing/DevOps world.
+<!-- Should use \paragraph{title} ... instead of sections -->
 
-## Something will always break
+## We did well for 50 years. Why fix it?
 
-No matter how hard we try, there will always be something that goes 
-wrong. We don't aim at perfect repeatability but to minimize the 
-issues we face and (see above) have a common language that can be used 
-while collaborating to fix all these reproducibility issues.
+Shared infrastructures "in the cloud" are becoming the norm and enable new kinds of
+sharing, such as experiments, that were not practical before. Thus, the opportunity
+of these services goes beyond just economies of scale: by using conventions and tools
+to enable reproducibility, we can dramatically increase the value of scientific
+experiments for education and for research. The Popper Convention makes not only the
+result of a systems experiment available but the entire experiment and allows
+researchers to study and reuse all aspects of it.
+
+## The power of "crystallization points." 
+
+Docker images, Ansible playbooks, CI unit tests, Git repositories, and Jupyter
+notebooks are all exemples of artifacts around which broad-based efforts can be
+organized. Crystallization points are pieces of technology, and are intended to be
+easily shareable, have the ability to grow and improvie over time, and ensure buy-in
+from researchers and students. Examples of very successful crystallization points are
+the Linux kernel, Wikipedia, and the Apache Project. Crystallization points encode
+community knowledge and are therefore useful for leveraging past research efforts for
+ongoing research as well as education and training. They help people to form
+abstractions and common understanding that enables them to more effectively
+commmunicate reproducible science. By having docker/ansible as a lingua franca for
+researchers, and Popper to guide them in how to structure their paper repos, we can
+expedite collaboration and at the same time benefit from all the new advances done in
+the cloud-computing/DevOps world.
+
+## Perfect is the enemy of good
+
+No matter how hard we try, there will always be something that goes wrong. The
+context of systems experiments is often very complex and that complexity is likely to
+increase in the future. Perfect repeatability will be very difficult to achieve.
+We don't aim at perfect repeatability but to minimize the 
+issues we face and have a common language that can be used 
+while collaborating to fix all these reproducibility issues. 
 
 ## Drawing the line between deploy and packaging
 
-Figuring out where something should be in the deploy framework (e.g., 
-Ansible) or in the package framework (e.g., Docker) must be 
-standardized by the users of the project. One could implement Popper 
-entirely with Ansible but this introduces complicated playbooks and 
-permantently installs packages on the host. Alternatively, one could 
-use Docker to orchestrate services but this requires "chaining" images 
-together. This process is hard to develop since containers must be 
-recompiled and shared around the cluster.
+Figuring out where something should be in the deploy framework (e.g., Ansible) or in
+the package framework (e.g., Docker) must be standardized by the users of the
+project. One could implement Popper entirely with Ansible but this introduces
+complicated playbooks and permantently installs packages on the host. Alternatively,
+one could use Docker to orchestrate services but this requires "chaining" images
+together. This process is hard to develop since containers must be recompiled and
+shared around the cluster. We expect that communities of practice will find the right
+balance between these technologies by improving on the co-design of Ansible playbooks
+and Docker images within their communities.
 
 ## Usability is the key to make this work
 
-There are some entry-level barriers for this to work.
+The technologies underlying the OSS Development Model are not new. However, the open-source software community, in particular the DevOps community, have significantly increased the usability of the tools involved. Usability is the key to make reproducibility work: it is already hard enough to publish scientific papers, so in order to make reproducibility even practical, the tools have to be extremely easy to use. The Popper Convention enables systems researchers to leverage the usability of DevOps tools.
 
-### Things that piss people off
-
-  * Not everybody knows git
-  - number files in the paper rpo
-  - lines of code in the paper repo
-  - number of submodules
-
-### Containers are not Virtualization
-
-People usually misunderstand how OS-level virtualization works.
-
-  - no performance hit
-  - no network port remapping
-  - no layers of indirection
-
-### Containers are not baremetal
-
-First encounters with docker require a paradigm shift. Docker is 
-immutable infrastructure.
-
-  * need to login as if it were a regular linux server
-  - can't ssh into them to start services (which is how most services 
-    start daemons)
-  - need to have a service per image
-  * container state must be immutable: you can't sudo apt-get install 
-    stuff into them and expect those packages to be installed after 
-    you relaunch the container
+However, with all great advances in usability, scientists still have to get used to new concepts these tools introduce. In our experience, experimental setups that do not ensure any reproducibility are still a lot easier to create than the ones that do. Not everyone knows git and people are irritated by the number of files and submodules in the paper repo. They also usuaually misunderstand how OS-level virtualization works and do not realize that there is no performance hit, no network port remapping, and no layers of indirection. Lastly, first encounters with Docker require users to understand that Docker containers do not represent baremetal hardware but immutable infrastructure, i.e. one can't ssh into them to start services, one need to have a service per image, and one cannot install software inside of them and expect those installations to persist after relaunching a container.
 
 ## Numerical vs. Performance Reproducibility
 
@@ -794,18 +790,18 @@ preliminary work.
 
 Our convention can be used to either of these two approaches.
 
-## New Categories For Experimental Evaluations
+## Controlled Experiments become Practical
 
-We envision two new categories for reporting performance results in 
-academic articles: controlled experiments vs. statistical studies. Our 
-work fits on the former, where a great amount of effort is devoted to 
-ensure that all the relevant factors that influence performance are 
-carefully accounted for. However, this does not correspond to 
-real-world scenarios thus, in the latter, applications run without 
-constraints so that they can take advantage of all the resources 
-available to them but sound statistical analysis 
-[@hoefler_scientific_2015] is applied to the experimental design and 
-analysis of results.
+Almost all publications about systems experiments underreport the context of an
+experiment, making it very difficult for someone trying to reproduce the experiment
+to control for differences between the context of the reported experiment and the
+reproduced one. Due to traditional intractability of controlling for all aspects of
+the setup of an experiment systems researchers typically strive for making results
+"understandable" by applying sound statistical analysis to the experimental design
+and analysis of results [@hoefler_scientific_2015].
+
+The Popper Convention makes controlled experiments practical by managing all aspects of the setup of an experiment and leveraging shared infrastructure.
+
 
 ## Providing Performance Profiles Alongside Experimental Results
 
