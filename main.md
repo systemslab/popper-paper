@@ -14,23 +14,24 @@ abstract: |
   parallel and distributed systems research is a challenging task, 
   mainly due to changes and differences in software and hardware in 
   computational environments. Recreating an environment that resembles 
-  the original systems research is difficult and time-consuming. In this paper we 
-  introduce the _Popper Convention_, a set of principles for producing 
-  useful research and scientific publications that are easy to validate. Concretely, we make 
-  the case for treating an article as an open source software (OSS) 
-  project and for applying software engineering best-practices to 
-  manage its associated artifacts and maintain the reproducibility of 
-  its findings. We propose leveraging existing cloud-computing 
-  infrastructure and modern OSS development tools to produce academic 
-  articles that are easy to validate. We present our prototype file 
-  system, GassyFS, as a use case for illustrating the usefulness of 
-  this approach. We show how, by following Popper, re-executing 
-  experiments on multiple platforms is more practical,
-  allowing reviewers and students to quickly get to the point of 
-  getting results without relying on the author's intervention.
+  the original systems research is difficult and time-consuming. In 
+  this paper we introduce the _Popper Convention_, a set of principles 
+  for producing scientific publications. Concretely, we make the case 
+  for treating an article as an open source software (OSS) project, 
+  applying software engineering best-practices to manage its 
+  associated artifacts and maintain the reproducibility of its 
+  findings. Leveraging existing cloud-computing infrastructure and 
+  modern OSS development tools to produce academic articles that are 
+  easy to validate. We present our prototype file system, GassyFS, as 
+  a use case for illustrating the usefulness of this approach. We show 
+  how, by following _Popper_, re-executing experiments on multiple 
+  platforms is more practical, allowing reviewers and students to 
+  quickly get to the point of getting results without relying on the 
+  author's intervention.
 documentclass: ieeetran
 classoption: conference
 ieeetran: true
+monofont-size: scriptsize
 numbersections: true
 substitute-hyperref: true
 csl: "ieee.csl"
@@ -634,13 +635,10 @@ $M_4$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
 \toprule
 
 Machine ID & CPU Model              & Memory BW & Release Date \\\midrule
-cloudlab   & Xeon E5-310 @1.6GHz   & 4x2GB DDR2   & Q4-2006 \\
+cloudlab   & Xeon E5-310 @1.6GHz    & 4x2GB DDR2   & Q4-2006 \\
 ec2        & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
 ec2-net    & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
 ucsc       & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
-
-r3.4xlarge  16 vCPU 122 GB RAM  1 x 320
-High Frequency Intel Xeon E5-2670 v2
 
 \end{tabular}
 \end{table}
@@ -658,27 +656,32 @@ generating expected results
 The goal of this experiment is to compare the performance of GassyFS 
 with respect to that of TempFS on a single node. As mentioned before, 
 the idea of GassyFS is to serve as a distributed version of TmpFS.
-Figure 3 shows the results of this test. We can see that GassyFS, due 
-to the FUSE overhead, performs within 90% of TmpFS's performance. The 
+Figure 3 shows the results of this test. The overhead of GassyFS over 
+TmpFS is attributed to two main components: FUSE and GASNet. The 
 validation statements for this experiments are the following:
 
 ```
 when
   workload=*
 expect
-  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+  time(fs=gassyfs) > 1.75 * time(fs=tmpfs)
 ```
+
+The above assertion codifies the condition that, regardless of the 
+workload. GassyFS should not be oopback on single node. This number is 
+taken from empirical evidence and from work published in 
+[@tarasov_terra_2015].
 
 ![GassyFS vs tmpfs variability.](figures/gassyfs-variability.png)
 
 ## Experiment 2: Analytics on GassyFS
 
-One of the main use cases of GassyFS is for data analytics workloads. 
-By providing larger amounts of memory, an analysis application can 
-crunch more numbers and thus generate more accurate results. The goal 
-of this experiment is to compare the performance of Dask when it runs 
-on GassyFS vs. on the local filesystem. Dask is a python library for 
-parallel computing analytics that extends NumPy to out-of-core 
+One of the main use cases of GassyFS is in data analytics. By 
+providing larger amounts of memory, an analysis application can crunch 
+more numbers and thus generate more accurate results. The goal of this 
+experiment is to compare the performance of Dask when it runs on 
+GassyFS against that on the local filesystem. Dask is a python library 
+for parallel computing analytics that extends NumPy to out-of-core 
 datasets by blocking arrays into small chunks and executing on those 
 chunks in parallel. This allows python to easily process large data 
 and also simultaneously make use of all of our CPU resources. Dask 
@@ -729,7 +732,9 @@ expect
   time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
 ```
 
-![Dask workload on GassyFS.](figures/dask.png)
+![Multinode experiment.](figures/dd-multinode.png)
+
+![Multinode experiment.](figures/git-multinode.png)
 
 # Discussion
 
