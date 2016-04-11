@@ -106,7 +106,7 @@ current practice is to make the code available in a public repository
 and leave readers with the daunting task of recompiling, 
 reconfiguring, deploying and re-executing an experiment. In this work, 
 we revisit the idea of an executable paper 
-[@strijkers_executable_2011], which poses the integration of 
+[@strijkers_executable_2011], which proposes the integration of 
 executables and data with scholarly articles to help facilitate its 
 reproducibility, but look at implementing it in today's 
 cloud-computing world by treating an article as an open source 
@@ -129,7 +129,7 @@ validation of results. There are two main goals for this convention:
 If, from an article's inception, researchers make use of 
 version-control systems, lightweight OS-level virtualization, 
 automated multi-node orchestration, continuous integration and 
-web-based data visualization, re-executing and validating an 
+web-based data visualization, then re-executing and validating an 
 experiment becomes practical. This paper makes the following 
 contributions:
 
@@ -140,10 +140,14 @@ contributions:
   * GasssyFS: a scalable in-memory file system that adheres to the 
     Popper convention.
 
-Our use case highlights the ability of re-executing experiments on 
-multiple platforms with minimal effort, and how automated performance 
-regression testing helps in maintaining the reproducibility integrity 
-of experiments.
+GassyFS, while simple in design, is complex in terms of compilation 
+and configuration. Using it as a use case for Popper illustrates the 
+benefits of following this convention: it becomes practical for others 
+to re-execute experiments on multiple platforms with minimal effort, 
+without having to speculate on what the original authors (ourselves) 
+did to compile and configure the system; and shows how automated 
+performance regression testing aids in maintaining the reproducibility 
+integrity of experiments.
 
 The rest of the paper is organized as follows. _Section II_ analyzes 
 the traditional OSS development model and how it applies to academic 
@@ -253,11 +257,13 @@ processes require:
 
 # The OSS Development Model for Academic Articles
 
-In the following section, we look at software tools for maintaining 
-code and describe how they can help make scientific papers reproducible.
-By using these tools for maintaining experiments in the paper, the authors
-enjoy the same benefits that the tools provide for software. We use the 
-generic OSS workflow in Figure 1 to guide our discussion.
+In practice, the open-source software (OSS) development process is 
+applied to software projects (Figure 1). In the following section, we 
+list the key reasons why the process of writing scientific papers is 
+so amenable to OSS methodologies. The goal of our work is to apply 
+these in the academic setting in order to enjoy from the same 
+benefits. We use the generic OSS workflow in Figure 1 to guide our 
+discussion.
 
 ## Version Control
 
@@ -302,7 +308,7 @@ GitHub and BitBucket are web-based Git repository hosting services.
 They offer all of the distributed revision control and source code 
 management (SCM) functionality of Git as well as adding their own 
 features. They give new users the ability to look at the entire 
-history of the authors' development process.
+history of the project and its artifacts.
 
 ## Package Management
 
@@ -330,10 +336,10 @@ are modern package managers such as Nix [@dolstra_nixos_2008] or Spack
 
 Continuous Integration (CI) is a development practice that requires 
 developers to integrate code into a shared repository frequently with 
-the purpose of catching errors as early as possible. An experiment is 
-not absent of this type of issues. If an experiment's findings can be 
-codified in the form of a unit test, this can be verified on every 
-change to the article's repository.
+the purpose of catching errors as early as possible. The experiments 
+associated to an article is not absent of this type of issues. If an 
+experiment's findings can be codified in the form of a unit test, this 
+can be verified on every change to the article's repository.
 
 **Tools and services**: Travis CI is an open-source, hosted, 
 distributed continuous integration service used to build and test 
@@ -669,11 +675,11 @@ following:
   when
     workload=*
   expect
-    time(fs='gassyfs') < 1.75 * time(fs='tmpfs')
+    time(fs='gassyfs') < 5 * time(fs='tmpfs')
 ```
 
 The above assertion codifies the condition that, regardless of the 
-workload, GassyFS should not be less than 75% worse than TmpFS. This 
+workload, GassyFS should not be less than 5x worse than TmpFS. This 
 number is taken from empirical evidence and from work published in 
 [@tarasov_terra_2015].
 
@@ -682,9 +688,9 @@ notebooks (as we propose in this convention) due to double-blind
 review.
 
 ![\[[source](https://github.com)\] Boxplots comparing the variability 
-of GassyFS vs TmpFS on distinct `fio` workloads. Every test was 
-executed 3 times on machine $M_4$ from Table 
-1.](figures/gassyfs-variability.png)
+of GassyFS vs TmpFS on a sequential `fio` workload. Every test was 
+executed 3 times on machines listed on Table 1 (all except 
+$M_4$).](figures/gassyfs-variability.png)
 
 ## Experiment 2: Analytics on GassyFS
 
@@ -734,7 +740,9 @@ datasets. Having GassyFS, users can scale-up DRAM by aggregating the
 memory of multiple nodes, which is an alternative to the conventional 
 way in which that Dask is used. We show that even though Dask is 
 efficient, having NetCDF datasets in GassyFS improves the performance 
-significantly.](figures/dask.png)
+significantly. The variability of the experiment comes from executing 
+the same workload on all the machines listed in Table 
+1.](figures/dask.png)
 
 ## Experiment 3: Scalability
 

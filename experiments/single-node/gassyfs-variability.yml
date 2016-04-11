@@ -13,103 +13,123 @@ tmpfs:
   - 'nosuid'
   - 'size=5g'
 tests:
-- id: fio_1
+- id: fio_sequential_1
   docker_flags: ''
   image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
+  image_args: --minimal /root/examples/sequential-fill.fio
   copy_folder: false
   folder_name: ''
   run_in_local_fs: false
   run_in_tmpfs: true
   run_in_gassyfs: true
-  delete_after: false
-- id: fio_2
+  delete_after: true
+- id: fio_sequential_2
   docker_flags: ''
   image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
+  image_args: --minimal /root/examples/sequential-fill.fio
   copy_folder: false
   folder_name: ''
   run_in_local_fs: false
   run_in_tmpfs: true
   run_in_gassyfs: true
-  delete_after: false
-- id: fio_3
+  delete_after: true
+- id: fio_sequential_3
   docker_flags: ''
   image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
+  image_args: --minimal /root/examples/sequential-fill.fio
   copy_folder: false
   folder_name: ''
   run_in_local_fs: false
   run_in_tmpfs: true
   run_in_gassyfs: true
-  delete_after: false
-- id: fio_4
-  docker_flags: ''
-  image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
-  copy_folder: false
-  folder_name: ''
-  run_in_local_fs: false
-  run_in_tmpfs: true
-  run_in_gassyfs: true
-  delete_after: false
-- id: fio_5
-  docker_flags: ''
-  image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
-  copy_folder: false
-  folder_name: ''
-  run_in_local_fs: false
-  run_in_tmpfs: true
-  run_in_gassyfs: true
-  delete_after: false
-- id: fio_6
-  docker_flags: ''
-  image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
-  copy_folder: false
-  folder_name: ''
-  run_in_local_fs: false
-  run_in_tmpfs: true
-  run_in_gassyfs: true
-  delete_after: false
-- id: fio_7
-  docker_flags: ''
-  image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
-  copy_folder: false
-  folder_name: ''
-  run_in_local_fs: false
-  run_in_tmpfs: true
-  run_in_gassyfs: true
-  delete_after: false
-- id: fio_8
-  docker_flags: ''
-  image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
-  copy_folder: false
-  folder_name: ''
-  run_in_local_fs: false
-  run_in_tmpfs: true
-  run_in_gassyfs: true
-  delete_after: false
-- id: fio_9
-  docker_flags: ''
-  image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
-  copy_folder: false
-  folder_name: ''
-  run_in_local_fs: false
-  run_in_tmpfs: true
-  run_in_gassyfs: true
-  delete_after: false
-- id: fio_10
-  docker_flags: ''
-  image_name: ivotron/fio
-  image_args: --minimal /root/examples/test.fio
-  copy_folder: false
-  folder_name: ''
-  run_in_local_fs: false
-  run_in_tmpfs: true
-  run_in_gassyfs: true
-  delete_after: false
+  delete_after: true
+#- id: fio_randrw_1
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/random_rw.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_randrw_2
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/random_rw.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_randrw_3
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/random_rw.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_threads_1
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/four-threads-randio.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_threads_2
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/four-threads-randio.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_threads_3
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/four-threads-randio.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_zones_1
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/rand_zones.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_zones_2
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/rand_zones.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
+#- id: fio_zones_3
+  #docker_flags: ''
+  #image_name: ivotron/fio
+  #image_args: --minimal /root/examples/rand_zones.fio
+  #copy_folder: false
+  #folder_name: ''
+  #run_in_local_fs: false
+  #run_in_tmpfs: true
+  #run_in_gassyfs: true
+  #delete_after: true
