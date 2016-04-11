@@ -181,41 +181,8 @@ deploying, and monitoring your system.
 
 - packages, distros, compilers, deployment, tunables
 
-The software environment is the software the surrounds the source code. It
-includes the binaries on the host system (packages, distros, compilers) and 
-pre-flight setup. Obviously, there are many ways of deploying these systems.
-For example, for the experiments in this paper, we use GASNet. For our
-version of GASNet, there are 64 flags for additional packages and 138 
-flags for additional features. We use:
-```
-./configure \
-  --prefix=/usr \
-  --enable-udp \
-  --enable-ibv \
-  --disable-mpi \
-  --enable-par \
-  --enable-segment-everything \
-  --disable-aligned-segments \
-  --disable-pshm \
-  --with-segment-mmap-max=160GB
-```
-
-To mount GassyFS, we use FUSE. In addition to the 3 flags we add for our 
-file system, there are about 30 options for mounting FUSE. We use:
-
-```
-/usr/local/bin/amudprun -np 2 /gassy mount 
-  -o allow_other -o fsname=gassy -o atomic_o_trunc -o rank0_alloc
-```
-
-Although GassyFS is a simple system, the code snippets above illustrate
-the complexity of deploying, tuning, and configuring it. Furthermore, it is
-unreasonable to ask the developer to list and test every enviroments packages, 
-distros, and compilers. Merely listing these in a notebook or email is 
-insufficient for sharing, colloborating, and distributing experimentl results
-and the methodology for sharing these environments is specific to each developer
-
-## Hardware
+The software environment is the software the surrounds the source 
+code. ## Hardware
 
 - specifications (network speed, processor architectures, storage media),
 cluster configuration, system integrity (slow disk, overloaded network, etc.)
@@ -513,16 +480,16 @@ The red markers correpond to dependencies for the generation of the
 PDF, while the blue ones mark files used for the 
 experiment.](figures/experiment-metadata.png)
 
-**TODO (improve wording)**: When validating performance, an important 
-component is to see the baseline performance of the experimental 
-environment we are running on. Ansible has a way of obtaining "facts" 
-about machines that is useful to have when validating results. Also, 
-baseliner profiles that are associated to experimental results are a 
-great way of asserting assumptions about the environment. baseliner is 
-composed of multiple docker images that measure CPU, memory, I/O and 
-network raw performance of a set of nodes. We execute baseliner on 
-multi-node setups and make the profiles part of the results since this 
-is the fingerprint of our execution. This also gives us an idea of the 
+When validating performance, an important component is to see the 
+baseline performance of the experimental environment we are running 
+on. Ansible has a way of obtaining "facts" about machines that is 
+useful to have when validating results. Also, baseliner profiles that 
+are associated to experimental results are a great way of asserting 
+assumptions about the environment. baseliner is composed of multiple 
+docker images that measure CPU, memory, I/O and network raw 
+performance of a set of nodes. We execute baseliner on multi-node 
+setups and make the profiles part of the results since this is the 
+fingerprint of our execution. This also gives us an idea of the 
 relationship among the multiple subsystems (e.g. 10:1 of network to 
 IO).
 
@@ -591,6 +558,26 @@ Finally, GassyFS supports a form of file system federation that allows
 checkpoint content to be accessed remotely to enable efficient data 
 sharing between users over a wide-area network.
 
+Although GassyFS is simple in design, it is relatively complex to 
+setup. The combinatorial space of possible ways in which the system 
+can be compiled, packaged and configured is large. For example, 
+current version of GCC (4.9) has approximately $10^80$ possible ways 
+of compiling a binary. For the version of GASNet that we use (2.6), 
+there are 64 flags for additional packages and 
+138 flags for additional features[^more]. To mount GassyFS, we use 
+FUSE, which can be given 30 different options, many of them taking 
+multiple values.
+
+[^more]: This are the flags that are documented. There are many more 
+that can be configured but not shown in the official documentation.
+
+Furthermore, it is unreasonable to ask the developer to list and test 
+every enviroments packages, distros, and compilers. Merely listing 
+these in a notebook or email is insufficient for sharing, 
+colloborating, and distributing experimentl results and the 
+methodology for sharing these environments is specific to each 
+developer.
+
 In subsequent sections we describe several experiments that evaluate 
 the performance of GassyFS[^note-to-reviewers]. We note that while the 
 performance numbers obtained are relevant, they are not our main 
@@ -602,6 +589,11 @@ effort and how we can ensure the validity of the results.
 amount of experiments that we include. We will expand the number of 
 experiments, as well as the number of platforms we test on.
 
+![GassyFS has facilities for explicitly managing  persistence to 
+different storage targets. A checkpointing infrastructure gives 
+GassyFS flexible policies for persisting namespaces and federating 
+data.](figures/arch.pdf)
+
 ## Experimental Setup
 
 We have two sets of machines. The first two experiments use machines 
@@ -611,11 +603,6 @@ experiments should run on any Linux kernel that is supported by Docker
 known bug that impedes docker containers to launch sshd daemons, thus 
 our experiments don't run on this version. Besides this, the only 
 requirement is to have the Docker 1.10 or newer.
-
-![GassyFS has facilities for explicitly managing  persistence to 
-different storage targets. A checkpointing infrastructure gives 
-GassyFS flexible policies for persisting namespaces and federating 
-data.](figures/arch.pdf)
 
 \begin{table}[ht]
 \caption{Machines used in Experiments 1 and 2.}
@@ -661,6 +648,11 @@ asserts that the given statements hold true on the metrics gathered at
 runtime. This helps to automatically check when experiments are not 
 generating expected results
 
+![\[[source](https://github.com)\] Boxplots comparing the variability 
+of GassyFS vs TmpFS on a sequential `fio` workload. Every test was 
+executed 3 times on machines listed on Table 1 (all except 
+$M_4$).](figures/gassyfs-variability.png)
+
 ## Experiment 1: GassyFS vs. TempFS
 
 The goal of this experiment is to compare the performance of GassyFS 
@@ -687,11 +679,6 @@ number is taken from empirical evidence and from work published in
 notebooks (as we propose in this convention) due to double-blind 
 review.
 
-![\[[source](https://github.com)\] Boxplots comparing the variability 
-of GassyFS vs TmpFS on a sequential `fio` workload. Every test was 
-executed 3 times on machines listed on Table 1 (all except 
-$M_4$).](figures/gassyfs-variability.png)
-
 ## Experiment 2: Analytics on GassyFS
 
 One of the main use cases of GassyFS is in data analytics. By 
@@ -709,6 +696,16 @@ While this works fine for single-node scenarios, an alternative is to
 load a large array into GassyFS, and then let Dask take advantage of 
 the larger memory size.
 
+![\[[source](https://github.com)\] Performance of Dask on GassyFS vs. 
+on the local disk. Dask is used to break the memory barrier for large 
+datasets. Having GassyFS, users can scale-up DRAM by aggregating the 
+memory of multiple nodes, which is an alternative to the conventional 
+way in which that Dask is used. We show that even though Dask is 
+efficient, having NetCDF datasets in GassyFS improves the performance 
+significantly. The variability of the experiment comes from executing 
+the same workload on all the machines listed in Table 
+1.](figures/dask.png)
+
 Figure 6 shows the results of an experiment where Dask analyzes 5 GB 
 worth of NetCDF files of an n-dimensional array. We see that as the 
 number of routines that Dask executes increases, the performance of 
@@ -720,7 +717,7 @@ this result.
   when
     fs='gassyfs'
   expect
-    time(num_analytic_routines = 1) < time(num_analytic_routines = 2)
+    time(num_routines = 1) < time(num_routines = 2)
   ;
   when
     num_analytic_routines=*
@@ -733,16 +730,6 @@ analytic routine on GassyFS, the upfront cost of copying files into
 GassyFS has to be payed. The second statement expresses that, 
 regardless of the number of analytic routines, it is always faster to 
 execute Dask on GassyFS than on the local filesystem.
-
-![\[[source](https://github.com)\] Performance of Dask on GassyFS vs. 
-on the local disk. Dask is used to break the memory barrier for large 
-datasets. Having GassyFS, users can scale-up DRAM by aggregating the 
-memory of multiple nodes, which is an alternative to the conventional 
-way in which that Dask is used. We show that even though Dask is 
-efficient, having NetCDF datasets in GassyFS improves the performance 
-significantly. The variability of the experiment comes from executing 
-the same workload on all the machines listed in Table 
-1.](figures/dask.png)
 
 ## Experiment 3: Scalability
 
@@ -763,6 +750,10 @@ this result:
 
 The above expresses our expectation of GassyFS performing sublinearly 
 with respect to the number of nodes.
+
+![\[[source](https://github.com)\] Scalability of GassyFS as the 
+number of nodes in the GASNet network increases. The workload in 
+question compiles `git`.](figures/git-multinode.png)
 
 # Discussion
 
@@ -791,10 +782,6 @@ commmunicate reproducible science. By having docker/ansible as a lingua franca f
 researchers, and Popper to guide them in how to structure their paper repos, we can
 expedite collaboration and at the same time benefit from all the new advances done in
 the cloud-computing/DevOps world.
-
-![\[[source](https://github.com)\] Scalability of GassyFS as the 
-number of nodes in the GASNet network increases. The workload in 
-question compiles `git`.](figures/git-multinode.png)
 
 ## Perfect is the enemy of good
 
