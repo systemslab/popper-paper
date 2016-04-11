@@ -1,0 +1,107 @@
+2016-04-11 05:13:44,626 p=22201 u=root |  PLAY ***************************************************************************
+2016-04-11 05:13:44,638 p=22201 u=root |  TASK [setup] *******************************************************************
+2016-04-11 05:13:45,051 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:13:45,055 p=22201 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-11 05:13:45,093 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/main.yml for 10.10.1.3
+2016-04-11 05:13:45,101 p=22201 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-11 05:13:45,183 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/pre_requisite.yml for 10.10.1.3
+2016-04-11 05:13:45,200 p=22201 u=root |  TASK [gassyfs/worker : create bootstrap directories] ***************************
+2016-04-11 05:13:46,375 p=22201 u=root |  ok: [10.10.1.3] => (item=/etc/ceph/)
+2016-04-11 05:13:46,392 p=22201 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-11 05:13:46,407 p=22201 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-11 05:13:46,422 p=22201 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-11 05:13:46,425 p=22201 u=root |  TASK [gassyfs/worker : install pip and docker on ubuntu] ***********************
+2016-04-11 05:13:46,579 p=22201 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-11 05:13:46,582 p=22201 u=root |  TASK [gassyfs/worker : install pip and docker on debian] ***********************
+2016-04-11 05:13:46,729 p=22201 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-11 05:13:46,733 p=22201 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-11 05:13:47,284 p=22201 u=root |  ok: [10.10.1.3] => (item=[u'python-pip', u'docker-engine'])
+2016-04-11 05:13:47,287 p=22201 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-11 05:13:47,432 p=22201 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-11 05:13:47,435 p=22201 u=root |  TASK [gassyfs/worker : install docker-py] **************************************
+2016-04-11 05:13:48,039 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:13:48,043 p=22201 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-11 05:13:48,127 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/start_docker_worker.yml for 10.10.1.3
+2016-04-11 05:13:48,167 p=22201 u=root |  TASK [gassyfs/worker : run the gassyfs docker image] ***************************
+2016-04-11 05:13:49,933 p=22201 u=root |  changed: [10.10.1.3]
+2016-04-11 05:13:49,936 p=22201 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-11 05:13:49,997 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/check.yml for 10.10.1.3
+2016-04-11 05:13:50,037 p=22201 u=root |  TASK [gassyfs/worker : wait for the SSH port on the container to become active] 
+2016-04-11 05:13:58,298 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:13:58,307 p=22201 u=root |  PLAY ***************************************************************************
+2016-04-11 05:13:58,318 p=22201 u=root |  TASK [setup] *******************************************************************
+2016-04-11 05:13:58,760 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:13:58,765 p=22201 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-11 05:13:58,805 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/main.yml for 10.10.1.3
+2016-04-11 05:13:58,813 p=22201 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-11 05:13:58,899 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/pre_requisite.yml for 10.10.1.3
+2016-04-11 05:13:58,920 p=22201 u=root |  TASK [gassyfs/master : create bootstrap directories] ***************************
+2016-04-11 05:14:00,114 p=22201 u=root |  ok: [10.10.1.3] => (item=/etc/ceph/)
+2016-04-11 05:14:00,133 p=22201 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-11 05:14:00,150 p=22201 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-11 05:14:00,166 p=22201 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-11 05:14:00,169 p=22201 u=root |  TASK [gassyfs/master : install pip and docker on ubuntu] ***********************
+2016-04-11 05:14:00,324 p=22201 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-11 05:14:00,328 p=22201 u=root |  TASK [gassyfs/master : install pip and docker on debian] ***********************
+2016-04-11 05:14:00,455 p=22201 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-11 05:14:00,459 p=22201 u=root |  TASK [gassyfs/master : install pip and docker on redhat] ***********************
+2016-04-11 05:14:01,021 p=22201 u=root |  ok: [10.10.1.3] => (item=[u'python-pip', u'docker-engine'])
+2016-04-11 05:14:01,026 p=22201 u=root |  TASK [gassyfs/master : install pip and docker on redhat] ***********************
+2016-04-11 05:14:01,183 p=22201 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-11 05:14:01,187 p=22201 u=root |  TASK [gassyfs/master : install docker-py] **************************************
+2016-04-11 05:14:01,786 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:14:01,791 p=22201 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-11 05:14:01,882 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/fetch_configs.yml for 10.10.1.3
+2016-04-11 05:14:01,924 p=22201 u=root |  TASK [gassyfs/master : remove old keys] ****************************************
+2016-04-11 05:14:02,221 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:14:02,226 p=22201 u=root |  TASK [gassyfs/master : create a new directory for ssh keys] ********************
+2016-04-11 05:14:02,513 p=22201 u=root |  changed: [10.10.1.3]
+2016-04-11 05:14:02,518 p=22201 u=root |  TASK [gassyfs/master : set ssh key paths] **************************************
+2016-04-11 05:14:02,586 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:14:02,591 p=22201 u=root |  TASK [gassyfs/master : try to fetch ssh keys] **********************************
+2016-04-11 05:14:03,780 p=22201 u=root |  changed: [10.10.1.3] => (item=id_rsa)
+2016-04-11 05:14:03,796 p=22201 u=root |  changed: [10.10.1.3] => (item=id_rsa.pub)
+2016-04-11 05:14:03,811 p=22201 u=root |  changed: [10.10.1.3] => (item=authorized_keys)
+2016-04-11 05:14:03,814 p=22201 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-11 05:14:03,908 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/start_docker_master.yml for 10.10.1.3
+2016-04-11 05:14:03,958 p=22201 u=root |  TASK [gassyfs/master : run the gassyfs docker image] ***************************
+2016-04-11 05:14:05,797 p=22201 u=root |  changed: [10.10.1.3]
+2016-04-11 05:14:05,800 p=22201 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-11 05:14:05,881 p=22201 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/check.yml for 10.10.1.3
+2016-04-11 05:14:05,936 p=22201 u=root |  TASK [gassyfs/master : wait for gassyfs to start up] ***************************
+2016-04-11 05:14:05,963 p=22201 u=root |  Pausing for 60 seconds
+2016-04-11 05:14:05,963 p=22201 u=root |  (ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+2016-04-11 05:15:06,011 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:15:06,016 p=22201 u=root |  TASK [gassyfs/master : check if the master container is up] ********************
+2016-04-11 05:15:06,485 p=22201 u=root |  ok: [10.10.1.3]
+2016-04-11 05:15:06,489 p=22201 u=root |  TASK [add_host] ****************************************************************
+2016-04-11 05:15:06,530 p=22201 u=root |  changed: [10.10.1.3]
+2016-04-11 05:15:06,540 p=22201 u=root |  PLAY ***************************************************************************
+2016-04-11 05:15:06,549 p=22201 u=root |  TASK [setup] *******************************************************************
+2016-04-11 05:15:09,138 p=22201 u=root |  ok: [node-0]
+2016-04-11 05:15:09,143 p=22201 u=root |  TASK [wait for gassyfs to mount] ***********************************************
+2016-04-11 05:15:09,505 p=22201 u=root |  changed: [node-0]
+2016-04-11 05:15:09,509 p=22201 u=root |  TASK [how big is our gassyfs mount?] *******************************************
+2016-04-11 05:15:09,867 p=22201 u=root |  changed: [node-0]
+2016-04-11 05:15:09,869 p=22201 u=root |  TASK [debug] *******************************************************************
+2016-04-11 05:15:09,920 p=22201 u=root |  ok: [node-0] => {
+    "result.stdout_lines": [
+        "Filesystem                                                                                      Size  Used Avail Use% Mounted on", 
+        "/dev/mapper/docker-8:1-951195-44a22d0e32dc0e09e363745e7c37c2cd15fe7596218875f0220d0f150a48f434   10G  1.2G  8.9G  12% /", 
+        "tmpfs                                                                                           126G     0  126G   0% /dev", 
+        "tmpfs                                                                                           126G     0  126G   0% /sys/fs/cgroup", 
+        "/dev/sda1                                                                                        16G  6.4G  8.5G  44% /home", 
+        "tmpfs                                                                                           126G   74M  126G   1% /run/shm", 
+        "tmpfs                                                                                           126G     0  126G   0% /dev/shm", 
+        "gassy                                                                                           160G     0  160G   0% /mount"
+    ]
+}
+2016-04-11 05:15:09,924 p=22201 u=root |  PLAY RECAP *********************************************************************
+2016-04-11 05:15:09,924 p=22201 u=root |  10.10.1.3                  : ok=27   changed=5    unreachable=0    failed=0   
+2016-04-11 05:15:09,924 p=22201 u=root |  node-0                     : ok=4    changed=2    unreachable=0    failed=0   
+2016-04-11 05:15:09,941 p=22201 u=root |  PLAY ***************************************************************************
+2016-04-11 05:15:09,949 p=22201 u=root |  TASK [setup] *******************************************************************
+2016-04-11 05:15:12,547 p=22201 u=root |  ok: [node-0]
+2016-04-11 05:15:12,551 p=22201 u=root |  TASK [clone the ceph code] *****************************************************
+2016-04-11 05:15:18,149 p=22201 u=root |   [ERROR]: User interrupted execution
+

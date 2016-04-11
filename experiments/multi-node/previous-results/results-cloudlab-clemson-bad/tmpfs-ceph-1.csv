@@ -1,0 +1,13 @@
+delta, cmd
+"0:00:01.094046", "cp -r /home/ceph ceph"
+"0:06:07.161989", "cd ceph; ./install-deps.sh; ./autogen.sh; ./configure --with-debug --with-librocksdb-static"
+"0:16:47.012270", "cd ceph; make -j10"
+"0:00:03.184357", "rm -r ceph"
+"0:00:00.988283", "cp -r /home/ceph ceph"
+"0:01:45.041321", "cd ceph; ./install-deps.sh; ./autogen.sh; ./configure --with-debug --with-librocksdb-static"
+"0:16:46.023871", "cd ceph; make -j10"
+"0:00:03.306934", "rm -r ceph"
+"0:00:01.049238", "cp -r /home/ceph ceph"
+"0:01:47.981351", "cd ceph; ./install-deps.sh; ./autogen.sh; ./configure --with-debug --with-librocksdb-static"
+"0:16:45.442098", "cd ceph; make -j10"
+"0:00:03.306796", "rm -r ceph"
