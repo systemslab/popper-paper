@@ -400,7 +400,7 @@ servers themselves.
 # The Popper Convention
 
 ![End-to-end workflow for an article that follows the Popper 
-convention.](figures/wflow.png)
+convention. All figures and results from the paper must be accessible.](figures/wflow.png)
 
 _Popper_ is a convention for articles that are developed as an OSS 
 project. In the remaining of this paper we use GitHub, Docker, Binder, 
