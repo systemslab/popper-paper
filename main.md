@@ -1,7 +1,10 @@
 ---
-title: "Popper: Making Systems Performance Evaluation Practical"
+title: "Popper: Making Reproducible Systems Performance Evaluation 
+Practical"
 author:
-- name: ""
+- name: '  '
+  affiliation: ' '
+  email: '  '
 #- name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
   #affiliation: "_UC Santa Cruz_"
   #email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
@@ -273,11 +276,10 @@ ad-hoc activity but can be automated using high-level languages or
 testing is making sure that baselines are reproducible, since if they 
 are not, then there is no point in re-executing an experiment.
 
-**Tools and services**: [Aver](https://github.com/ivotron/aver) is 
-language and tool that allows authors to express and validate 
-statements on top of metrics gathered at runtime. For obtaining 
-baselines [baseliner](https://github.com/ivotron/baseliner) is a tool 
-that can be used for this purpose.
+**Tools and services**: Aver is language and tool that allows authors 
+to express and validate statements on top of metrics gathered at 
+runtime. For obtaining baselines Baseliner is a tool that can be used 
+for this purpose.
 
 ## Data Visualization
 
@@ -465,11 +467,6 @@ over RDMA or Ethernet. Applications access GassyFS through a standard
 FUSE mount, or may link directly to the library to avoid any overhead 
 that FUSE may introduce.
 
-![GassyFS has facilities for explicitly managing  persistence to 
-different storage targets. A checkpointing infrastructure gives 
-GassyFS flexible policies for persisting namespaces and federating 
-data.](figures/arch.pdf)
-
 By default all data in GassyFS is non-persistent. That is, all 
 metadata and file data is kept in memory, and any node failure will 
 result in data loss. In this mode GassyFS can be thought of as a 
@@ -484,7 +481,7 @@ volatility of memory, durability and consistency are handled
 explicitly by selectively copying data across file system boundaries. 
 Finally, GassyFS supports a form of file system federation that allows 
 checkpoint content to be accessed remotely to enable efficient data 
-sharing between users over a wide-area network. 
+sharing between users over a wide-area network.
 
 In subsequent sections we describe several experiments that evaluate 
 the performance of GassyFS. We note that while the performance numbers 
@@ -495,14 +492,21 @@ results on multiple environments with minimal effort.
 
 ## Experimental Setup
 
-Thanks
+We have two sets of machines. The first two experiments use machines 
+in Table 1. The third experiment uses machines in Table 2. While our 
+experiments should run on any Linux kernel that is supported by Docker 
+(3.2+), we ran on kernels 3.19 and 4.2. Version 3.13 on Ubuntu has a 
+known bug that impedes docker containers to launch sshd daemons, thus 
+our experiments don't run on this version. Besides this, the only 
+requirement is to have the Docker engine version 1.10 (or newer).
 
-Each experiment ran on each of these machines.
+![GassyFS has facilities for explicitly managing  persistence to 
+different storage targets. A checkpointing infrastructure gives 
+GassyFS flexible policies for persisting namespaces and federating 
+data.](figures/arch.pdf)
 
 \begin{table}[ht]
-\caption{Components of base and target machines used in our study. All 
-machines run Ubuntu Server 14.04.3 and Linux 3.13. Complete details 
-about these systems can be found in the article's github repository.}
+\caption{Machines used in Experiments 1 and 2.}
 
 \scriptsize
 \centering
@@ -510,18 +514,42 @@ about these systems can be found in the article's github repository.}
 \toprule
 
 Machine ID & CPU Model              & Memory BW & Release Date \\\midrule
-base       & Xeon E5-310 @1.6GHz   & 4x2GB DDR2   & Q4-2006 \\
-$T_1$         & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
-$T_2$         & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
-$T_3$         & Xeon E5-2630 @2.3GHz   & 8x8GB DDR3   & Q1-2012 \\
-$T_4$         & Opteron 6320 @2.8GHz   & 8x8GB DDR3   & Q3-2012 \\
-$T_5$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
+$M_1$         & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
+$M_2$         & Xeon E5-2630 @2.3GHz   & 8x8GB DDR3   & Q1-2012 \\
+$M_3$         & Opteron 6320 @2.8GHz   & 8x8GB DDR3   & Q3-2012 \\
+$M_4$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
 
 \end{tabular}
 \end{table}
 
 
-For every experiment, we have two main components
+\begin{table}[ht]
+\caption{Machines used in Experiment 3.}
+
+\scriptsize
+\centering
+\begin{tabular}{@{} c c c c @{}}
+\toprule
+
+Machine ID & CPU Model              & Memory BW & Release Date \\\midrule
+cloudlab   & Xeon E5-310 @1.6GHz   & 4x2GB DDR2   & Q4-2006 \\
+ec2        & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
+ec2-net    & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
+ucsc       & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
+
+r3.4xlarge  16 vCPU 122 GB RAM  1 x 320
+High Frequency Intel Xeon E5-2670 v2
+
+\end{tabular}
+\end{table}
+
+For every experiment, we first describe the goal of the experiment and 
+show the result. Then we describe how we codify our observations in 
+the Aver language. Before every experiment executes, Baseliner obtains 
+baseline metrics for every machine in the experiment. At the end, Aver 
+asserts that the given statements hold true on the metrics gathered at 
+runtime. This helps to automatically check when experiments are not 
+generating expected results
 
 ## Experiment 1: GassyFS vs. TempFS
 
@@ -529,45 +557,54 @@ The goal of this experiment is to compare the performance of GassyFS
 with respect to that of TempFS on a single node. As mentioned before, 
 the idea of GassyFS is to serve as a distributed version of TmpFS.
 Figure 3 shows the results of this test. We can see that GassyFS, due 
-to the FUSE overhead, performs within 90% of TmpFS's performance.
-
-The corresponding experiment folder in the paper repository contains 
-the necessary ansible files to re-execute this experiment with minimum 
-effort. The only assumption is docker +1.10 and root access on the 
-remote machine where this runs. The validation statements for this 
-experiments are the following:
+to the FUSE overhead, performs within 90% of TmpFS's performance. The 
+validation statements for this experiments are the following:
 
 ```
 when
-  workload=*, size=*
+  workload=*
 expect
   time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
-
-when
-  workload=1
 ```
 
 ![GassyFS vs tmpfs variability.](figures/gassyfs-variability.png)
 
 ## Experiment 2: Analytics on GassyFS
 
-One of the use cases of tmpfs is in the analysis of data. When data is 
-too big to fit in memory, alternatives resort to either scale-out or 
-do
+One of the main use cases of GassyFS is for data analytics workloads. 
+By providing larger amounts of memory, an analysis application can 
+crunch more numbers and thus generate more accurate results. The goal 
+of this experiment is to compare the performance of Dask when it runs 
+on GassyFS vs. on the local filesystem. Dask is a python library for 
+parallel computing analytics that extends NumPy to out-of-core 
+datasets by blocking arrays into small chunks and executing on those 
+chunks in parallel. This allows python to easily process large data 
+and also simultaneously make use of all of our CPU resources. Dask 
+assumes that an n-dimensional array won't fit in memory and thus 
+chunks the datasets (on disk) and iteratively process them in-memory. 
+While this works fine for single-node scenarios, an alternative is to 
+load a large array into GassyFS, and then let Dask take advantage of 
+the larger memory size.
 
-
-The corresponding experiment folder in the paper repository contains 
-the necessary ansible files to re-execute this experiment with minimum 
-effort. The only assumption is docker +1.10 and root access on the 
-remote machine where this runs. The validation statements for this 
-experiments are the following:
+In this experiment, we show. The following assertion is used to test 
+the integrity of this result.
 
 ```
-for
-  workload=*
+when
+  fs=gassyfs
 expect
-  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+  time(analytic_routines = 1) < time(analytic_routines > 1)
+when
+  analytic_routines=*
+expect
+  time(fs=gassyfs) > time(fs=local)
 ```
+
+The first condition asserts that, the first time that GassyFS runs an 
+analytic routine in Dask, it has to pay the upfront cost of copying 
+files into GassyFS. The second statement expresses that, regardless of 
+the number of analytic routines, it is always faster to execute Dask 
+on GassyFS than on the local filesystem.
 
 ![Dask workload on GassyFS.](figures/dask.png)
 
@@ -575,8 +612,7 @@ expect
 
 One of the use cases of tmpfs is in the analysis of data. When data is 
 too big to fit in memory, alternatives resort to either scale-out or 
-do
-
+do.
 
 The corresponding experiment folder in the paper repository contains 
 the necessary ansible files to re-execute this experiment with minimum 
@@ -591,7 +627,7 @@ expect
   time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
 ```
 
-![Dask workload on GassyFS.](figures/dask.png)
+![Dask workload on GassyFS.](figures/scalability.png)
 
 # Discussion
 
@@ -713,6 +749,12 @@ analysis of results.
 This allows to preserve the performance characteristics of the 
 underlying hardware that an experiment executed on and facilitates the 
 interpretation of results in the future.
+
+## Handling of results
+
+We might need to find another way of managing experimental results. 
+Putting results on git won't scale. There's also the issue of naming 
+and experiment metadata.
 
 # Related Work
 
