@@ -14,23 +14,24 @@ abstract: |
   parallel and distributed systems research is a challenging task, 
   mainly due to changes and differences in software and hardware in 
   computational environments. Recreating an environment that resembles 
-  the original systems research is difficult and time-consuming. In this paper we 
-  introduce the _Popper Convention_, a set of principles for producing 
-  useful research and scientific publications that are easy to validate. Concretely, we make 
-  the case for treating an article as an open source software (OSS) 
-  project and for applying software engineering best-practices to 
-  manage its associated artifacts and maintain the reproducibility of 
-  its findings. We propose leveraging existing cloud-computing 
-  infrastructure and modern OSS development tools to produce academic 
-  articles that are easy to validate. We present our prototype file 
-  system, GassyFS, as a use case for illustrating the usefulness of 
-  this approach. We show how, by following Popper, re-executing 
-  experiments on multiple platforms is more practical,
-  allowing reviewers and students to quickly get to the point of 
-  getting results without relying on the author's intervention.
+  the original systems research is difficult and time-consuming. In 
+  this paper we introduce the _Popper Convention_, a set of principles 
+  for producing scientific publications. Concretely, we make the case 
+  for treating an article as an open source software (OSS) project, 
+  applying software engineering best-practices to manage its 
+  associated artifacts and maintain the reproducibility of its 
+  findings. Leveraging existing cloud-computing infrastructure and 
+  modern OSS development tools to produce academic articles that are 
+  easy to validate. We present our prototype file system, GassyFS, as 
+  a use case for illustrating the usefulness of this approach. We show 
+  how, by following _Popper_, re-executing experiments on multiple 
+  platforms is more practical, allowing reviewers and students to 
+  quickly get to the point of getting results without relying on the 
+  author's intervention.
 documentclass: ieeetran
 classoption: conference
 ieeetran: true
+monofont-size: scriptsize
 numbersections: true
 substitute-hyperref: true
 csl: "ieee.csl"
@@ -634,13 +635,10 @@ $M_4$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
 \toprule
 
 Machine ID & CPU Model              & Memory BW & Release Date \\\midrule
-cloudlab   & Xeon E5-310 @1.6GHz   & 4x2GB DDR2   & Q4-2006 \\
+cloudlab   & Xeon E5-310 @1.6GHz    & 4x2GB DDR2   & Q4-2006 \\
 ec2        & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
 ec2-net    & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
 ucsc       & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
-
-r3.4xlarge  16 vCPU 122 GB RAM  1 x 320
-High Frequency Intel Xeon E5-2670 v2
 
 \end{tabular}
 \end{table}
@@ -658,27 +656,32 @@ generating expected results
 The goal of this experiment is to compare the performance of GassyFS 
 with respect to that of TempFS on a single node. As mentioned before, 
 the idea of GassyFS is to serve as a distributed version of TmpFS.
-Figure 3 shows the results of this test. We can see that GassyFS, due 
-to the FUSE overhead, performs within 90% of TmpFS's performance. The 
+Figure 3 shows the results of this test. The overhead of GassyFS over 
+TmpFS is attributed to two main components: FUSE and GASNet. The 
 validation statements for this experiments are the following:
 
 ```
 when
   workload=*
 expect
-  time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
+  time(fs=gassyfs) > 1.75 * time(fs=tmpfs)
 ```
+
+The above assertion codifies the condition that, regardless of the 
+workload. GassyFS should not be oopback on single node. This number is 
+taken from empirical evidence and from work published in 
+[@tarasov_terra_2015].
 
 ![GassyFS vs tmpfs variability.](figures/gassyfs-variability.png)
 
 ## Experiment 2: Analytics on GassyFS
 
-One of the main use cases of GassyFS is for data analytics workloads. 
-By providing larger amounts of memory, an analysis application can 
-crunch more numbers and thus generate more accurate results. The goal 
-of this experiment is to compare the performance of Dask when it runs 
-on GassyFS vs. on the local filesystem. Dask is a python library for 
-parallel computing analytics that extends NumPy to out-of-core 
+One of the main use cases of GassyFS is in data analytics. By 
+providing larger amounts of memory, an analysis application can crunch 
+more numbers and thus generate more accurate results. The goal of this 
+experiment is to compare the performance of Dask when it runs on 
+GassyFS against that on the local filesystem. Dask is a python library 
+for parallel computing analytics that extends NumPy to out-of-core 
 datasets by blocking arrays into small chunks and executing on those 
 chunks in parallel. This allows python to easily process large data 
 and also simultaneously make use of all of our CPU resources. Dask 
@@ -729,72 +732,70 @@ expect
   time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
 ```
 
-![Dask workload on GassyFS.](figures/dask.png)
+![Multinode experiment.](figures/dd-multinode.png)
+
+![Multinode experiment.](figures/git-multinode.png)
 
 # Discussion
 
-## Convention over Technology
+<!-- Should use \paragraph{title} ... instead of sections -->
 
-The value of docker is not the technology but that helps people agree 
-on a complex issue. One could argue the same about Ansible, but for 
-"distributed bash" (many people has tried to done this in the past 
-unsuccessfully but Ansible is being adopted everywhere).
+# Discussion
 
-We want to have the same effect in the academic realm. By having 
-docker/ansible as a lingua franca for researches, and Popper to guide 
-them in how to structure their paper repos, we can expedite 
-collaboration and at the same time benefit from all the new advances 
-done in the cloud-computing/DevOps world.
+<!-- Should use \paragraph{title} ... instead of sections -->
 
-## Something will always break
+## We did well for 50 years. Why fix it?
 
-No matter how hard we try, there will always be something that goes 
-wrong. We don't aim at perfect repeatability but to minimize the 
-issues we face and (see above) have a common language that can be used 
-while collaborating to fix all these reproducibility issues.
+Shared infrastructures "in the cloud" are becoming the norm and enable new kinds of
+sharing, such as experiments, that were not practical before. Thus, the opportunity
+of these services goes beyond just economies of scale: by using conventions and tools
+to enable reproducibility, we can dramatically increase the value of scientific
+experiments for education and for research. The Popper Convention makes not only the
+result of a systems experiment available but the entire experiment and allows
+researchers to study and reuse all aspects of it.
+
+## The power of "crystallization points." 
+
+Docker images, Ansible playbooks, CI unit tests, Git repositories, and Jupyter
+notebooks are all exemples of artifacts around which broad-based efforts can be
+organized. Crystallization points are pieces of technology, and are intended to be
+easily shareable, have the ability to grow and improvie over time, and ensure buy-in
+from researchers and students. Examples of very successful crystallization points are
+the Linux kernel, Wikipedia, and the Apache Project. Crystallization points encode
+community knowledge and are therefore useful for leveraging past research efforts for
+ongoing research as well as education and training. They help people to form
+abstractions and common understanding that enables them to more effectively
+commmunicate reproducible science. By having docker/ansible as a lingua franca for
+researchers, and Popper to guide them in how to structure their paper repos, we can
+expedite collaboration and at the same time benefit from all the new advances done in
+the cloud-computing/DevOps world.
+
+## Perfect is the enemy of good
+
+No matter how hard we try, there will always be something that goes wrong. The
+context of systems experiments is often very complex and that complexity is likely to
+increase in the future. Perfect repeatability will be very difficult to achieve.
+We don't aim at perfect repeatability but to minimize the 
+issues we face and have a common language that can be used 
+while collaborating to fix all these reproducibility issues. 
 
 ## Drawing the line between deploy and packaging
 
-Figuring out where something should be in the deploy framework (e.g., 
-Ansible) or in the package framework (e.g., Docker) must be 
-standardized by the users of the project. One could implement Popper 
-entirely with Ansible but this introduces complicated playbooks and 
-permantently installs packages on the host. Alternatively, one could 
-use Docker to orchestrate services but this requires "chaining" images 
-together. This process is hard to develop since containers must be 
-recompiled and shared around the cluster.
+Figuring out where something should be in the deploy framework (e.g., Ansible) or in
+the package framework (e.g., Docker) must be standardized by the users of the
+project. One could implement Popper entirely with Ansible but this introduces
+complicated playbooks and permantently installs packages on the host. Alternatively,
+one could use Docker to orchestrate services but this requires "chaining" images
+together. This process is hard to develop since containers must be recompiled and
+shared around the cluster. We expect that communities of practice will find the right
+balance between these technologies by improving on the co-design of Ansible playbooks
+and Docker images within their communities.
 
 ## Usability is the key to make this work
 
-There are some entry-level barriers for this to work.
+The technologies underlying the OSS Development Model are not new. However, the open-source software community, in particular the DevOps community, have significantly increased the usability of the tools involved. Usability is the key to make reproducibility work: it is already hard enough to publish scientific papers, so in order to make reproducibility even practical, the tools have to be extremely easy to use. The Popper Convention enables systems researchers to leverage the usability of DevOps tools.
 
-### Things that piss people off
-
-  * Not everybody knows git
-  - number files in the paper rpo
-  - lines of code in the paper repo
-  - number of submodules
-
-### Containers are not Virtualization
-
-People usually misunderstand how OS-level virtualization works.
-
-  - no performance hit
-  - no network port remapping
-  - no layers of indirection
-
-### Containers are not baremetal
-
-First encounters with docker require a paradigm shift. Docker is 
-immutable infrastructure.
-
-  * need to login as if it were a regular linux server
-  - can't ssh into them to start services (which is how most services 
-    start daemons)
-  - need to have a service per image
-  * container state must be immutable: you can't sudo apt-get install 
-    stuff into them and expect those packages to be installed after 
-    you relaunch the container
+However, with all great advances in usability, scientists still have to get used to new concepts these tools introduce. In our experience, experimental setups that do not ensure any reproducibility are still a lot easier to create than the ones that do. Not everyone knows git and people are irritated by the number of files and submodules in the paper repo. They also usuaually misunderstand how OS-level virtualization works and do not realize that there is no performance hit, no network port remapping, and no layers of indirection. Lastly, first encounters with Docker require users to understand that Docker containers do not represent baremetal hardware but immutable infrastructure, i.e. one can't ssh into them to start services, one need to have a service per image, and one cannot install software inside of them and expect those installations to persist after relaunching a container.
 
 ## Numerical vs. Performance Reproducibility
 
@@ -833,18 +834,18 @@ preliminary work.
 
 Our convention can be used to either of these two approaches.
 
-## New Categories For Experimental Evaluations
+## Controlled Experiments become Practical
 
-We envision two new categories for reporting performance results in 
-academic articles: controlled experiments vs. statistical studies. Our 
-work fits on the former, where a great amount of effort is devoted to 
-ensure that all the relevant factors that influence performance are 
-carefully accounted for. However, this does not correspond to 
-real-world scenarios thus, in the latter, applications run without 
-constraints so that they can take advantage of all the resources 
-available to them but sound statistical analysis 
-[@hoefler_scientific_2015] is applied to the experimental design and 
-analysis of results.
+Almost all publications about systems experiments underreport the context of an
+experiment, making it very difficult for someone trying to reproduce the experiment
+to control for differences between the context of the reported experiment and the
+reproduced one. Due to traditional intractability of controlling for all aspects of
+the setup of an experiment systems researchers typically strive for making results
+"understandable" by applying sound statistical analysis to the experimental design
+and analysis of results [@hoefler_scientific_2015].
+
+The Popper Convention makes controlled experiments practical by managing all aspects of the setup of an experiment and leveraging shared infrastructure.
+
 
 ## Providing Performance Profiles Alongside Experimental Results
 
