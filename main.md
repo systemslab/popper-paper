@@ -37,7 +37,6 @@ substitute-hyperref: true
 csl: "ieee.csl"
 bibliography: "citations.bib"
 usedefaultspacing: true
-links-as-notes: true
 fontfamily: times
 conferencename: SC2016
 copyrightyear: 2016
@@ -673,7 +672,8 @@ workload, GassyFS should not be less than 75% worse than TmpFS. This
 number is taken from empirical evidence and from work published in 
 [@tarasov_terra_2015].
 
-![GassyFS vs tmpfs variability.](figures/gassyfs-variability.png)
+![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/master/experiments/single-node/visualize.ipynb)\] 
+GassyFS vs TmpFS variability.](figures/gassyfs-variability.png)
 
 ## Experiment 2: Analytics on GassyFS
 
@@ -715,7 +715,8 @@ into GassyFS has to be payed. The second statement expresses that,
 regardless of the number of analytic routines, it is always faster to 
 execute Dask on GassyFS than on the local filesystem.
 
-![Dask workload on GassyFS.](figures/dask.png)
+![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/master/experiments/single-node/visualize.ipynb)\] 
+Dask workload on GassyFS.](figures/dask.png)
 
 ## Experiment 3: Scalability
 
@@ -736,8 +737,6 @@ this result:
 
 The above expresses our expectation of GassyFS performing sublinearly 
 with the number of nodes.
-
-![Multinode experiment.](figures/git-multinode.png)
 
 # Discussion
 
@@ -766,6 +765,9 @@ commmunicate reproducible science. By having docker/ansible as a lingua franca f
 researchers, and Popper to guide them in how to structure their paper repos, we can
 expedite collaboration and at the same time benefit from all the new advances done in
 the cloud-computing/DevOps world.
+
+![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/master/experiments/multi-node/visualize.ipynb)\] 
+Multinode experiment.](figures/git-multinode.png)
 
 ## Perfect is the enemy of good
 
