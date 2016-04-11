@@ -656,9 +656,10 @@ generating expected results
 The goal of this experiment is to compare the performance of GassyFS 
 with respect to that of TempFS on a single node. As mentioned before, 
 the idea of GassyFS is to serve as a distributed version of TmpFS.
-Figure 5 shows the results of this test. The overhead of GassyFS over 
-TmpFS is attributed to two main components: FUSE and GASNet. The 
-validation statements for this experiments are the following:
+Figure 5[^blind-review] shows the results of this test. The overhead 
+of GassyFS over TmpFS is attributed to two main components: FUSE and 
+GASNet. The validation statements for this experiments are the 
+following:
 
 ```sql
   when
@@ -672,8 +673,12 @@ workload, GassyFS should not be less than 75% worse than TmpFS. This
 number is taken from empirical evidence and from work published in 
 [@tarasov_terra_2015].
 
-![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/master/experiments/single-node/visualize.ipynb)\] 
-GassyFS vs TmpFS variability.](figures/gassyfs-variability.png)
+[^blind-review]: We don't link our figures to the corresponding 
+notebooks (as we propose in this convention) due to double-blind 
+review.
+
+![\[[source](https://github.com)\] GassyFS vs TmpFS 
+variability.](figures/gassyfs-variability.png)
 
 ## Experiment 2: Analytics on GassyFS
 
@@ -716,8 +721,8 @@ into GassyFS has to be payed. The second statement expresses that,
 regardless of the number of analytic routines, it is always faster to 
 execute Dask on GassyFS than on the local filesystem.
 
-![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/master/experiments/single-node/visualize.ipynb)\] 
-Dask workload on GassyFS.](figures/dask.png)
+![\[[source](https://github.com)\] Dask workload on 
+GassyFS.](figures/dask.png)
 
 ## Experiment 3: Scalability
 
@@ -767,8 +772,8 @@ researchers, and Popper to guide them in how to structure their paper repos, we 
 expedite collaboration and at the same time benefit from all the new advances done in
 the cloud-computing/DevOps world.
 
-![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/master/experiments/multi-node/visualize.ipynb)\] 
-Multinode experiment.](figures/git-multinode.png)
+![\[[source](https://github.com)\] Multinode 
+experiment.](figures/git-multinode.png)
 
 ## Perfect is the enemy of good
 
