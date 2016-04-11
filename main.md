@@ -634,11 +634,12 @@ $M_4$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
 \begin{tabular}{@{} c c c c @{}}
 \toprule
 
-Machine ID & CPU Model              & Memory BW & Release Date \\\midrule
-cloudlab   & Xeon E5-310 @1.6GHz    & 4x2GB DDR2   & Q4-2006 \\
-ec2        & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
-ec2-net    & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
-ucsc       & Core i5-2400 @3.1GHz   & 2x4GB DDR3   & Q1-2011 \\
+Platform   & CPU Model             & Memory BW    & Site \\\midrule
+cloudlab   & Xeon E5-2630 @2.4GHz  & 8x16GB DDR4  & Wisconsin \\
+cloudlab   & Xeon E5-2660 @2.20GHz & 16x16GB DDR4 & Clemson \\
+ec2        & Xeon E5-2670 @2.6GHz  & 122GB DDR4   & high network\\
+ec2        & Xeon E5-2670 @2.6GHz  & 122GB DDR4   & 10Gb network \\
+mycluster  & Core i5-2400 @3.1GHz  & 2x4GB DDR3   & in-house \\
 
 \end{tabular}
 \end{table}
