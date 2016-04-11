@@ -656,7 +656,7 @@ generating expected results
 The goal of this experiment is to compare the performance of GassyFS 
 with respect to that of TempFS on a single node. As mentioned before, 
 the idea of GassyFS is to serve as a distributed version of TmpFS.
-Figure 3 shows the results of this test. The overhead of GassyFS over 
+Figure 5 shows the results of this test. The overhead of GassyFS over 
 TmpFS is attributed to two main components: FUSE and GASNet. The 
 validation statements for this experiments are the following:
 
@@ -692,10 +692,11 @@ While this works fine for single-node scenarios, an alternative is to
 load a large array into GassyFS, and then let Dask take advantage of 
 the larger memory size.
 
-In this experiment, we show that as the number of routines that Dask 
-executes increases, the performance of GassyFS gets closer to that of 
-executing Dask up to a certain threshold. The following assertions are 
-used to test the integrity of this result.
+Figure 6 shows the results of this experiment. We see that as the 
+number of routines that Dask executes increases, the performance of 
+GassyFS gets closer to that of executing Dask, but up to a certain 
+threshold. The following assertions are used to test the integrity of 
+this result.
 
 ```sql
   when
