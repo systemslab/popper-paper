@@ -1,0 +1,216 @@
+2016-04-10 22:21:28,242 p=4142 u=root |  PLAY ***************************************************************************
+2016-04-10 22:21:28,253 p=4142 u=root |  TASK [setup] *******************************************************************
+2016-04-10 22:21:28,623 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:21:28,671 p=4142 u=root |  ok: [10.10.1.4]
+2016-04-10 22:21:28,683 p=4142 u=root |  ok: [10.10.1.1]
+2016-04-10 22:21:28,686 p=4142 u=root |  ok: [10.10.1.2]
+2016-04-10 22:21:28,822 p=4142 u=root |  ok: [10.10.1.5]
+2016-04-10 22:21:28,829 p=4142 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-10 22:21:28,887 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/main.yml for 10.10.1.3, 10.10.1.1, 10.10.1.2, 10.10.1.4, 10.10.1.5
+2016-04-10 22:21:28,899 p=4142 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-10 22:21:28,990 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/pre_requisite.yml for 10.10.1.1, 10.10.1.3, 10.10.1.2, 10.10.1.4, 10.10.1.5
+2016-04-10 22:21:29,037 p=4142 u=root |  TASK [gassyfs/worker : create bootstrap directories] ***************************
+2016-04-10 22:21:30,022 p=4142 u=root |  ok: [10.10.1.3] => (item=/etc/ceph/)
+2016-04-10 22:21:30,036 p=4142 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-10 22:21:30,050 p=4142 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-10 22:21:30,064 p=4142 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-10 22:21:30,156 p=4142 u=root |  ok: [10.10.1.2] => (item=/etc/ceph/)
+2016-04-10 22:21:30,171 p=4142 u=root |  ok: [10.10.1.2] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-10 22:21:30,185 p=4142 u=root |  ok: [10.10.1.2] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-10 22:21:30,199 p=4142 u=root |  ok: [10.10.1.2] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-10 22:21:30,218 p=4142 u=root |  ok: [10.10.1.5] => (item=/etc/ceph/)
+2016-04-10 22:21:30,233 p=4142 u=root |  ok: [10.10.1.5] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-10 22:21:30,247 p=4142 u=root |  ok: [10.10.1.5] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-10 22:21:30,261 p=4142 u=root |  ok: [10.10.1.5] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-10 22:21:30,282 p=4142 u=root |  ok: [10.10.1.4] => (item=/etc/ceph/)
+2016-04-10 22:21:30,296 p=4142 u=root |  ok: [10.10.1.4] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-10 22:21:30,310 p=4142 u=root |  ok: [10.10.1.4] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-10 22:21:30,324 p=4142 u=root |  ok: [10.10.1.4] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-10 22:21:30,344 p=4142 u=root |  ok: [10.10.1.1] => (item=/etc/ceph/)
+2016-04-10 22:21:30,359 p=4142 u=root |  ok: [10.10.1.1] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-10 22:21:30,373 p=4142 u=root |  ok: [10.10.1.1] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-10 22:21:30,387 p=4142 u=root |  ok: [10.10.1.1] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-10 22:21:30,391 p=4142 u=root |  TASK [gassyfs/worker : install pip and docker on ubuntu] ***********************
+2016-04-10 22:21:30,512 p=4142 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-10 22:21:30,531 p=4142 u=root |  skipping: [10.10.1.1] => (item=[]) 
+2016-04-10 22:21:30,551 p=4142 u=root |  skipping: [10.10.1.2] => (item=[]) 
+2016-04-10 22:21:30,570 p=4142 u=root |  skipping: [10.10.1.4] => (item=[]) 
+2016-04-10 22:21:30,589 p=4142 u=root |  skipping: [10.10.1.5] => (item=[]) 
+2016-04-10 22:21:30,594 p=4142 u=root |  TASK [gassyfs/worker : install pip and docker on debian] ***********************
+2016-04-10 22:21:30,707 p=4142 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-10 22:21:30,726 p=4142 u=root |  skipping: [10.10.1.1] => (item=[]) 
+2016-04-10 22:21:30,746 p=4142 u=root |  skipping: [10.10.1.2] => (item=[]) 
+2016-04-10 22:21:30,765 p=4142 u=root |  skipping: [10.10.1.4] => (item=[]) 
+2016-04-10 22:21:30,785 p=4142 u=root |  skipping: [10.10.1.5] => (item=[]) 
+2016-04-10 22:21:30,789 p=4142 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-10 22:21:31,326 p=4142 u=root |  ok: [10.10.1.3] => (item=[u'python-pip', u'docker-engine'])
+2016-04-10 22:21:31,349 p=4142 u=root |  ok: [10.10.1.2] => (item=[u'python-pip', u'docker-engine'])
+2016-04-10 22:21:31,370 p=4142 u=root |  ok: [10.10.1.4] => (item=[u'python-pip', u'docker-engine'])
+2016-04-10 22:21:31,389 p=4142 u=root |  ok: [10.10.1.5] => (item=[u'python-pip', u'docker-engine'])
+2016-04-10 22:21:31,409 p=4142 u=root |  ok: [10.10.1.1] => (item=[u'python-pip', u'docker-engine'])
+2016-04-10 22:21:31,413 p=4142 u=root |  TASK [gassyfs/worker : install pip and docker on redhat] ***********************
+2016-04-10 22:21:31,532 p=4142 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-10 22:21:31,552 p=4142 u=root |  skipping: [10.10.1.1] => (item=[]) 
+2016-04-10 22:21:31,571 p=4142 u=root |  skipping: [10.10.1.2] => (item=[]) 
+2016-04-10 22:21:31,591 p=4142 u=root |  skipping: [10.10.1.4] => (item=[]) 
+2016-04-10 22:21:31,610 p=4142 u=root |  skipping: [10.10.1.5] => (item=[]) 
+2016-04-10 22:21:31,615 p=4142 u=root |  TASK [gassyfs/worker : install docker-py] **************************************
+2016-04-10 22:21:32,183 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:21:32,197 p=4142 u=root |  ok: [10.10.1.1]
+2016-04-10 22:21:32,210 p=4142 u=root |  ok: [10.10.1.2]
+2016-04-10 22:21:32,224 p=4142 u=root |  ok: [10.10.1.5]
+2016-04-10 22:21:32,253 p=4142 u=root |  ok: [10.10.1.4]
+2016-04-10 22:21:32,257 p=4142 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-10 22:21:32,344 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/start_docker_worker.yml for 10.10.1.1, 10.10.1.3, 10.10.1.4, 10.10.1.2, 10.10.1.5
+2016-04-10 22:21:32,515 p=4142 u=root |  TASK [gassyfs/worker : run the gassyfs docker image] ***************************
+2016-04-10 22:21:32,948 p=4142 u=root |  ok: [10.10.1.5]
+2016-04-10 22:21:34,152 p=4142 u=root |  changed: [10.10.1.1]
+2016-04-10 22:21:34,194 p=4142 u=root |  changed: [10.10.1.2]
+2016-04-10 22:21:34,211 p=4142 u=root |  changed: [10.10.1.3]
+2016-04-10 22:21:34,231 p=4142 u=root |  changed: [10.10.1.4]
+2016-04-10 22:21:34,235 p=4142 u=root |  TASK [gassyfs/worker : include] ************************************************
+2016-04-10 22:21:34,316 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/worker/tasks/docker/check.yml for 10.10.1.3, 10.10.1.1, 10.10.1.2, 10.10.1.4, 10.10.1.5
+2016-04-10 22:21:34,487 p=4142 u=root |  TASK [gassyfs/worker : wait for the SSH port on the container to become active] 
+2016-04-10 22:21:34,786 p=4142 u=root |  ok: [10.10.1.5]
+2016-04-10 22:21:40,743 p=4142 u=root |  ok: [10.10.1.1]
+2016-04-10 22:21:42,741 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:21:42,752 p=4142 u=root |  ok: [10.10.1.2]
+2016-04-10 22:21:42,762 p=4142 u=root |  ok: [10.10.1.4]
+2016-04-10 22:21:42,772 p=4142 u=root |  PLAY ***************************************************************************
+2016-04-10 22:21:42,780 p=4142 u=root |  TASK [setup] *******************************************************************
+2016-04-10 22:21:43,189 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:21:43,193 p=4142 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-10 22:21:43,222 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/main.yml for 10.10.1.3
+2016-04-10 22:21:43,228 p=4142 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-10 22:21:43,290 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/pre_requisite.yml for 10.10.1.3
+2016-04-10 22:21:43,308 p=4142 u=root |  TASK [gassyfs/master : create bootstrap directories] ***************************
+2016-04-10 22:21:44,473 p=4142 u=root |  ok: [10.10.1.3] => (item=/etc/ceph/)
+2016-04-10 22:21:44,493 p=4142 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-osd)
+2016-04-10 22:21:44,510 p=4142 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-mds)
+2016-04-10 22:21:44,526 p=4142 u=root |  ok: [10.10.1.3] => (item=/var/lib/ceph/bootstrap-rgw)
+2016-04-10 22:21:44,530 p=4142 u=root |  TASK [gassyfs/master : install pip and docker on ubuntu] ***********************
+2016-04-10 22:21:44,681 p=4142 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-10 22:21:44,685 p=4142 u=root |  TASK [gassyfs/master : install pip and docker on debian] ***********************
+2016-04-10 22:21:44,844 p=4142 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-10 22:21:44,848 p=4142 u=root |  TASK [gassyfs/master : install pip and docker on redhat] ***********************
+2016-04-10 22:21:45,394 p=4142 u=root |  ok: [10.10.1.3] => (item=[u'python-pip', u'docker-engine'])
+2016-04-10 22:21:45,398 p=4142 u=root |  TASK [gassyfs/master : install pip and docker on redhat] ***********************
+2016-04-10 22:21:45,553 p=4142 u=root |  skipping: [10.10.1.3] => (item=[]) 
+2016-04-10 22:21:45,557 p=4142 u=root |  TASK [gassyfs/master : install docker-py] **************************************
+2016-04-10 22:21:46,180 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:21:46,185 p=4142 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-10 22:21:46,287 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/fetch_configs.yml for 10.10.1.3
+2016-04-10 22:21:46,330 p=4142 u=root |  TASK [gassyfs/master : remove old keys] ****************************************
+2016-04-10 22:21:46,614 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:21:46,618 p=4142 u=root |  TASK [gassyfs/master : create a new directory for ssh keys] ********************
+2016-04-10 22:21:46,906 p=4142 u=root |  changed: [10.10.1.3]
+2016-04-10 22:21:46,911 p=4142 u=root |  TASK [gassyfs/master : set ssh key paths] **************************************
+2016-04-10 22:21:46,978 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:21:46,982 p=4142 u=root |  TASK [gassyfs/master : try to fetch ssh keys] **********************************
+2016-04-10 22:21:48,149 p=4142 u=root |  changed: [10.10.1.3] => (item=id_rsa)
+2016-04-10 22:21:48,166 p=4142 u=root |  changed: [10.10.1.3] => (item=id_rsa.pub)
+2016-04-10 22:21:48,181 p=4142 u=root |  changed: [10.10.1.3] => (item=authorized_keys)
+2016-04-10 22:21:48,184 p=4142 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-10 22:21:48,270 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/start_docker_master.yml for 10.10.1.3
+2016-04-10 22:21:48,319 p=4142 u=root |  TASK [gassyfs/master : run the gassyfs docker image] ***************************
+2016-04-10 22:21:50,062 p=4142 u=root |  changed: [10.10.1.3]
+2016-04-10 22:21:50,065 p=4142 u=root |  TASK [gassyfs/master : include] ************************************************
+2016-04-10 22:21:50,145 p=4142 u=root |  included: /experiments/roles/srl/gassyfs/master/tasks/docker/check.yml for 10.10.1.3
+2016-04-10 22:21:50,207 p=4142 u=root |  TASK [gassyfs/master : wait for gassyfs to start up] ***************************
+2016-04-10 22:21:50,232 p=4142 u=root |  Pausing for 60 seconds
+2016-04-10 22:21:50,232 p=4142 u=root |  (ctrl+C then 'C' = continue early, ctrl+C then 'A' = abort)
+2016-04-10 22:22:50,286 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:22:50,292 p=4142 u=root |  TASK [gassyfs/master : check if the master container is up] ********************
+2016-04-10 22:22:50,754 p=4142 u=root |  ok: [10.10.1.3]
+2016-04-10 22:22:50,757 p=4142 u=root |  TASK [add_host] ****************************************************************
+2016-04-10 22:22:50,796 p=4142 u=root |  changed: [10.10.1.3]
+2016-04-10 22:22:50,803 p=4142 u=root |  PLAY ***************************************************************************
+2016-04-10 22:22:50,810 p=4142 u=root |  TASK [setup] *******************************************************************
+2016-04-10 22:22:53,503 p=4142 u=root |  ok: [node-0]
+2016-04-10 22:22:53,507 p=4142 u=root |  TASK [wait for gassyfs to mount] ***********************************************
+2016-04-10 22:22:53,825 p=4142 u=root |  changed: [node-0]
+2016-04-10 22:22:53,828 p=4142 u=root |  TASK [how big is our gassyfs mount?] *******************************************
+2016-04-10 22:22:54,163 p=4142 u=root |  changed: [node-0]
+2016-04-10 22:22:54,166 p=4142 u=root |  TASK [debug] *******************************************************************
+2016-04-10 22:22:54,203 p=4142 u=root |  ok: [node-0] => {
+    "result.stdout_lines": [
+        "Filesystem                                                                                      Size  Used Avail Use% Mounted on", 
+        "/dev/mapper/docker-8:1-951195-912464aaefec7c5daa7a5e63a5b4b1b2688a28addf6abefd5b82df1f49accfdd   10G  1.2G  8.9G  12% /", 
+        "tmpfs                                                                                           126G     0  126G   0% /dev", 
+        "tmpfs                                                                                           126G     0  126G   0% /sys/fs/cgroup", 
+        "/dev/sda1                                                                                        16G  5.2G  9.7G  35% /home", 
+        "tmpfs                                                                                           126G   34M  126G   1% /run/shm", 
+        "tmpfs                                                                                           126G     0  126G   0% /dev/shm", 
+        "gassy                                                                                           800G     0  800G   0% /mount"
+    ]
+}
+2016-04-10 22:22:54,206 p=4142 u=root |  PLAY RECAP *********************************************************************
+2016-04-10 22:22:54,206 p=4142 u=root |  10.10.1.1                  : ok=10   changed=1    unreachable=0    failed=0   
+2016-04-10 22:22:54,207 p=4142 u=root |  10.10.1.2                  : ok=10   changed=1    unreachable=0    failed=0   
+2016-04-10 22:22:54,207 p=4142 u=root |  10.10.1.3                  : ok=27   changed=5    unreachable=0    failed=0   
+2016-04-10 22:22:54,207 p=4142 u=root |  10.10.1.4                  : ok=10   changed=1    unreachable=0    failed=0   
+2016-04-10 22:22:54,207 p=4142 u=root |  10.10.1.5                  : ok=10   changed=0    unreachable=0    failed=0   
+2016-04-10 22:22:54,207 p=4142 u=root |  node-0                     : ok=4    changed=2    unreachable=0    failed=0   
+2016-04-10 22:22:54,226 p=4142 u=root |  PLAY ***************************************************************************
+2016-04-10 22:22:54,235 p=4142 u=root |  TASK [setup] *******************************************************************
+2016-04-10 22:22:56,699 p=4142 u=root |  ok: [node-0]
+2016-04-10 22:22:56,705 p=4142 u=root |  TASK [30GB dd microbenchmark] **************************************************
+2016-04-10 22:22:56,764 p=4142 u=root |  ok: [node-0]
+2016-04-10 22:22:56,766 p=4142 u=root |  TASK [include] *****************************************************************
+2016-04-10 22:22:56,792 p=4142 u=root |  included: /experiments/experiments/multi-node/workloads/compile.yml for node-0
+2016-04-10 22:22:56,798 p=4142 u=root |  TASK [run the job n times] *****************************************************
+2016-04-10 23:00:04,188 p=4142 u=root |  changed: [node-0] => (item=[0, u'dd if=/dev/zero of=./zero bs=1M count=30720'])
+2016-04-10 23:00:04,194 p=4142 u=root |  changed: [node-0] => (item=[0, u'rm ./zero'])
+2016-04-10 23:00:04,200 p=4142 u=root |  changed: [node-0] => (item=[1, u'dd if=/dev/zero of=./zero bs=1M count=30720'])
+2016-04-10 23:00:04,205 p=4142 u=root |  changed: [node-0] => (item=[1, u'rm ./zero'])
+2016-04-10 23:00:04,210 p=4142 u=root |  changed: [node-0] => (item=[2, u'dd if=/dev/zero of=./zero bs=1M count=30720'])
+2016-04-10 23:00:04,215 p=4142 u=root |  changed: [node-0] => (item=[2, u'rm ./zero'])
+2016-04-10 23:00:04,218 p=4142 u=root |  TASK [parse results] ***********************************************************
+2016-04-10 23:00:05,021 p=4142 u=root |  changed: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; dd if=/dev/zero of=./zero bs=1M count=30720', u'end': u'2016-04-10 22:35:17.929807', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-10 22:22:56.988792', u'delta': u'0:12:20.941015', 'item': [0, u'dd if=/dev/zero of=./zero bs=1M count=30720'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; dd if=/dev/zero of=./zero bs=1M count=30720', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u'30720+0 records in\n30720+0 records out\n32212254720 bytes (32 GB) copied, 740.823 s, 43.5 MB/s'})
+2016-04-10 23:00:05,027 p=4142 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; rm ./zero', u'end': u'2016-04-10 22:35:21.435492', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-10 22:35:18.149588', u'delta': u'0:00:03.285904', 'item': [0, u'rm ./zero'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; rm ./zero', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u''})
+2016-04-10 23:00:05,032 p=4142 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; dd if=/dev/zero of=./zero bs=1M count=30720', u'end': u'2016-04-10 22:47:38.819072', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-10 22:35:21.629587', u'delta': u'0:12:17.189485', 'item': [1, u'dd if=/dev/zero of=./zero bs=1M count=30720'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; dd if=/dev/zero of=./zero bs=1M count=30720', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u'30720+0 records in\n30720+0 records out\n32212254720 bytes (32 GB) copied, 737.071 s, 43.7 MB/s'})
+2016-04-10 23:00:05,037 p=4142 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; rm ./zero', u'end': u'2016-04-10 22:47:42.297244', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-10 22:47:39.041918', u'delta': u'0:00:03.255326', 'item': [1, u'rm ./zero'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; rm ./zero', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u''})
+2016-04-10 23:00:05,042 p=4142 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; dd if=/dev/zero of=./zero bs=1M count=30720', u'end': u'2016-04-10 23:00:00.623939', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-10 22:47:42.501191', u'delta': u'0:12:18.122748', 'item': [2, u'dd if=/dev/zero of=./zero bs=1M count=30720'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; dd if=/dev/zero of=./zero bs=1M count=30720', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u'30720+0 records in\n30720+0 records out\n32212254720 bytes (32 GB) copied, 738.006 s, 43.6 MB/s'})
+2016-04-10 23:00:05,047 p=4142 u=root |  ok: [node-0] => (item={u'stdout': u'', u'cmd': u'cd /mount; rm ./zero', u'end': u'2016-04-10 23:00:04.144689', '_ansible_no_log': False, u'warnings': [], u'changed': True, u'start': u'2016-04-10 23:00:00.846698', u'delta': u'0:00:03.297991', 'item': [2, u'rm ./zero'], u'rc': 0, 'invocation': {'module_name': u'command', u'module_args': {u'creates': None, u'executable': None, u'chdir': None, u'_raw_params': u'cd /mount; rm ./zero', u'removes': None, u'warn': True, u'_uses_shell': True}}, 'stdout_lines': [], u'stderr': u''})
+2016-04-10 23:00:05,050 p=4142 u=root |  PLAY RECAP *********************************************************************
+2016-04-10 23:00:05,050 p=4142 u=root |  10.10.1.1                  : ok=10   changed=1    unreachable=0    failed=0   
+2016-04-10 23:00:05,050 p=4142 u=root |  10.10.1.2                  : ok=10   changed=1    unreachable=0    failed=0   
+2016-04-10 23:00:05,050 p=4142 u=root |  10.10.1.3                  : ok=27   changed=5    unreachable=0    failed=0   
+2016-04-10 23:00:05,050 p=4142 u=root |  10.10.1.4                  : ok=10   changed=1    unreachable=0    failed=0   
+2016-04-10 23:00:05,051 p=4142 u=root |  10.10.1.5                  : ok=10   changed=0    unreachable=0    failed=0   
+2016-04-10 23:00:05,051 p=4142 u=root |  node-0                     : ok=9    changed=4    unreachable=0    failed=0   
+2016-04-10 23:00:05,370 p=4822 u=root |  PLAY ***************************************************************************
+2016-04-10 23:00:05,383 p=4822 u=root |  TASK [setup] *******************************************************************
+2016-04-10 23:00:05,846 p=4822 u=root |  ok: [10.10.1.3]
+2016-04-10 23:00:05,879 p=4822 u=root |  ok: [10.10.1.1]
+2016-04-10 23:00:05,896 p=4822 u=root |  ok: [10.10.1.4]
+2016-04-10 23:00:05,899 p=4822 u=root |  ok: [10.10.1.2]
+2016-04-10 23:00:05,904 p=4822 u=root |  ok: [10.10.1.5]
+2016-04-10 23:00:05,921 p=4822 u=root |  TASK [cleanup : remove containers [u'michaelsevilla/gassyfs']] *****************
+2016-04-10 23:00:07,518 p=4822 u=root |  changed: [10.10.1.5] => (item=michaelsevilla/gassyfs)
+2016-04-10 23:00:07,603 p=4822 u=root |  changed: [10.10.1.1] => (item=michaelsevilla/gassyfs)
+2016-04-10 23:00:07,637 p=4822 u=root |  changed: [10.10.1.4] => (item=michaelsevilla/gassyfs)
+2016-04-10 23:00:07,832 p=4822 u=root |  changed: [10.10.1.2] => (item=michaelsevilla/gassyfs)
+2016-04-10 23:00:08,987 p=4822 u=root |  changed: [10.10.1.3] => (item=michaelsevilla/gassyfs)
+2016-04-10 23:00:08,992 p=4822 u=root |  TASK [cleanup : delete user defined files] *************************************
+2016-04-10 23:00:09,612 p=4822 u=root |  ok: [10.10.1.3] => (item=/tmp/fetch)
+2016-04-10 23:00:09,617 p=4822 u=root |  changed: [10.10.1.3] => (item=/tmp/ssh)
+2016-04-10 23:00:09,620 p=4822 u=root |  changed: [10.10.1.3] => (item=/tmp/gassyfs)
+2016-04-10 23:00:09,714 p=4822 u=root |  ok: [10.10.1.2] => (item=/tmp/fetch)
+2016-04-10 23:00:09,719 p=4822 u=root |  ok: [10.10.1.2] => (item=/tmp/ssh)
+2016-04-10 23:00:09,722 p=4822 u=root |  changed: [10.10.1.2] => (item=/tmp/gassyfs)
+2016-04-10 23:00:09,728 p=4822 u=root |  ok: [10.10.1.5] => (item=/tmp/fetch)
+2016-04-10 23:00:09,732 p=4822 u=root |  ok: [10.10.1.5] => (item=/tmp/ssh)
+2016-04-10 23:00:09,735 p=4822 u=root |  changed: [10.10.1.5] => (item=/tmp/gassyfs)
+2016-04-10 23:00:09,740 p=4822 u=root |  ok: [10.10.1.4] => (item=/tmp/fetch)
+2016-04-10 23:00:09,743 p=4822 u=root |  ok: [10.10.1.4] => (item=/tmp/ssh)
+2016-04-10 23:00:09,747 p=4822 u=root |  changed: [10.10.1.4] => (item=/tmp/gassyfs)
+2016-04-10 23:00:09,752 p=4822 u=root |  ok: [10.10.1.1] => (item=/tmp/fetch)
+2016-04-10 23:00:09,755 p=4822 u=root |  ok: [10.10.1.1] => (item=/tmp/ssh)
+2016-04-10 23:00:09,758 p=4822 u=root |  changed: [10.10.1.1] => (item=/tmp/gassyfs)
+2016-04-10 23:00:09,762 p=4822 u=root |  PLAY RECAP *********************************************************************
+2016-04-10 23:00:09,762 p=4822 u=root |  10.10.1.1                  : ok=3    changed=2    unreachable=0    failed=0   
+2016-04-10 23:00:09,762 p=4822 u=root |  10.10.1.2                  : ok=3    changed=2    unreachable=0    failed=0   
+2016-04-10 23:00:09,762 p=4822 u=root |  10.10.1.3                  : ok=3    changed=2    unreachable=0    failed=0   
+2016-04-10 23:00:09,763 p=4822 u=root |  10.10.1.4                  : ok=3    changed=2    unreachable=0    failed=0   
+2016-04-10 23:00:09,763 p=4822 u=root |  10.10.1.5                  : ok=3    changed=2    unreachable=0    failed=0   
