@@ -154,6 +154,7 @@ present a use case of a project following Popper. We discuss some of
 the limitations of Popper and lessons learned in _Section V_. Lastly, 
 we review related work on _Section VI_ and conclude.
 
+<!--
 # Reproducibility Needs More than Source Code
 
 Software projects use sophisticated tools to ensure the integrity of 
@@ -248,7 +249,9 @@ processes require:
 
 3. testing and verification
 
-# OSS Development Model for Academic Articles
+-->
+
+# The OSS Development Model for Academic Articles
 
 In the following section, we look at software tools for maintaining 
 code and describe how they can help make scientific papers reproducible.
@@ -726,7 +729,7 @@ expect
   time(fs=gassyfs) > 0.8 * time(fs=tmpfs)
 ```
 
-![Dask workload on GassyFS.](figures/scalability.png)
+![Dask workload on GassyFS.](figures/dask.png)
 
 # Discussion
 
