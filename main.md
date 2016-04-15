@@ -648,7 +648,7 @@ asserts that the given statements hold true on the metrics gathered at
 runtime. This helps to automatically check when experiments are not 
 generating expected results
 
-![\[[source](https://github.com)\] Boxplots comparing the variability 
+![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/single-node/visualize.ipynb)\] Boxplots comparing the variability 
 of GassyFS vs TmpFS on a sequential `fio` workload. Every test was 
 executed 3 times on machines listed on Table 1 (all except 
 $M_4$).](figures/gassyfs-variability.png)
@@ -696,7 +696,7 @@ While this works fine for single-node scenarios, an alternative is to
 load a large array into GassyFS, and then let Dask take advantage of 
 the larger memory size.
 
-![\[[source](https://github.com)\] Performance of Dask on GassyFS vs. 
+![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/single-node/visualize.ipynb)\] Performance of Dask on GassyFS vs. 
 on the local disk. Dask is used to break the memory barrier for large 
 datasets. Having GassyFS, users can scale-up DRAM by aggregating the 
 memory of multiple nodes, which is an alternative to the conventional 
@@ -751,7 +751,7 @@ this result:
 The above expresses our expectation of GassyFS performing sublinearly 
 with respect to the number of nodes.
 
-![\[[source](https://github.com)\] Scalability of GassyFS as the 
+![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/multi-node/visualize.ipynb)\] Scalability of GassyFS as the 
 number of nodes in the GASNet network increases. The workload in 
 question compiles `git`.](figures/git-multinode.png)
 
