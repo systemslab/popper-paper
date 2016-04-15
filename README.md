@@ -1,3 +1,5 @@
+[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org/repo/michaelsevilla/gassyfs-experiments)
+
 SC16: Experiments and Results
 =============================
 
