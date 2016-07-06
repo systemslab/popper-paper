@@ -179,7 +179,6 @@ $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:
 \renewcommand{\href}[2]{#2\footnote{\url{#1}}}
 $endif$
-\renewenvironment{Shaded} {\begin{snugshade}\scriptsize} {\end{snugshade}}
 $if(strikeout)$
 \usepackage[normalem]{ulem}
 % avoid problems with \sout in headers with hyperref:

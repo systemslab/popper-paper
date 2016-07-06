@@ -1,3 +1,0 @@
-[submodule "roles/srl"]
-	path = roles/srl
-	url = https://github.com/systemslab/srl-roles.git

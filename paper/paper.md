@@ -651,7 +651,7 @@ generating expected results
 ![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/single-node/visualize.ipynb)\] Boxplots comparing the variability 
 of GassyFS vs TmpFS on a sequential `fio` workload. Every test was 
 executed 3 times on machines listed on Table 1 (all except 
-$M_4$).](figures/gassyfs-variability.png)
+$M_4$).](experiments/single-node/gassyfs-variability.png)
 
 ## Experiment 1: GassyFS vs. TempFS
 
@@ -704,7 +704,7 @@ way in which that Dask is used. We show that even though Dask is
 efficient, having NetCDF datasets in GassyFS improves the performance 
 significantly. The variability of the experiment comes from executing 
 the same workload on all the machines listed in Table 
-1.](figures/dask.png)
+1.](experiments/single-node/dask.png)
 
 Figure 6 shows the results of an experiment where Dask analyzes 5 GB 
 worth of NetCDF files of an n-dimensional array. We see that as the 
@@ -753,7 +753,7 @@ with respect to the number of nodes.
 
 ![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/multi-node/visualize.ipynb)\] Scalability of GassyFS as the 
 number of nodes in the GASNet network increases. The workload in 
-question compiles `git`.](figures/git-multinode.png)
+question compiles `git`.](experiments/multi-node/git-multinode.png)
 
 # Discussion
 
