@@ -2,12 +2,12 @@
 title: "Popper: Making Reproducible Systems Performance Evaluation 
 Practical"
 author:
-- name: '  '
-  affiliation: ' '
-  email: '  '
+- name: "  "
+  affiliation: "  "
+  email: "  "
 #- name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
-  #affiliation: "_UC Santa Cruz_"
-  #email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
+#  affiliation: "_UC Santa Cruz_"
+#  email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
 number-of-authors: 4
 abstract: |
   Independent validation of experimental results in the field of 
@@ -15,36 +15,27 @@ abstract: |
   mainly due to changes and differences in software and hardware in 
   computational environments. Recreating an environment that resembles 
   the original systems research is difficult and time-consuming. In 
-  this paper we introduce the _Popper Convention_, a set of principles 
-  for producing scientific publications. Concretely, we make the case 
-  for treating an article as an open source software (OSS) project, 
-  applying software engineering best-practices to manage its 
-  associated artifacts and maintain the reproducibility of its 
-  findings. Leveraging existing cloud-computing infrastructure and 
-  modern OSS development tools to produce academic articles that are 
-  easy to validate. We present our prototype file system, GassyFS, as 
-  a use case for illustrating the usefulness of this approach. We show 
-  how, by following _Popper_, re-executing experiments on multiple 
+  this paper we introduce the _Popper_, an experiment assistant that 
+  follows a set open source principles for producing scientific 
+  publications. Concretely, we make the case for treating an article 
+  as an open source software (OSS) project, applying software 
+  engineering best-practices to manage its associated artifacts and 
+  maintain the reproducibility of its findings. Leveraging existing 
+  cloud-computing infrastructure and modern OSS development tools to 
+  produce academic articles that are easy to validate. We present 
+  three use cases that illustrate the usefulness of this approach. We 
+  show how, by using _Popper_, re-executing experiments on multiple 
   platforms is more practical, allowing reviewers and students to 
   quickly get to the point of getting results without relying on the 
   author's intervention.
-documentclass: ieeetran
-classoption: conference
-ieeetran: true
+documentclass: sigplanconf
+sigplanconf: true
+classoption: 10pt
 monofont-size: scriptsize
 numbersections: true
 substitute-hyperref: true
-csl: "ieee.csl"
-bibliography: "citations.bib"
 usedefaultspacing: true
 fontfamily: times
-conferencename: SC2016
-copyrightyear: 2016
-keywords:
- - reproducibility
- - computer-systems
- - systems-validation
- - systems-evaluation
 linkcolor: black
 ---
 
@@ -101,30 +92,30 @@ mitigating the performance penalties associated with VMs
 [@jimenez_role_2015].
 
 One central issue in reproducibility is how to organize an article's 
-experiments so that readers or students can easily repeat them. The 
-current practice is to make the code available in a public repository 
-and leave readers with the daunting task of recompiling, 
-reconfiguring, deploying and re-executing an experiment. In this work, 
-we revisit the idea of an executable paper 
-[@strijkers_executable_2011], which proposes the integration of 
-executables and data with scholarly articles to help facilitate its 
-reproducibility, but look at implementing it in today's 
-cloud-computing world by treating an article as an open source 
-software (OSS) project. We introduce _Popper_, a convention for 
-organizing an article's artifacts following the OSS development model 
-that allows researchers to make all the associated artifacts publicly 
-available with the goal of easing the re-execution of experiments and 
-validation of results. There are two main goals for this convention:
+experiments so that readers can easily repeat them. The current 
+practice is to make the code available in a public repository and 
+leave readers with the daunting task of recompiling, reconfiguring, 
+deploying and re-executing an experiment. In this work, we revisit the 
+idea of an executable paper [@strijkers_executable_2011], which 
+proposes the integration of executables and data with scholarly 
+articles to help facilitate its reproducibility, but look at 
+implementing it in today's cloud-computing world by treating an 
+article as an open source software (OSS) project. We introduce 
+_Popper_, an experiment assistant for organizing an article's 
+artifacts following the OSS development model that allows researchers 
+to make all the associated artifacts publicly available with the goal 
+of easing the re-execution of experiments and validation of results. 
+There are two main goals for Popper:
 
- 1. It should apply to as many research projects as possible, 
+ 1. It should be usable in as many research projects as possible, 
     regardless of their domain. While the use case shown in _Section 
     IV_ pertains to the area of distributed storage systems, our goal 
     is to embody any project with a computational component in it.
- 2. It should be applicable, regardless of the underlying 
-    technologies. In general, Popper relies on software-engineering 
-    practices like continuous integration (CI) which are implemented 
-    in multiple existing tools. Applying this convention should work, 
-    for example, regardless of what CI tool is being used.
+ 2. It should abstract the underlying technologies. In general, Popper 
+    relies on software-engineering practices like continuous 
+    integration (CI) which are implemented in multiple existing tools. 
+    Applying this convention should work, for example, regardless of 
+    what CI tool is being used.
 
 If, from an article's inception, researchers make use of 
 version-control systems, lightweight OS-level virtualization, 
@@ -135,92 +126,54 @@ contributions:
 
   * An analysis of how the OSS development process can be repurposed 
     to an academic article;
-  * Popper: a convention for writing academic articles and associated 
-    experiments following the OSS model; and
-  * GasssyFS: a scalable in-memory file system that adheres to the 
-    Popper convention.
+  * A methodology for writing academic articles and associated 
+    experiments following the OSS model
+  * Popper: an experiment assistant implementing these concepts; and
+  * Three use cases detailing the use of Popper in practice.
 
-GassyFS, while simple in design, is complex in terms of compilation 
-and configuration. Using it as a use case for Popper illustrates the 
-benefits of following this convention: it becomes practical for others 
-to re-execute experiments on multiple platforms with minimal effort, 
-without having to speculate on what the original authors (ourselves) 
-did to compile and configure the system; and shows how automated 
-performance regression testing aids in maintaining the reproducibility 
-integrity of experiments.
+The use cases illustrate the benefits of using Popper: it becomes 
+practical for others to re-execute experiments on multiple platforms 
+with minimal effort, without having to speculate on what the original 
+authors did to compile and configure the system; and shows how 
+automated performance regression testing aids in maintaining the 
+reproducibility integrity of experiments.
 
-The rest of the paper is organized as follows. _Section II_ analyzes 
-the traditional OSS development model and how it applies to academic 
-articles. _Section III_ describes _Popper_ in detail and gives an 
-overview of the high-level workflow that a researcher goes through 
-when writing an article following the convention. In _Section IV_ we 
-present a use case of a project following Popper. We discuss some of 
-the limitations of Popper and lessons learned in _Section V_. Lastly, 
-we review related work on _Section VI_ and conclude.
+# Common Practice
 
-<!--
-# Reproducibility Needs More than Source Code
+## Ad-hoc Personal Workflows
 
-Software projects use sophisticated tools to ensure the integrity of 
-their source code. Collaborating, sharing, and maintaining a history
-of code is easy. Unfortunately, running the code in new environments
-is difficult because the source code does not include sufficient 
-details about the developer's software environment, hardware, workload 
-paramaters, and experimental/benchmarking setup(s).
+Bash scripts and hardcoded paths are usually what people do in 
+practice.
 
-This innefficiencies make reproducibility difficult and even the 
-most diligent developer must make trade-offs in how they report 
-their methodologies. Over documentation can be overwhelming for 
-new users while insufficient documentation makes it impossible
-for anyone to reproduce results. Furthermore, these ad-hoc 
-methologies make it difficult to adapt to new software projects
-and communities -- what is needed is a standard for packaging, 
-deploying, and monitoring your system.
+## Sharing source code
 
-## Software Enviroment
+Put it on github, let others build it.
 
-- packages, distros, compilers, deployment, tunables
+## Virtual Machines
 
-The software environment is the software the surrounds the source 
-code. ## Hardware
+A snapshot in EC2 or an experiment profile in Cloudlab. This means 
+lock-in and
 
-- specifications (network speed, processor architectures, storage media),
-cluster configuration, system integrity (slow disk, overloaded network, etc.)
+## Experiment repositories
 
-Example: GassyFS runs in infiniband which takes tuning and file handle limits
+research compendia et al. . This is 
 
+## Experiment Packing
 
-## Workload Paramters
+Reprozip and others automatically package experiments. Limitations:
 
-- talk about hadoop mappers/reducers and auxiliary systems that are used.
+  * large datasets can't be packaged.
+  * hard to build upon existing work, since we can't extend binaries. 
 
-## Experimental/Benchmarking Setup(s)
+## The Missing Link
 
-- talk about running the jobs (e.g., what kind of `dd` tests we do)
+We need something that:
 
-Stuff that makes reproducibility harder:
-
-## Requirements of Writing Reproducible Papers 
-
-Systems are much more complicated than source code and each component
-of an experimental setup should be treated with the same care that 
-give software. In this work, we take the ultimate achievement in 
-science, a published academic paper, and use software tools to ensure 
-that others cans run the same experiments and draw the same, and 
-hopefully new, conclusions. We argue that existing software tools, 
-when combined correctly, provide all the technology necessary for 
-reproducing experiments.
-
-Writing scientific papers is amenable to OSS methologies because both 
-processes require:
-
-1. maintaining a history of work
-
-2. sharing and collaborating
-
-3. testing and verification
-
--->
+  * Improves the personal workflows of scientists.
+  * Captures the end-to-end workflow in a modern (OSS) way.
+  * Can make use of existing tools (don't reinvent the wheel!).
+  * Take into account datasets.
+  * It's amenable to improvement/extensions.
 
 # The OSS Development Model for Academic Articles
 
@@ -229,7 +182,8 @@ applied to software projects (Figure 1). In the following section, we
 list the key reasons why the process of writing scientific papers is 
 so amenable to OSS methodologies. The goal of our work is to apply 
 these in the academic setting in order to enjoy from the same 
-benefits. We use the generic OSS workflow in Figure 1 to guide our 
+benefits: building upon the work of others advances the state of the 
+art. We use the generic OSS workflow in Figure 1 to guide our 
 discussion.
 
 ## Version Control
@@ -245,10 +199,9 @@ is useful, here we make the distinction between changing the prose of the paper
 and changing the parameters of the experiment (both its components and 
 its configuration).
 
-Ideally,
-one would like to version-control the entire end-to-end pipeline for 
-all the experiments contained in an article. With the advent of 
-cloud-computing, this is possible for most research 
+Ideally, one would like to version-control the entire end-to-end 
+pipeline for all the experiments contained in an article. With the 
+advent of cloud-computing, this is possible for most research 
 articles[^difficult-platforms]. One of the mantras of the DevOps 
 movement [@wiggins_twelvefactor_2011] is to make "infrastructure as 
 code". In a sense, having all the article's dependencies in the same 
@@ -260,15 +213,6 @@ monolithic repositories to manage their internal infrastructure
 on specialized platforms, re-executing an experiment might be 
 difficult. However, this doesn't exclude such research projects from 
 being able to version-control the article's associated assets.
-
-<!--
-To illustrate the usefulness of a VCS to manage an article's 
-dependencies, consider an article's experiments and how they evolve 
-throughout the life-cycle of an article. Figure 2 shows a timeline...
-
-**TODO**: Add diagram of a timeline with results being affected by 
-changes in the.
--->
 
 **Tools and services**: git, svn and mercurial are popular VCS tools. 
 GitHub and BitBucket are web-based Git repository hosting services. 
@@ -316,11 +260,9 @@ CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
 ## Multi-node Orchestration
 
 Experiments that require a cluster need a tool that automatically 
-manages binaries and updates packages across machines. Serializing this
-by having an administrator manage all the nodes in a cluser is 
-impossible in HPC settings. Traditionally, this is done with an ad-hoc
-bash script but for experiments that are continually tested there needs
-to be an automated solution.
+manages binaries and updates packages across machines. Traditionally, 
+this has been done with an ad-hoc bash script but for experiments that 
+are continually tested there needs to be an automated solution.
 
 **Tools and services**: Ansible is a configuration management utility 
 for configuring and managing computers, as well as deploying and 
@@ -330,7 +272,7 @@ Chef, Salt, among others.
 ## Bare-metal-as-a-Service
 
 For experiments that cannot run on consolidated infrastructures due to 
-noisy-neighborhood phenomena, bare-metal as a service is an 
+noisy-neighborhood phenomena (e.g. EC2), bare-metal as a service is an 
 alternative.
 
 **Tools and services**: Cloudlab [@ricci_introducing_2014], Chameleon 
@@ -356,10 +298,14 @@ to express and validate statements on top of metrics gathered at
 runtime. For obtaining baselines Baseliner is a tool that can be used 
 for this purpose.
 
-## Data Visualization
+## Dataset Management
+
+datapackage, etc.
+
+## Analysis and Visualization
 
 Once an experiment runs, the next task is to analyze and visualize 
-results. This is a task that is usually not done in OSS projects. 
+results. This is usually not done in OSS projects.
 
 **Tools and services**: Jupyter notebooks run on a web-based 
 application. It facilitates the sharing of documents containing live 
@@ -370,13 +316,52 @@ that allows one to turn a GitHub repository into a collection of
 interactive Jupyter notebooks so that readers don't need to deploy web 
 servers themselves.
 
-# The Popper Convention
+# The Popper Experiment Assistant
 
 ![End-to-end workflow for an article that follows the Popper 
 convention.](figures/wflow.png)
 
-_Popper_ is a convention for articles that are developed as an OSS 
-project. In the remaining of this paper we use GitHub, Docker, Binder, 
+_Popper_ assists in the creation of articles that are developed as an 
+OSS project. It provides the following unique features:
+
+ 2. Composable 
+
+
+## Self-containment
+
+A popper repository contains all the information necessary to 
+reproduce the article's findings. There are `paper/` and 
+`experiments/` folders, and every experiment has a `datasets/` folder 
+in it.
+
+## Toolchain-agnosticism
+
+We designed Popper as a general approach, applicable to a wide variety 
+of environments, from cloud to HPC. In general, Popper can be applied 
+in any scenario where a component (data, code, infrastructure, 
+hardware, etc.) is referenceable, and where there is an underlying 
+tool that consumes these IDs so that they can be acted upon (install, 
+run, store, visualize, etc.). The core idea behind Popper is to borrow 
+from the DevOps movement the idea of treating every component as an 
+immutable piece of information and provide referenceable 
+scripts/components for the creation/execution/validation of 
+experiments (in a convened structure) rather than leaving to the 
+reader the daunting task of inferring how binaries/experiments were 
+generated/configured..
+
+## Experiment Templates
+
+We also have templates for papers.
+
+## Results Validation
+
+# Use Cases
+
+We now show use cases
+
+## Latex, Docker, Ansible and Jupyter
+
+In the remaining of this paper we use GitHub, Docker, Binder, 
 CloudLab, Travis CI and Aver as the tools/services for every component 
 described in the previous section. As stated in goal 2, any of these 
 should be swappable for other tools, for example: VMs instead of 
@@ -759,56 +744,84 @@ question compiles `git`.](experiments/multi-node/git-multinode.png)
 
 ## We did well for 50 years. Why fix it?
 
-Shared infrastructures "in the cloud" are becoming the norm and enable new kinds of
-sharing, such as experiments, that were not practical before. Thus, the opportunity
-of these services goes beyond just economies of scale: by using conventions and tools
-to enable reproducibility, we can dramatically increase the value of scientific
-experiments for education and for research. The Popper Convention makes not only the
-result of a systems experiment available but the entire experiment and allows
-researchers to study and reuse all aspects of it.
+Shared infrastructures "in the cloud" are becoming the norm and enable 
+new kinds of sharing, such as experiments, that were not practical 
+before. Thus, the opportunity of these services goes beyond just 
+economies of scale: by using conventions and tools to enable 
+reproducibility, we can dramatically increase the value of scientific 
+experiments for education and for research. The Popper Convention 
+makes not only the result of a systems experiment available but the 
+entire experiment and allows researchers to study and reuse all 
+aspects of it.
 
 ## The power of "crystallization points." 
 
-Docker images, Ansible playbooks, CI unit tests, Git repositories, and Jupyter
-notebooks are all exemples of artifacts around which broad-based efforts can be
-organized. Crystallization points are pieces of technology, and are intended to be
-easily shareable, have the ability to grow and improvie over time, and ensure buy-in
-from researchers and students. Examples of very successful crystallization points are
-the Linux kernel, Wikipedia, and the Apache Project. Crystallization points encode
-community knowledge and are therefore useful for leveraging past research efforts for
-ongoing research as well as education and training. They help people to form
-abstractions and common understanding that enables them to more effectively
-commmunicate reproducible science. By having docker/ansible as a lingua franca for
-researchers, and Popper to guide them in how to structure their paper repos, we can
-expedite collaboration and at the same time benefit from all the new advances done in
-the cloud-computing/DevOps world.
+Docker images, Ansible playbooks, CI unit tests, Git repositories, and 
+Jupyter notebooks are all exemples of artifacts around which 
+broad-based efforts can be organized. Crystallization points are 
+pieces of technology, and are intended to be easily shareable, have 
+the ability to grow and improvie over time, and ensure buy-in from 
+researchers and students. Examples of very successful crystallization 
+points are the Linux kernel, Wikipedia, and the Apache Project. 
+Crystallization points encode community knowledge and are therefore 
+useful for leveraging past research efforts for ongoing research as 
+well as education and training. They help people to form abstractions 
+and common understanding that enables them to more effectively 
+commmunicate reproducible science. By having docker/ansible as a 
+lingua franca for researchers, and Popper to guide them in how to 
+structure their paper repos, we can expedite collaboration and at the 
+same time benefit from all the new advances done in the 
+cloud-computing/DevOps world.
 
 ## Perfect is the enemy of good
 
-No matter how hard we try, there will always be something that goes wrong. The
-context of systems experiments is often very complex and that complexity is likely to
-increase in the future. Perfect repeatability will be very difficult to achieve.
-We don't aim at perfect repeatability but to minimize the 
-issues we face and have a common language that can be used 
-while collaborating to fix all these reproducibility issues. 
+No matter how hard we try, there will always be something that goes 
+wrong. The context of systems experiments is often very complex and 
+that complexity is likely to increase in the future. Perfect 
+repeatability will be very difficult to achieve. We don't aim at 
+perfect repeatability but to minimize the issues we face and have a 
+common language that can be used while collaborating to fix all these 
+reproducibility issues. 
 
 ## Drawing the line between deploy and packaging
 
-Figuring out where something should be in the deploy framework (e.g., Ansible) or in
-the package framework (e.g., Docker) must be standardized by the users of the
-project. One could implement Popper entirely with Ansible but this introduces
-complicated playbooks and permantently installs packages on the host. Alternatively,
-one could use Docker to orchestrate services but this requires "chaining" images
-together. This process is hard to develop since containers must be recompiled and
-shared around the cluster. We expect that communities of practice will find the right
-balance between these technologies by improving on the co-design of Ansible playbooks
-and Docker images within their communities.
+Figuring out where something should be in the deploy framework (e.g., 
+Ansible) or in the package framework (e.g., Docker) must be 
+standardized by the users of the project. One could implement Popper 
+entirely with Ansible but this introduces complicated playbooks and 
+permantently installs packages on the host. Alternatively, one could 
+use Docker to orchestrate services but this requires "chaining" images 
+together. This process is hard to develop since containers must be 
+recompiled and shared around the cluster. We expect that communities 
+of practice will find the right balance between these technologies by 
+improving on the co-design of Ansible playbooks and Docker images 
+within their communities.
 
 ## Usability is the key to make this work
 
-The technologies underlying the OSS Development Model are not new. However, the open-source software community, in particular the DevOps community, have significantly increased the usability of the tools involved. Usability is the key to make reproducibility work: it is already hard enough to publish scientific papers, so in order to make reproducibility even practical, the tools have to be extremely easy to use. The Popper Convention enables systems researchers to leverage the usability of DevOps tools.
+The technologies underlying the OSS Development Model are not new. 
+However, the open-source software community, in particular the DevOps 
+community, have significantly increased the usability of the tools 
+involved. Usability is the key to make reproducibility work: it is 
+already hard enough to publish scientific papers, so in order to make 
+reproducibility even practical, the tools have to be extremely easy to 
+use. The Popper Convention enables systems researchers to leverage the 
+usability of DevOps tools.
 
-However, with all great advances in usability, scientists still have to get used to new concepts these tools introduce. In our experience, experimental setups that do not ensure any reproducibility are still a lot easier to create than the ones that do. Not everyone knows git and people are irritated by the number of files and submodules in the paper repo. They also usuaually misunderstand how OS-level virtualization works and do not realize that there is no performance hit, no network port remapping, and no layers of indirection. Lastly, first encounters with Docker require users to understand that Docker containers do not represent baremetal hardware but immutable infrastructure, i.e. one can't ssh into them to start services, one need to have a service per image, and one cannot install software inside of them and expect those installations to persist after relaunching a container.
+However, with all great advances in usability, scientists still have 
+to get used to new concepts these tools introduce. In our experience, 
+experimental setups that do not ensure any reproducibility are still a 
+lot easier to create than the ones that do. Not everyone knows git and 
+people are irritated by the number of files and submodules in the 
+paper repo. They also usuaually misunderstand how OS-level 
+virtualization works and do not realize that there is no performance 
+hit, no network port remapping, and no layers of indirection. Lastly, 
+first encounters with Docker require users to understand that Docker 
+containers do not represent baremetal hardware but immutable 
+infrastructure, i.e. one can't ssh into them to start services, one 
+need to have a service per image, and one cannot install software 
+inside of them and expect those installations to persist after 
+relaunching a container.
 
 ## Numerical vs. Performance Reproducibility
 
