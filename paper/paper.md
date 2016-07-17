@@ -14,20 +14,21 @@ abstract: |
   parallel and distributed systems research is a challenging task, 
   mainly due to changes and differences in software and hardware in 
   computational environments. Recreating an environment that resembles 
-  the original systems research is difficult and time-consuming. In 
-  this paper we introduce the _Popper_, an experiment assistant that 
-  follows a set open source principles for producing scientific 
-  publications. Concretely, we make the case for treating an article 
-  as an open source software (OSS) project, applying software 
-  engineering best-practices to manage its associated artifacts and 
-  maintain the reproducibility of its findings. Leveraging existing 
-  cloud-computing infrastructure and modern OSS development tools to 
-  produce academic articles that are easy to validate. We present 
-  three use cases that illustrate the usefulness of this approach. We 
-  show how, by using _Popper_, re-executing experiments on multiple 
-  platforms is more practical, allowing reviewers and students to 
-  quickly get to the point of getting results without relying on the 
-  author's intervention.
+  the original is difficult and time-consuming. In this paper we 
+  introduce _Popper_, a convention based on a set of modern open 
+  source software (OSS) development principles for producing 
+  scientific publications. Concretely, we make the case for treating 
+  an article as an OSS project following a DevOps approach and 
+  applying software engineering best-practices to manage its 
+  associated artifacts and maintain the reproducibility of its 
+  findings. Popper leverages existing cloud-computing infrastructure 
+  and DevOps tools to produce academic articles that are easy to 
+  validate and reproduce. We present three use cases that illustrate 
+  the usefulness of this approach. We show how, by following the 
+  _Popper_ convention, re-executing experiments on multiple platforms 
+  is more practical, allowing reviewers and students to quickly get to 
+  the point of getting results without relying on the author's 
+  intervention.
 documentclass: sigplanconf
 sigplanconf: true
 classoption: 10pt
@@ -40,6 +41,9 @@ linkcolor: black
 ---
 
 # Introduction
+
+![A generic experimentation workflow (top) and a DevOps view of it 
+(bottom).](figures/devops_approach.png)
 
 A key component of the scientific method is the ability to revisit and 
 replicate previous experiments. Managing information about an 
@@ -57,18 +61,10 @@ student can immediately run the original experiments and build on the
 results in the paper, thus allowing them to "stand on the shoulder of 
 giants".
 
-![The OSS development model. A version-control system is used to 
-maintain the changes to code. The software is packaged and those 
-packages are used in either testing or deployment. The testing 
-environment ensures that the software behaves as expected. When the 
-software is deployed in production, or when it needs to be checked for 
-performance integrity, it is monitored and metrics are analyzed in 
-order to determine any problems.](figures/ossmodel.png)
-
 Independently validating experimental results in the field of computer 
 systems research is a challenging task. Recreating an environment that 
 resembles the one where an experiment was originally executed is a 
-challenging endeavour. Version-control systems give authors,
+time-consuming endeavour. Version-control systems give authors,
 reviewers and readers access to the same code base 
 [@brown_how_2014] but the availability of source code does not 
 guarantee reproducibility [@collberg_repeatability_2015]; code may not
@@ -91,52 +87,42 @@ research, cannot be accounted for easily [@clark_xen_2004 ;
 mitigating the performance penalties associated with VMs 
 [@jimenez_role_2015].
 
-One central issue in reproducibility is how to organize an article's 
-experiments so that readers can easily repeat them. The current 
-practice is to make the code available in a public repository and 
-leave readers with the daunting task of recompiling, reconfiguring, 
-deploying and re-executing an experiment. In this work, we revisit the 
-idea of an executable paper [@strijkers_executable_2011], which 
-proposes the integration of executables and data with scholarly 
-articles to help facilitate its reproducibility, but look at 
-implementing it in today's cloud-computing world by treating an 
-article as an open source software (OSS) project. We introduce 
-_Popper_, an experiment assistant for organizing an article's 
-artifacts following the OSS development model that allows researchers 
-to make all the associated artifacts publicly available with the goal 
-of easing the re-execution of experiments and validation of results. 
-There are two main goals for Popper:
+In this work, we revisit the idea of an executable paper 
+[@strijkers_executable_2011], which proposes the integration of 
+executables and data with scholarly articles to help facilitate its 
+reproducibility, but look at implementing it in today's 
+cloud-computing world by treating an article as an open source 
+software (OSS) project. We introduce _Popper_, a convention for 
+organizing an article's artifacts following a DevOps[^devops] approach 
+that allows researchers to make all the associated artifacts publicly 
+available with the goal of easing the re-execution of experiments and 
+validation of results. There are two main goals for Popper:
 
  1. It should be usable in as many research projects as possible, 
-    regardless of their domain. While the use case shown in _Section 
-    IV_ pertains to the area of distributed storage systems, our goal 
-    is to embody any project with a computational component in it.
- 2. It should abstract the underlying technologies. In general, Popper 
-    relies on software-engineering practices like continuous 
-    integration (CI) which are implemented in multiple existing tools. 
-    Applying this convention should work, for example, regardless of 
-    what CI tool is being used.
+    regardless of their domain.
+ 2. It should abstract the underlying technologies.
 
-If, from an article's inception, researchers make use of 
-version-control systems, lightweight OS-level virtualization, 
-automated multi-node orchestration, continuous integration and 
-web-based data visualization, then re-executing and validating an 
-experiment becomes practical. This paper makes the following 
+This paper describes our experiences with the Popper convention which 
+we have successfully followed to aid in producing papers and classroom 
+lessons that are easy to reproduce. This paper makes the following 
 contributions:
 
-  * An analysis of how the OSS development process can be repurposed 
-    to an academic article;
-  * A methodology for writing academic articles and associated 
+  * An analysis of how the DevOps practice can be repurposed to an 
+    academic article;
+  * Popper: A methodology for writing academic articles and associated 
     experiments following the OSS model
-  * Popper: an experiment assistant implementing these concepts; and
-  * Three use cases detailing the use of Popper in practice.
+  * Popper-CLI: an experiment bootstrapping tool; and
+  * Three use cases detailing how to follow Popper in practice.
 
-The use cases illustrate the benefits of using Popper: it becomes 
-practical for others to re-execute experiments on multiple platforms 
-with minimal effort, without having to speculate on what the original 
-authors did to compile and configure the system; and shows how 
-automated performance regression testing aids in maintaining the 
+The use cases illustrate the benefits of following the Popper 
+convention: it brings order to personal research workflows and makes 
+it practical for others to re-execute experiments on multiple 
+platforms with minimal effort, without having to speculate on what the 
+original authors did to compile and configure the system; and shows 
+how automated performance regression testing aids in maintaining the 
 reproducibility integrity of experiments.
+
+[^devops]: https://en.wikipedia.org/wiki/DevOps
 
 # Common Practice
 
@@ -147,7 +133,9 @@ practice.
 
 ## Sharing source code
 
-Put it on github, let others build it.
+The current practice is to make the code available in a public 
+repository and leave readers with the daunting task of recompiling, 
+reconfiguring, deploying and re-executing an experiment. 
 
 ## Virtual Machines
 
@@ -156,35 +144,55 @@ lock-in and
 
 ## Experiment repositories
 
-research compendia et al. . This is 
+Research compendia et al. . This is 
 
 ## Experiment Packing
 
-Reprozip and others automatically package experiments. Limitations:
+Reprozip and others automatically package experiments, making it 
+easier to _validate_ what others did. Limitations:
 
   * large datasets can't be packaged.
-  * hard to build upon existing work, since we can't extend binaries. 
+  * hard to build upon existing work.
+  * can't capture validation criteria
+
+## _Eyeball_ Validation
+
+Validation is done by "eyeballing" figures and the description of 
+experiments in a paper. It's a subjective practice, based entirely on 
+the intuition and expertise of domain-scientists.
 
 ## The Missing Link
 
 We need something that:
 
+  * Is reproducible from the get-go.
   * Improves the personal workflows of scientists.
   * Captures the end-to-end workflow in a modern (OSS) way.
-  * Can make use of existing tools (don't reinvent the wheel!).
-  * Take into account datasets.
-  * It's amenable to improvement/extensions.
+  * Makes use of existing tools (don't reinvent the wheel!).
+  * Takes into account datasets.
+  * Captures validation criteria.
+  * Is amenable to improvement/extensions.
 
-# The OSS Development Model for Academic Articles
+# A DevOps Approach to Producing Academic Articles
 
-In practice, the open-source software (OSS) development process is 
-applied to software projects (Figure 1). In the following section, we 
-list the key reasons why the process of writing scientific papers is 
-so amenable to OSS methodologies. The goal of our work is to apply 
-these in the academic setting in order to enjoy from the same 
-benefits: building upon the work of others advances the state of the 
-art. We use the generic OSS workflow in Figure 1 to guide our 
-discussion.
+DevOps is a practice that emphasizes the collaboration and 
+communication of both software developers and other 
+information-technology (IT) professionals while automating the process 
+of software delivery and infrastructure changes. It aims at 
+establishing a culture and environment where building, testing, and 
+releasing software, can happen rapidly, frequently, and more reliably. 
+Because DevOps is a cultural shift, there is no single toolset, rather 
+a set or “DevOps toolchain” consisting of multiple tools, where each 
+fits into one or more categories, which is reflective of the software 
+development and delivery process.
+
+In this section, we list the key reasons why the process of 
+implementing experiments and writing scientific papers is so amenable 
+to a DevOps approach. The goal of our work is to apply these in the 
+academic setting in order to enjoy from the same benefits: build upon 
+the work of (and openly collaborate with) others to advance the state 
+of the art. We use the generic experimentation workflow in top of 
+Figure 1 to guide our discussion.
 
 ## Version Control
 
@@ -195,9 +203,10 @@ figures. The idea of keeping an article's source in a VCS is not new
 and in fact many people follow this practice [@brown_how_2014 ; 
 @dolfi_model_2014]. However, this only considers automating the 
 generation of the article in its final format (usually PDF). While this 
-is useful, here we make the distinction between changing the prose of the paper 
-and changing the parameters of the experiment (both its components and 
-its configuration).
+is useful, here we make the distinction between changing the prose of 
+the pape, changing the parameters of the experiment (both its 
+components and its configuration), as well as storing the experiment 
+results.
 
 Ideally, one would like to version-control the entire end-to-end 
 pipeline for all the experiments contained in an article. With the 
@@ -302,7 +311,7 @@ for this purpose.
 
 datapackage, etc.
 
-## Analysis and Visualization
+## Data Analysis and Visualization
 
 Once an experiment runs, the next task is to analyze and visualize 
 results. This is usually not done in OSS projects.
@@ -316,7 +325,7 @@ that allows one to turn a GitHub repository into a collection of
 interactive Jupyter notebooks so that readers don't need to deploy web 
 servers themselves.
 
-# The Popper Experiment Assistant
+# The Popper Convention
 
 ![End-to-end workflow for an article that follows the Popper 
 convention.](figures/wflow.png)
@@ -324,21 +333,19 @@ convention.](figures/wflow.png)
 _Popper_ assists in the creation of articles that are developed as an 
 OSS project. It provides the following unique features:
 
- 2. Composable 
-
-
-## Self-containment
-
-A popper repository contains all the information necessary to 
-reproduce the article's findings. There are `paper/` and 
-`experiments/` folders, and every experiment has a `datasets/` folder 
-in it.
+ 1. Abstract research workflows and provide a tool that is agnostic of 
+    specific tools.
+ 2. Works for commonly used toolchains.
+ 3. Embrace a methodology for generating self-contained experiments.
+ 4. Provide with re-usable experiment templates to minimize the time 
+    taken to get a researcher up to speed with a research project.
+ 5. Automated Validation
 
 ## Toolchain-agnosticism
 
-We designed Popper as a general approach, applicable to a wide variety 
-of environments, from cloud to HPC. In general, Popper can be applied 
-in any scenario where a component (data, code, infrastructure, 
+We designed Popper as a general tool, applicable to a wide variety of 
+environments, from cloud to HPC. Figure 2 In general, Popper can be 
+applied in any scenario where a component (data, code, infrastructure, 
 hardware, etc.) is referenceable, and where there is an underlying 
 tool that consumes these IDs so that they can be acted upon (install, 
 run, store, visualize, etc.). The core idea behind Popper is to borrow 
@@ -347,19 +354,28 @@ immutable piece of information and provide referenceable
 scripts/components for the creation/execution/validation of 
 experiments (in a convened structure) rather than leaving to the 
 reader the daunting task of inferring how binaries/experiments were 
-generated/configured..
+generated/configured.
 
-## Experiment Templates
+## Self-containment
 
-We also have templates for papers.
+A popper repository contains all the dependencies for an article, 
+including its manuscript (Figure 2). There are `paper/` and 
+`experiments/` folders, and every experiment has a `datasets/` folder 
+in it.
 
-## Results Validation
 
-# Use Cases
-
-We now show use cases
-
-## Latex, Docker, Ansible and Jupyter
+```bash
+paper-repo
+| experiments
+|   |-- myexp
+|   |   |-- run
+|   |   |-- script.py
+|   |    -- figure.png
+|   paper
+|   |-- build
+|   |-- figures
+|    -- paper.tex
+```
 
 In the remaining of this paper we use GitHub, Docker, Binder, 
 CloudLab, Travis CI and Aver as the tools/services for every component 
@@ -370,7 +386,8 @@ so on and so forth. Our approach can be summarized as follows:
 
   * Github repository stores all details for the paper. It stores the 
     metadata necessary to build the paper and re-run experiments. 
-  * Docker images capture the experimental environment, packages and tunables.
+  * Docker images capture the experimental environment, packages and 
+    tunables.
   * Ansible playbook deploy and execute the experiments.
   * Travis tests the integrity of all experiments.
   * Jupyter notebooks analyze and visualize experimental data produced 
@@ -460,11 +477,6 @@ the given assertions hold on the given performance metrics. This
 allows to automatically check that high-level statements about the 
 outcome of an experiment are true.
 
-![Structure of a folder for a project following the Popper convention. 
-The red markers correpond to dependencies for the generation of the 
-PDF, while the blue ones mark files used for the 
-experiment.](figures/experiment-metadata.png)
-
 When validating performance, an important component is to see the 
 baseline performance of the experimental environment we are running 
 on. Ansible has a way of obtaining "facts" about machines that is 
@@ -513,232 +525,34 @@ refers to code of a `mysystem` codebase. Then:
 Input/output files should be also versioned. For small datasets, we 
 can can put them in the git repository of the paper. For large 
 datasets we can use `git-lfs`.
+### Dependencies
 
-# GassyFS: a model project for Popper
+**Executables**
 
-GassyFS [@watkins_gassyfs_2016] is a new prototype filesystem system 
-that stores files in distributed remote memory and provides support 
-for checkpointing file system state. The architecture of GassyFS is 
-illustrated in Figure 4. The core of the file system is a user-space 
-library that implements a POSIX file interface. File system metadata 
-is managed locally in memory, and file data is distributed across a 
-pool of network-attached RAM managed by worker nodes and accessible 
-over RDMA or Ethernet. Applications access GassyFS through a standard 
-FUSE mount, or may link directly to the library to avoid any overhead 
-that FUSE may introduce.
+## Experiment Templates
 
-By default all data in GassyFS is non-persistent. That is, all 
-metadata and file data is kept in memory, and any node failure will 
-result in data loss. In this mode GassyFS can be thought of as a 
-high-volume tmpfs that can be instantiated and destroyed as needed, or 
-kept mounted and used by applications with multiple stages of 
-execution. The differences between GassyFS and tmpfs become apparent 
-when we consider how users deal with durability concerns.
+We also have templates for papers.
 
-At the bottom of Figure 4 are shown a set of storage targets that can 
-be used for managing persistent checkpoints of GassyFS. Given the 
-volatility of memory, durability and consistency are handled 
-explicitly by selectively copying data across file system boundaries. 
-Finally, GassyFS supports a form of file system federation that allows 
-checkpoint content to be accessed remotely to enable efficient data 
-sharing between users over a wide-area network.
+## Results Validation
 
-Although GassyFS is simple in design, it is relatively complex to 
-setup. The combinatorial space of possible ways in which the system 
-can be compiled, packaged and configured is large. For example, 
-current version of GCC (4.9) has approximately $10^80$ possible ways 
-of compiling a binary. For the version of GASNet that we use (2.6), 
-there are 64 flags for additional packages and 
-138 flags for additional features[^more]. To mount GassyFS, we use 
-FUSE, which can be given 30 different options, many of them taking 
-multiple values.
+This is automated
 
-[^more]: This are the flags that are documented. There are many more 
-that can be configured but not shown in the official documentation.
+# Use Cases
 
-Furthermore, it is unreasonable to ask the developer to list and test 
-every enviroments packages, distros, and compilers. Merely listing 
-these in a notebook or email is insufficient for sharing, 
-colloborating, and distributing experimentl results and the 
-methodology for sharing these environments is specific to each 
-developer.
+We now show use cases for three different toolchains that are commonly 
+used.
 
-In subsequent sections we describe several experiments that evaluate 
-the performance of GassyFS[^note-to-reviewers]. We note that while the 
-performance numbers obtained are relevant, they are not our main 
-focus. Instead, we put more emphasis on the goals of the experiments, 
-how we can reproduce results on multiple environments with minimal 
-effort and how we can ensure the validity of the results.
+## Markdown, Docker, Ansible and Jupyter
 
-[^note-to-reviewers]: Due to time constraints we had to limit the 
-amount of experiments that we include. We will expand the number of 
-experiments, as well as the number of platforms we test on.
+This
 
-![GassyFS has facilities for explicitly managing  persistence to 
-different storage targets. A checkpointing infrastructure gives 
-GassyFS flexible policies for persisting namespaces and federating 
-data.](figures/arch.pdf)
+## Latex, Spack, Slurm and Paraview
 
-## Experimental Setup
+This
 
-We have two sets of machines. The first two experiments use machines 
-in Table 1. The third experiment uses machines in Table 2. While our 
-experiments should run on any Linux kernel that is supported by Docker 
-(3.2+), we ran on kernels 3.19 and 4.2. Version 3.13 on Ubuntu has a 
-known bug that impedes docker containers to launch sshd daemons, thus 
-our experiments don't run on this version. Besides this, the only 
-requirement is to have the Docker 1.10 or newer.
+## Word, Vagrant, Bash and Matlab
 
-\begin{table}[ht]
-\caption{Machines used in Experiments 1 and 2.}
-
-\scriptsize
-\centering
-\begin{tabular}{@{} c c c c @{}}
-\toprule
-
-Machine ID & CPU Model              & Memory BW & Release Date \\\midrule
-$M_1$         & Core i7-930 @2.8GHz    & 6x2GB DDR3   & Q1-2010 \\
-$M_2$         & Xeon E5-2630 @2.3GHz   & 8x8GB DDR3   & Q1-2012 \\
-$M_3$         & Opteron 6320 @2.8GHz   & 8x8GB DDR3   & Q3-2012 \\
-$M_4$         & Xeon E5-2660v2 @2.2GHz & 16x16GB DDR4 & Q3-2013 \\
-
-\end{tabular}
-\end{table}
-
-
-\begin{table}[ht]
-\caption{Machines used in Experiment 3.}
-
-\scriptsize
-\centering
-\begin{tabular}{@{} c c c c @{}}
-\toprule
-
-Platform   & CPU Model             & Memory BW    & Site \\\midrule
-cloudlab   & Xeon E5-2630 @2.4GHz  & 8x16GB DDR4  & Wisconsin \\
-cloudlab   & Xeon E5-2660 @2.20GHz & 16x16GB DDR4 & Clemson \\
-ec2        & Xeon E5-2670 @2.6GHz  & 122GB DDR4   & high network\\
-ec2        & Xeon E5-2670 @2.6GHz  & 122GB DDR4   & 10Gb network \\
-mycluster  & Core i5-2400 @3.1GHz  & 2x4GB DDR3   & in-house \\
-
-\end{tabular}
-\end{table}
-
-For every experiment, we first describe the goal of the experiment and 
-show the result. Then we describe how we codify our observations in 
-the Aver language. Before every experiment executes, Baseliner obtains 
-baseline metrics for every machine in the experiment. At the end, Aver 
-asserts that the given statements hold true on the metrics gathered at 
-runtime. This helps to automatically check when experiments are not 
-generating expected results
-
-![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/single-node/visualize.ipynb)\] Boxplots comparing the variability 
-of GassyFS vs TmpFS on a sequential `fio` workload. Every test was 
-executed 3 times on machines listed on Table 1 (all except 
-$M_4$).](experiments/single-node/gassyfs-variability.png)
-
-## Experiment 1: GassyFS vs. TempFS
-
-The goal of this experiment is to compare the performance of GassyFS 
-with respect to that of TempFS on a single node. As mentioned before, 
-the idea of GassyFS is to serve as a distributed version of TmpFS.
-Figure 5[^blind-review] shows the results of this test. The overhead 
-of GassyFS over TmpFS is attributed to two main components: FUSE and 
-GASNet. The validation statements for this experiments are the 
-following:
-
-```sql
-  when
-    workload=*
-  expect
-    time(fs='gassyfs') < 5 * time(fs='tmpfs')
-```
-
-The above assertion codifies the condition that, regardless of the 
-workload, GassyFS should not be less than 5x worse than TmpFS. This 
-number is taken from empirical evidence and from work published in 
-[@tarasov_terra_2015].
-
-[^blind-review]: We don't link our figures to the corresponding 
-notebooks (as we propose in this convention) due to double-blind 
-review.
-
-## Experiment 2: Analytics on GassyFS
-
-One of the main use cases of GassyFS is in data analytics. By 
-providing larger amounts of memory, an analysis application can crunch 
-more numbers and thus generate more accurate results. The goal of this 
-experiment is to compare the performance of Dask when it runs on 
-GassyFS against that on the local filesystem. Dask is a python library 
-for parallel computing analytics that extends NumPy to out-of-core 
-datasets by blocking arrays into small chunks and executing on those 
-chunks in parallel. This allows python to easily process large data 
-and also simultaneously make use of all of our CPU resources. Dask 
-assumes that an n-dimensional array won't fit in memory and thus 
-chunks the datasets (on disk) and iteratively process them in-memory. 
-While this works fine for single-node scenarios, an alternative is to 
-load a large array into GassyFS, and then let Dask take advantage of 
-the larger memory size.
-
-![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/single-node/visualize.ipynb)\] Performance of Dask on GassyFS vs. 
-on the local disk. Dask is used to break the memory barrier for large 
-datasets. Having GassyFS, users can scale-up DRAM by aggregating the 
-memory of multiple nodes, which is an alternative to the conventional 
-way in which that Dask is used. We show that even though Dask is 
-efficient, having NetCDF datasets in GassyFS improves the performance 
-significantly. The variability of the experiment comes from executing 
-the same workload on all the machines listed in Table 
-1.](experiments/single-node/dask.png)
-
-Figure 6 shows the results of an experiment where Dask analyzes 5 GB 
-worth of NetCDF files of an n-dimensional array. We see that as the 
-number of routines that Dask executes increases, the performance of 
-GassyFS gets closer to that of executing Dask, but up to a certain 
-threshold. The following assertions are used to test the integrity of 
-this result.
-
-```sql
-  when
-    fs='gassyfs'
-  expect
-    time(num_routines = 1) < time(num_routines = 2)
-  ;
-  when
-    num_analytic_routines=*
-  expect
-    time(fs='gassyfs') > time(fs='local')
-```
-
-The first condition asserts that the first time that Dask runs an 
-analytic routine on GassyFS, the upfront cost of copying files into 
-GassyFS has to be payed. The second statement expresses that, 
-regardless of the number of analytic routines, it is always faster to 
-execute Dask on GassyFS than on the local filesystem.
-
-## Experiment 3: Scalability
-
-In this experiment we aim to show how GassyFS performs when we 
-increase the number of nodes in the underlying GASNet-backed FUSE 
-mount. Figure 7 shows the results of compiling `git` on GassyFS. We 
-observe that once the cluster gets to 2 nodes, performance degrades 
-sublinearly with the number of nodes. This is expected for workloads 
-such as the one in question. The following assertion is used to test 
-this result:
-
-```sql
-  when
-    workload=* and machine=*
-  expect
-    sublinear(nodes,time)
-```
-
-The above expresses our expectation of GassyFS performing sublinearly 
-with respect to the number of nodes.
-
-![\[[source](https://github.com/michaelsevilla/gassyfs-experiments/blob/sc16/experiments/multi-node/visualize.ipynb)\] Scalability of GassyFS as the 
-number of nodes in the GASNet network increases. The workload in 
-question compiles `git`.](experiments/multi-node/git-multinode.png)
+This
 
 # Discussion
 
