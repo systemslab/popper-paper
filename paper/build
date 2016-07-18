@@ -19,10 +19,6 @@ docker run \
     --csl ieee.csl \
     --filter pandoc-crossref \
     --filter pandoc-tabularize.py \
-    --variable header-includes="\usepackage{booktabs}" \
-    --variable documentclass=sigplanconf \
-    --variable sigplanconf=true \
-    --variable classoption=twocolumn,10pt \
     --output=out/paper.pdf \
     paper.md 2> build.log
 
