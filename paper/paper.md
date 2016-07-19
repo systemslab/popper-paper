@@ -184,9 +184,9 @@ domain-scientists.
 ## Desiderata for a New Methodology
 
 A diagram of a generic experimentation workflow is shown in 
-@fig:exp_workflow. The problem with current practices is that each of 
-them partially cover the workflow. For example, sharing source code 
-only covers the first task (source code); experiment packing only 
+@fig:exp_workflow (top). The problem with current practices is that 
+each of them partially cover the workflow. For example, sharing source 
+code only covers the first task (source code); experiment packing only 
 covers the second one (packaging); and so on. Based on this, we see 
 the need for a new methodology that has the following properties:
 
@@ -208,7 +208,7 @@ the need for a new methodology that has the following properties:
     easy collaboration, as well as making it easier to build upon 
     existing work.
 
-# A DevOps Approach to Academic Papers
+# A DevOps Approach to Producing Academic Papers
 
 DevOps is a practice that emphasizes the collaboration and 
 communication of both software developers and other 
@@ -226,8 +226,9 @@ implementing experiments and writing scientific papers is so amenable
 to a DevOps approach. The goal of our work is to apply these in the 
 academic setting in order to enjoy from the same benefits: build upon 
 the work of (and openly collaborate with) others to advance the state 
-of the art. We use the generic experimentation workflow in top of 
-@fig:exp_workflow to guide our discussion.
+of the art. To guide our discussion, we will refer to the generic 
+experimentation workflow (top) in @fig:exp_workflow viewed through the 
+DevOps (bottom).
 
 ## Version Control
 
@@ -351,25 +352,31 @@ CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
 OSS projects such as the Linux kernel go through rigorous performance 
 testing [@intel_linux_2016] to ensure that newer version don't 
 introduce any problems. Performance regression testing is usually an 
-ad-hoc activity but can be automated using high-level languages or 
+ad-hoc activity but can be automated using high-level languages 
 [@jimenez_aver_2016] or statistical techniques 
-[@nguyen_automated_2012]. Another important aspect of performance 
-testing is making sure that baselines are reproducible, since if they 
-are not, then there is no point in re-executing an experiment.
+[@nguyen_automated_2012].
 
-**Tools and services**: Aver is language and tool that allows authors 
-to express and validate statements on top of metrics gathered at 
-runtime. For obtaining baselines Baseliner is a tool that can be used 
-for this purpose.
+**Tools and services**: Aver is an example of a language and tool that 
+allows authors to express and validate statements on top of metrics 
+gathered at runtime.
 
 ## Dataset Management
 
-datapackage, etc.
+Some experiments involve the processing of large input, intermediary 
+or output datasets. While possible, traditional version control tools 
+such as Git were not designed to store large binary files. A proper 
+artifact repository client or dataset management tool can take care of 
+handling data dependencies.
+
+**Tools and services**: Examples are Apache Archiva 
+[@apachearchivacontributors_archiva_2016], Git-LFS [@github_git_2016], 
+Datapackages [@openknowledgeinternational_data_2016] or Artifactory 
+[@jfrog_artifactory_2016].
 
 ## Data Analysis and Visualization
 
 Once an experiment runs, the next task is to analyze and visualize 
-results. This is usually not done in OSS projects.
+results.
 
 **Tools and services**: Jupyter notebooks run on a web-based 
 application. It facilitates the sharing of documents containing live 
@@ -378,7 +385,9 @@ explanatory text. Other domain-specific visualization tools can also
 fit into this category. [Binder](mybinder.org) is an online service 
 that allows one to turn a GitHub repository into a collection of 
 interactive Jupyter notebooks so that readers don't need to deploy web 
-servers themselves.
+servers themselves. Alternatives to Jupyter are Gnuplot, Zeppelin and 
+Beaker. Other scientific visualization such as Paraview tools can also 
+fit in this category.
 
 # The Popper Convention
 
@@ -604,7 +613,7 @@ used.
 
 ## Ceph Scalability Experiment
 
-Toolchain: Markdown, Docker, Ansible, Jupyter and Aver
+Toolchain: Markdown, Docker, Ansible, Gnuplot and Aver
 
 ## MPI Performance Variability
 
@@ -615,7 +624,7 @@ Use case: Kathryn's LULESH experiment
 
 ## BAMS
 
-Toolchain: AsciiDoc, Vagrant, Bash and GrADS
+Toolchain: AsciiDoc, Vagrant, Bash and Jupyter
 
 # Discussion
 
