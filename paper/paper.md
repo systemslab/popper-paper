@@ -39,7 +39,7 @@ substitute-hyperref: true
 usedefaultspacing: true
 fontfamily: times
 linkcolor: black
-figPrefix: Fig.
+secPrefix: Section
 ---
 
 # Introduction
@@ -208,27 +208,16 @@ the need for a new methodology that has the following properties:
     easy collaboration, as well as making it easier to build upon 
     existing work.
 
-# A DevOps Approach to Producing Academic Papers
+# The DevOps Toolkit
 
-DevOps is a practice that emphasizes the collaboration and 
-communication of both software developers and other 
-information-technology (IT) professionals while automating the process 
-of software delivery and infrastructure changes. It aims at 
-establishing a culture and environment where building, testing, and 
-releasing software, can happen rapidly, frequently, and more reliably. 
-Because DevOps is a cultural shift, there is no single toolset, rather 
-a set or "DevOps toolchain" consisting of multiple tools, where each 
-fits into one or more categories, which is reflective of the software 
-development and delivery process.
-
-In this section, we list the key reasons why the process of 
-implementing experiments and writing scientific papers is so amenable 
-to a DevOps approach. The goal of our work is to apply these in the 
-academic setting in order to enjoy from the same benefits: build upon 
-the work of (and openly collaborate with) others to advance the state 
-of the art. To guide our discussion, we will refer to the generic 
-experimentation workflow (top) in @fig:exp_workflow viewed through the 
-DevOps (bottom).
+In this section we review and highlight salient features of elements 
+from the DevOps toolkit that make them amenable to organize all the 
+artifacts associated to an academic article. To guide our discussion, 
+we refer to the generic experimentation workflow (top) in 
+@Fig:exp_workflow viewed through a DevOps looking glass (bottom). In 
+@sec:popper we analyze more closely the composability of these tools 
+and describe general guidelines (a convention) on how to structure 
+projects making use of these tools.
 
 ## Version Control
 
@@ -240,7 +229,7 @@ and in fact many people follow this practice [@brown_how_2014 ;
 @dolfi_model_2014]. However, this only considers automating the 
 generation of the article in its final format (usually PDF). While this 
 is useful, here we make the distinction between changing the prose of 
-the pape, changing the parameters of the experiment (both its 
+the paper, changing the parameters of the experiment (both its 
 components and its configuration), as well as storing the experiment 
 results.
 
@@ -289,17 +278,17 @@ changes).
 ](figures/devops_approach.png){#fig:exp_workflow}
 
 Availability of code does not guarantee reproducibility of results 
-[@collberg_repeatability_2015]. The second main component on the OSS 
-development model is the packaging of applications so that users don't 
-have to. Software containers (e.g. Docker, OpenVZ or FreeBSD's jails) 
-complement package managers by packaging all the dependencies of an 
-application in an entire filesystem snapshot that can be deployed in 
-systems "as is" without having to worry about problems such as package 
-dependencies or specific OS versions. From the point of view of an 
-academic article, these tools can be leveraged to package the 
-dependencies of an experiment. Software containers like Docker have 
-the great potential for being of great use in computational sciences 
-[@boettiger_introduction_2014].
+[@collberg_repeatability_2015]. The second main component on 
+experimentation pipeline is the packaging of applications so that 
+users don't have to. Software containers (e.g. Docker, OpenVZ or 
+FreeBSD's jails) complement package managers by packaging all the 
+dependencies of an application in an entire filesystem snapshot that 
+can be deployed in systems "as is" without having to worry about 
+problems such as package dependencies or specific OS versions. From 
+the point of view of an academic article, these tools can be leveraged 
+to package the dependencies of an experiment. Software containers like 
+Docker have the great potential for being of great use in 
+computational sciences [@boettiger_introduction_2014].
 
 **Tools and services**: Docker [@merkel_docker_2014] automates the 
 deployment of applications inside software containers by providing an 
@@ -333,33 +322,6 @@ bare-metal machines to execute multi-node experiments. Some cloud
 service providers such as Amazon allow users to deploy applications on 
 bare-metal instances.
 
-## Continuous Integration
-
-Continuous Integration (CI) is a development practice that requires 
-developers to integrate code into a shared repository frequently with 
-the purpose of catching errors as early as possible. The experiments 
-associated to an article is not absent of this type of issues. If an 
-experiment's findings can be codified in the form of a unit test, this 
-can be verified on every change to the article's repository.
-
-**Tools and services**: Travis CI is an open-source, hosted, 
-distributed continuous integration service used to build and test 
-software projects hosted at GitHub. Alternatives to Travis CI are 
-CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
-
-## Automated Performance Regression Testing
-
-OSS projects such as the Linux kernel go through rigorous performance 
-testing [@intel_linux_2016] to ensure that newer version don't 
-introduce any problems. Performance regression testing is usually an 
-ad-hoc activity but can be automated using high-level languages 
-[@jimenez_aver_2016] or statistical techniques 
-[@nguyen_automated_2012].
-
-**Tools and services**: Aver is an example of a language and tool that 
-allows authors to express and validate statements on top of metrics 
-gathered at runtime.
-
 ## Dataset Management
 
 Some experiments involve the processing of large input, intermediary 
@@ -389,10 +351,38 @@ servers themselves. Alternatives to Jupyter are Gnuplot, Zeppelin and
 Beaker. Other scientific visualization such as Paraview tools can also 
 fit in this category.
 
-# The Popper Convention
+## Continuous Integration
 
-_Popper_ assists in the creation of articles that are developed as an 
-OSS project. It provides the following unique features:
+Continuous Integration (CI) is a development practice that requires 
+developers to integrate code into a shared repository frequently with 
+the purpose of catching errors as early as possible. The experiments 
+associated to an article is not absent of this type of issues. If an 
+experiment's findings can be codified in the form of a unit test, this 
+can be verified on every change to the article's repository.
+
+**Tools and services**: Travis CI is an open-source, hosted, 
+distributed continuous integration service used to build and test 
+software projects hosted at GitHub. Alternatives to Travis CI are 
+CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
+
+## Automated Performance Regression Testing
+
+OSS projects such as the Linux kernel go through rigorous performance 
+testing [@intel_linux_2016] to ensure that newer version don't 
+introduce any problems. Performance regression testing is usually an 
+ad-hoc activity but can be automated using high-level languages 
+[@jimenez_aver_2016] or statistical techniques 
+[@nguyen_automated_2012].
+
+**Tools and services**: Aver is an example of a language and 
+validation tool that allows authors to express and corroborate 
+statements about the runtime metrics gathered of an experiment.
+
+# The Popper Convention: A DevOps Approach to Producing Academic Papers {#sec:convention}
+
+The goal for _Popper_ is to give researchers a common framework to 
+reason, in a convened way, about how to structure papers and 
+experiments. It provides the following unique features:
 
  1. Abstract research workflows and provide a tool that is agnostic of 
     specific tools.
@@ -400,7 +390,7 @@ OSS project. It provides the following unique features:
  3. Embrace a methodology for generating self-contained experiments.
  4. Provide with re-usable experiment templates to minimize the time 
     taken to get a researcher up to speed with a research project.
- 5. Automated Validation
+ 5. Automated validation.
 
 ![End-to-end workflow for an article that follows the Popper 
 convention.](figures/wflow.png)
@@ -772,79 +762,19 @@ Putting results on git won't scale. There's also the issue of naming
 and experiment metadata.
 -->
 
-# Related Work
-
-The challenging task of evaluating experimental results in applied 
-computer science has been long recognized [@ignizio_establishment_1971 
-; @ignizio_validating_1973 ; @crowder_reporting_1979]. This issue has 
-recently received a significant amount of attention from the 
-computational research community [@freire_computational_2012 ; 
-@neylon_changing_2012 ; @leveqije_reproducible_2012 ; 
-@stodden_implementing_2014], where the focus is more on numerical 
-reproducibility rather than performance evaluation. Similarly, efforts 
-such as _The Recomputation Manifesto_ [@gent_recomputation_2013] and 
-the _Software Sustainability Institute_ [@crouch_software_2013] have 
-reproducibility as a central part of their endeavour but leave runtime 
-performance as a secondary problem. In systems research, runtime 
-performance _is_ the subject of study, thus we need to look at it as a 
-primary issue. By obtaining profiles of executions and making them 
-part of the results, we allow researchers to validate experiments with 
-performance in mind.
-
-Recent efforts have looked at creating open science portals or 
-repositories [@bhardwaj_datahub_2014 ; @king_introduction_2007 ; 
-@stodden_researchcompendiaorg_2015 ; @centerforopenscience_open_2014] 
-that hold all (or a subset of) the artifacts associated to an article. 
-In our case, by treating an article as an OSS project, we benefit from 
-existing tools and web services such as git-lfs without having to 
-implement domain-specific tools. In the same realm, some services 
-provide researchers with the option of generating and absorving the 
-cost of a digital object identifier (DOI). Github projects can have a 
-DOI associated with it [@smith_improving_2014], which is one of the 
-main reasons we use it as our VCS service.
-
-A related issue is the publication model. In 
-[@chirigati_collaborative_2016] the authors propose to incentivize the 
-reproduction of published results by adding reviewers as co-authors of 
-a subsequent publication. We see the Popper convention as a 
-complementary effort that can be used to make the facilitate the work 
-of the reviewers.
-
-The issue of structuring an articles associated files has been 
-discussed in [@dolfi_model_2014], where the authors introduce a "paper 
-model" of reproducible research which consists of an MPI application 
-used to illustrate how to organize a project. In [@brown_how_2014], 
-the authors propose a similar approach based on the use of `make`, 
-with the purpose of automating the generation of a PDF file. We extend 
-these ideas by having our convention be centered around OSS 
-development practices and include the notion of instant replicability 
-by using docker and ansible.
-
-In [@collberg_measuring_2014] the authors took 613 articles published 
-in 13 top-tier systems research conferences and found that 25% of the 
-articles are reproducible (under their reproducibility criteria). The 
-authors did not analyze performance. In our case, we are interested 
-not only in being able to rebuild binaries and run them but also in 
-evaluating the performance characteristics of the results.
-
-Containers, and specifically docker, have been the subject of recent 
-efforts that try to alleviate some of the reproducibility problems in 
-data science [@boettiger_introduction_2014]. Existing tools such as 
-Reprozip [@chirigati_reprozip_2013] package an experiment in a 
-container without having to initially implement it in one (i.e. 
-automates the creation of a container from an "non-containerized" 
-environment). This tool can be useful for researchers that aren't 
-familiar with tools
 
 # Conclusion
 
 In the words of Karl Popper: "_the criterion of the scientific status 
 of a theory is its falsifiability, or refutability, or testability_". 
-The OSS development model has proven to be an extraordinary way for 
-people around the world to collaborate in software projects. In this 
-work, we apply it in an academic setting. By writing articles 
-following the _Popper_ convention, authors can generate research that 
-is easier to validate and replicate.
+The OSS development model and the DevOps practice have proven to be an 
+extraordinary way for people around the world to collaborate in 
+software projects. In this work, we apply them in an academic setting. 
+As the use cases presented here showed, by writing articles following 
+the _Popper_ convention, authors can improve their personal workflows, 
+while at the same time generate research that is easier to validate 
+and replicate. The Popper-CLI tool is available at 
+<https://github.com/systemslab/popper>.
 
 # Bibliography
 
