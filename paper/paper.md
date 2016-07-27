@@ -208,10 +208,10 @@ the need for a new methodology that has the following properties:
     easy collaboration, as well as making it easier to build upon 
     existing work.
 
-# The DevOps Toolkit
+# The DevOps Toolkit {#sec:toolkit}
 
-In this section we review and highlight salient features of elements 
-from the DevOps toolkit that make them amenable to organize all the 
+In this section we review and highlight salient features of items from 
+the DevOps toolbox that make them amenable to organize all the 
 artifacts associated to an academic article. To guide our discussion, 
 we refer to the generic experimentation workflow (top) in 
 @Fig:exp_workflow viewed through a DevOps looking glass (bottom). In 
@@ -378,52 +378,274 @@ ad-hoc activity but can be automated using high-level languages
 validation tool that allows authors to express and corroborate 
 statements about the runtime metrics gathered of an experiment.
 
-# The Popper Convention: A DevOps Approach to Producing Academic Papers {#sec:convention}
+# The Popper Convention: A DevOps Approach to Producing Academic Papers {#sec:popper}
 
 The goal for _Popper_ is to give researchers a common framework to 
-reason, in a convened way, about how to structure papers and 
-experiments. It provides the following unique features:
+reason, in a convened way, about how to structure all the dependencies 
+and generated artifacts associated to an experiment. This convention 
+provides the following unique features:
 
- 1. Abstract research workflows and provide a tool that is agnostic of 
-    specific tools.
- 2. Works for commonly used toolchains.
- 3. Embrace a methodology for generating self-contained experiments.
- 4. Provide with re-usable experiment templates to minimize the time 
-    taken to get a researcher up to speed with a research project.
- 5. Automated validation.
-
-![End-to-end workflow for an article that follows the Popper 
-convention.](figures/wflow.png)
+ 1. Provides a methodology (or experimentation protocol) for 
+    generating self-contained experiments, including the explicit 
+    specification of validation criteria.
+ 2. Abstracts research workflows and provide a tool that is agnostic 
+    of specific tools.
+ 3. Works for commonly used toolchains.
+ 4. Benefits the individual researcher.
+ 5. Provides re-usable experiment templates that provide with curated 
+    experiments that are commonly used in a community.
 
 ## Self-containment
 
-A popper repository contains all the dependencies for an article, 
-including its manuscript (Figure 2). There are `paper/` and 
-`experiments/` folders, and every experiment has a `datasets/` folder 
-in it.
+We say that an experiment is Popper-compliant (or that it has been 
+"Popperized") if all of the following is available, either directly or 
+by reference, in one single source-code repository: experiment code, 
+experiment orchestration code, reference to data dependencies, 
+parametrization of experiment, validation criteria and results. In 
+other words, a popper repository contains all the dependencies for an 
+article, including its manuscript (@lst:dir). The structure of a 
+Popper repo is simple, there are `paper/` and `experiments/` folders, 
+and every experiment has a `datasets/` folder in it.
 
-```bash
+```{#lst:dir .bash caption="Sample contents of a Popper repository."}
 paper-repo
+| README.md
+| .travis.yml
 | experiments
 |   |-- myexp
-|   |   |-- run
-|   |   |-- script.py
-|   |    -- figure.png
-|   paper
-|   |-- build
-|   |-- figures
-|    -- paper.tex
+|   |   |-- datasets/
+|   |       |-- input-data.csv
+|   |   |-- figure.png
+|   |   |-- process-result.py
+|   |   |-- setup.yml
+|   |   |-- results.csv
+|   |   |-- run.sh
+|   |   |-- validations.aver
+|   |    -- vars.yml
+| paper
+|   |-- build.sh
+|   |-- figures/
+|   |-- paper.tex
+|    -- references.bib
 ```
+
+A paper repository is mainly composed of the article text and 
+experiment orchestration logic. The actual code that gets executed by 
+an experiment is not part of the repository. This, as well as any 
+large datasets that are used as input to an experiment reside in their 
+own repositories and are stored in the experiment folder of paper 
+repository as references.
+
+With all these artifacts available, the reader can easily deploy an 
+experiment or rebuild the article's PDF that might include new 
+results. A paper is written in any desired markup language. In the 
+above listing we use LATeX as an example (`paper.tex` file). There is 
+a `build.sh` command that generates the output format (e.g. `PDF`). 
+For the experiment execution logic, each experiment folder contains 
+the necessary information such as setup, output post-processing (data 
+analysis) and scripts for generating an image from the results. The 
+execution of the experiment will produce output that is either 
+consumed by a post-processing script, or directly by the scripts that 
+generate an image. The output can be in any format (CSVs, HDF, NetCDF, 
+etc.), as long as it is versioned and referenced. An important 
+component of the experiment logic is that it should assert the 
+original assumptions made about environment (a `setup.yml` file in the 
+example), for example, the operating system version (if the experiment 
+assumes one). Also, it's important to parametrize the experiment 
+explicitly (e.g. `vars.yml`), so that readers can quickly get an idea 
+of what's the parameter space of the experiment and what they can 
+modify in order to obtain different results. One common practice we 
+follow is to place in every figure's caption a `[source]` link that 
+points to the URL of the corresponding post-processing script in the 
+version control web interface (e.g. GitHub[^github-ipy]).
+
+[^github-ipy]: GitHub has the ability to render jupyter notebooks on 
+its web interface. This is a static view of the notebook (as produced 
+by the original author). In order to have a live version of the 
+notebook, one has to instantiate a Binder or run a local notebook 
+server.
+
+## Automated Validation
+
+Validation of experiments can be classified in two categories. In the 
+first one, the integrity of the experimentation logic is checked using 
+existing continuous-integration (CI) services such as TravisCI, which 
+expects a `.travis.yml` file at the root folder that. This 
+specification consists of a list of tests that get executed every time 
+a new commit is added to the repository. This type of checks can 
+verify that the paper can be built (generate the PDF correctly); that 
+the syntax of orchestration files is correct to ensure that, if an 
+experiment is changed, say, by adding a new variable, it can be 
+executed without any issues; or checking that the post-processing 
+routines can be executed without problems.
+
+The second category of validations is related to the integrity of the 
+experiment results. These domain-specific tests ensure that the claims 
+made in the paper are valid for every re-execution of the experiment; 
+analogous to performance regression tests done in software projects 
+that can be implemented using the same class of tools. Alternatively, 
+claims can also be corroborated as part of the analysis code. When 
+experiments are not sensible to the effects of virtualized platforms, 
+these assertions can be executed on public/free CI platforms (e.g. 
+TravisCI runs tests in VMs). However, when results are sensible to the 
+underlying hardware, it is preferable to leave this out of the CI 
+pipeline and make them part of the post-processing routines of the 
+experiment. In the example above, an `assertions.aver` file contains 
+validations in the Aver [@jimenez_aver_2016] language that check the 
+integrity of runtime performance metrics that claims make reference 
+to. Examples of these type of assertions are: "the runtime of our 
+algorithm is 10x better than the baseline when the level of 
+parallelism exceeds 4 concurrent threads"; or "for dataset A, our 
+model predicts the outcome with an error of 95%". More concrete 
+examples are given in @sec:cases.
+
+When validating assertions that depend on the underlying hardware, 
+i.e. that come from capturing runtime performance metrics, an 
+important step is to corroborate that the baseline performance of the 
+experiment for a new environment can be reproduced. While this is a 
+similar test that can be codified using performance regression testing 
+as mentioned in the above paragraph, we make the distinction since 
+this step can be executed before any experiment runs. If the baseline 
+performance cannot be reproduced, there is no point in executing the 
+experiment. For example, the results of an experiment that originally 
+ran on an environment consisting of HDDs, with a particular ratio of 
+storage to network bandwidth where the bottleneck resides in storage, 
+results will likely differ from those executed in another environment 
+where the bottleneck is in the network (e.g. because storage is 
+faster). Many of the commonly used orchestration tools incorporate 
+functionality for obtaining "facts" about the environment, information 
+that is useful to have when corroborating assumptions; other 
+monitoring tools such as Nagios [@nagioscontributors_nagios_2016] can 
+capture raw system-level performance; and existing frameworks such as 
+baseliner are designed to obtain baseline profiles that are associated 
+to experimental results. All these different sources of baseline 
+performance characteristics can serve as a "fingerprint" of the 
+underlying platform and can be given to tools such as Aver so that 
+assertions about the environment are executed before an experiment 
+runs, as a way of sanitizing the execution.
+
+## Toolchain Agnosticism
+
+We designed Popper as a general tool, applicable to a wide variety of 
+environments, from cloud to HPC. Figure 2 In general, Popper can be 
+applied in any scenario where a component (data, code, infrastructure, 
+hardware, etc.) is referenceable, and where there is an underlying 
+tool that consumes these IDs so that they can be acted upon (install, 
+run, store, visualize, etc.). The core idea behind Popper is to borrow 
+from the DevOps movement [@wiggins_twelvefactor_2011] the idea of 
+treating every component as an immutable piece of information and 
+provide referenceable scripts/components for the 
+creation/execution/validation of experiments (in a convened structure) 
+rather than leaving to the reader the daunting task of inferring how 
+binaries/experiments were generated/configured.
+
+We say that a tool is Popper-compliant if it has the following two 
+properties:
+
+ 1. Assets can be be associated to unique IDs. Code, packages, 
+    configurations, data, results, etc. can all be referenceable and 
+    uniquely identified.
+ 2. The tool is scriptable (e.g. can be invoked in a CLI) and can act 
+    upon given asset IDs.
+
+In @sec:toolkit we have provided a list of tools for every category of 
+the generic experimentation workflow (@fig:exp_workflow) that comply 
+with the two properties given above. In order to illustrate better why 
+these are important, we give examples of non-compliant tools:
+
+ * source-code management: Visual SourceSafe (VSS) or StarTeam
+ * packaging: virtualbox.
+ * manuscript: word.
+ * experiment orchestration: foo.
+ * monitoring: a GUI-based thing (top or a Java-based one?)
+ * viz: excel, https://github.com/densitydesign/raw
+
+In general, tools that are hard to script e.g. because they only have 
+a programmatic API for a non-interpreted language or they don't 
+provide a command-line interface (can only interact via GUI) are 
+"unpopperizable" tools.
+
+## Experiment Templates
+
+Researchers that decide to follow Popper are faced with a steep 
+learning curve, especially if they have only used a couple of tools 
+from the DevOps toolbox. To lower the entry barrier, we have developed 
+a CLI tool[^link:cli] to help bootstrap a paper repository that 
+follows the Popper convention.
+
+As part of our efforts, we maintain a list of experiment templates 
+that have been "popperized"[^link:templates]. These are end-to-end 
+experiments that use a particular toolchain and for which execution, 
+production of results and generation of figures has been implemented 
+(see @sec:cases for examples; each use case is available as an 
+experiment in the templates repository). The CLI tool can list and 
+show information about available experiments. Assuming a git 
+repository has been initialized, the tool allows to add experiments to 
+the repository (@lst:poppercli).
+
+```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
+$> cd mypaper-repo
+$> popper init
+Initialized Popper repo
+$> popper experiment list
+ceph-rados
+cloverleaf
+- spark-standalone
+- …
+$> popper add cloverleaf myexp
+```
+
+[^link:cli]: https://github.com/systemslab/popper/popper
+[^link:templates]: https://github.com/systemslab/popper-templates
+
+# Use Cases {#sec:cases}
+
+We now show use cases for different toolchains that illustrate how 
+Popper is tool-agnostic.
+
+## PrometeusTM
+
+This is an ASPLOS paper.
+
+Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot
+
+## MPI Performance Variability
+
+An HPC scenario (LULESH experiment) 
+<http://dl.acm.org/citation.cfm?id=2503247>
+
+Toolchain: Latex, Spack, Slurm and Paraview
+
+## BAMS
+
+This is a "data science" paper showing the power of Popper for 
+properly referencing/tracking datasets
+
+Toolchain: restructuredtext, Bash, datapackages and Jupyter
+
+## Ceph Scalability Experiment
+
+Distributed, multi-node experiment showing the power of orchestration 
+(ansible) and validation
+
+Toolchain: Markdown, Docker, Ansible, Gnuplot and Aver
+
+<!--
+![End-to-end workflow for an article that follows the Popper 
+convention.
+](figures/wflow.png){#fig:sampletoolchain}
 
 In the remaining of this paper we use GitHub, Docker, Binder, 
 CloudLab, Travis CI and Aver as the tools/services for every component 
 described in the previous section. As stated in goal 2, any of these 
 should be swappable for other tools, for example: VMs instead of 
 Docker; Puppet instead of Ansible; Jenkins instead of Travis CI; and 
-so on and so forth. Our approach can be summarized as follows:
+so on and so forth. Our approach can be summarized as follows. The 
+contents of the paper repository have:
 
-  * Github repository stores all details for the paper. It stores the 
-    metadata necessary to build the paper and re-run experiments. 
+  * A version control repository stores all details for the paper. It 
+    stores the metadata necessary to build the paper and re-run 
+    experiments.
   * Docker images capture the experimental environment, packages and 
     tunables.
   * Ansible playbook deploy and execute the experiments.
@@ -515,19 +737,6 @@ the given assertions hold on the given performance metrics. This
 allows to automatically check that high-level statements about the 
 outcome of an experiment are true.
 
-When validating performance, an important component is to see the 
-baseline performance of the experimental environment we are running 
-on. Ansible has a way of obtaining "facts" about machines that is 
-useful to have when validating results. Also, baseliner profiles that 
-are associated to experimental results are a great way of asserting 
-assumptions about the environment. baseliner is composed of multiple 
-docker images that measure CPU, memory, I/O and network raw 
-performance of a set of nodes. We execute baseliner on multi-node 
-setups and make the profiles part of the results since this is the 
-fingerprint of our execution. This also gives us an idea of the 
-relationship among the multiple subsystems (e.g. 10:1 of network to 
-IO).
-
 ### Organizing Dependencies
 
 A paper repo is mainly composed of the article text and experiment 
@@ -564,57 +773,11 @@ Input/output files should be also versioned. For small datasets, we
 can can put them in the git repository of the paper. For large 
 datasets we can use `git-lfs`.
 
-### Automated Validation
+-->
 
-This is automated
+## Genomics
 
-## Toolchain-agnosticism
-
-We designed Popper as a general tool, applicable to a wide variety of 
-environments, from cloud to HPC. Figure 2 In general, Popper can be 
-applied in any scenario where a component (data, code, infrastructure, 
-hardware, etc.) is referenceable, and where there is an underlying 
-tool that consumes these IDs so that they can be acted upon (install, 
-run, store, visualize, etc.). The core idea behind Popper is to borrow 
-from the DevOps movement the idea of treating every component as an 
-immutable piece of information and provide referenceable 
-scripts/components for the creation/execution/validation of 
-experiments (in a convened structure) rather than leaving to the 
-reader the daunting task of inferring how binaries/experiments were 
-generated/configured.
-
-### Popper-compliant Tools
-
-Examples of non-compliant tools:
-
- * source-code management: Visual SourceSafe (VSS) or StarTeam
- * packaging: virtualbox
- * manuscript: word
- * viz: excel, https://github.com/densitydesign/raw
-
-## Experiment Templates
-
-We also have templates for papers.
-
-# Use Cases
-
-We now show use cases for three different toolchains that are commonly 
-used.
-
-## Ceph Scalability Experiment
-
-Toolchain: Markdown, Docker, Ansible, Gnuplot and Aver
-
-## MPI Performance Variability
-
-Toolchain: Latex, Spack, Slurm and Paraview
-
-Use case: Kathryn's LULESH experiment 
-<http://dl.acm.org/citation.cfm?id=2503247>
-
-## BAMS
-
-Toolchain: AsciiDoc, Vagrant, Bash and Jupyter
+Toolchain: toil
 
 # Discussion
 
@@ -753,15 +916,6 @@ The Popper Convention makes controlled experiments practical by managing all asp
 This allows to preserve the performance characteristics of the 
 underlying hardware that an experiment executed on and facilitates the 
 interpretation of results in the future.
-
-<!--
-## Handling of results
-
-We might need to find another way of managing experimental results. 
-Putting results on git won't scale. There's also the issue of naming 
-and experiment metadata.
--->
-
 
 # Conclusion
 
