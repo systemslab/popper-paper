@@ -1,0 +1,21 @@
+---
+- hosts: client
+  tasks:
+    - name: pull kernel source code
+      get_url:
+        url: "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.4.3.tar.xz"
+        dest: "/home/linux-4.4.3.tar.xz"
+      when: download
+
+    - name: untar, compile, delete kernel
+      set_fact:
+        job:
+          - "cp /home/linux-4.4.3.tar.xz ."
+          - "tar xf linux-4.4.3.tar.xz"
+          - "cd linux-4.4.3; make allmodconfig; make -j10"
+          - "cd linux-4.4.3; ls -lR ."
+          - "cd linux-4.4.3; du -h ."
+          - "rm -r linux-4.4.3"
+        output: "{{ site }}-kernel-{{ nnodes }}.csv"
+
+    - include: compile.yml

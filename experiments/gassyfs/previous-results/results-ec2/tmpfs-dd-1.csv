@@ -1,0 +1,7 @@
+delta, cmd
+"0:00:12.735413", "dd if=/dev/zero of=./zero bs=1M count=30720"
+"0:00:02.641609", "rm ./zero"
+"0:00:12.716720", "dd if=/dev/zero of=./zero bs=1M count=30720"
+"0:00:02.644490", "rm ./zero"
+"0:00:12.721076", "dd if=/dev/zero of=./zero bs=1M count=30720"
+"0:00:02.637280", "rm ./zero"

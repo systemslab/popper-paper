@@ -1,0 +1,4 @@
+delta, cmd, file
+{% for x in result %}
+"{{ x.delta }}", "{{ x.item.1 }}", "{{ x.cmd }}"
+{% endfor %}

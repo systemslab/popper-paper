@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: True
+  roles:
+    - role: cleanup
+      delete:
+        - "/tmp/fetch"
+        - "/tmp/ssh"
+        - "/tmp/gassyfs"
+      images:
+        - "{{ gassyfs_docker_username }}/{{ gassyfs_docker_imagename }}"

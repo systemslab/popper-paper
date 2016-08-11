@@ -1,0 +1,22 @@
+---
+# Defines deployment design and assigns role to server groups
+
+- hosts: master
+  become: True
+  roles:
+  - gassyfs/worker
+  tasks:
+    - add_host: 
+        name: "{{ ansible_hostname }}:{{ worker_sshd_port }}"
+        groups: "client"
+        ansible_ssh_user: "root"
+
+- hosts: client
+  tasks:
+    - name: mount tmpfs
+      mount: name="/mount" src="tmpfs" fstype="tmpfs" opts={{ mount_args }} state="mounted"
+
+    - name: how big is our tmpfs mount?
+      shell: df -h
+      register: result
+    - debug: var=result.stdout_lines

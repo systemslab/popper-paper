@@ -1,0 +1,11 @@
+---
+- hosts: client
+  tasks:
+    - name: 30GB dd microbenchmark
+      set_fact:
+        job:
+          - "dd if=/dev/zero of=./zero bs=1M count=30720"
+          - "rm ./zero"
+        output: "{{ site }}-dd-{{ nnodes }}.csv"
+
+    - include: compile.yml

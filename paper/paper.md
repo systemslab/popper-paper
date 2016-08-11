@@ -39,7 +39,7 @@ substitute-hyperref: true
 usedefaultspacing: true
 fontfamily: times
 linkcolor: black
-secPrefix: Section
+secPrefix: section
 ---
 
 # Introduction
@@ -68,10 +68,11 @@ integration of executables and data with scholarly articles to help
 facilitate its reproducibility, but look at implementing it in today's 
 cloud-computing world by treating an article as an open source 
 software (OSS) project. We introduce _Popper_, a convention for 
-organizing an article's artifacts following a DevOps[^devops] approach 
-that allows researchers to make all the associated artifacts publicly 
-available with the goal of easing the re-execution of experiments and 
-validation of results. There are two main goals for Popper:
+organizing an article's artifacts following a DevOps 
+[@httermann_devops_2012 ; @loukides_what_2012] approach that allows 
+researchers to make all the associated artifacts publicly available 
+with the goal of easing the re-execution of experiments and validation 
+of results. There are two main goals for Popper:
 
  1. It should be usable in as many research projects as possible, 
     regardless of their domain.
@@ -97,8 +98,6 @@ platforms with minimal effort, without having to speculate on what the
 original authors did to compile and configure the system; and shows 
 how automated performance regression testing aids in maintaining the 
 reproducibility integrity of experiments.
-
-[^devops]: https://en.wikipedia.org/wiki/DevOps
 
 # Common Practice
 
@@ -135,10 +134,10 @@ An alternative to sharing source code is experiment repositories
 @roure_designing_2007]. These allow researchers to upload artifacts 
 associated to a paper. Similarly to code repositories, one of the main 
 problems is the lack of automation and structure for the artifacts. 
-The availability of the artifacts doesn't guarantee the reproduction 
+The availability of the artifacts does not guarantee the reproduction 
 of results since a significant amount of manual work needs to be done 
 after these have been downloaded. Additionally, large data 
-dependencies can't be uploaded since there is usually a limit on the 
+dependencies cannot be uploaded since there is usually a limit on the 
 artifact file size.
 
 ## Virtual Machines
@@ -160,10 +159,10 @@ others [@chirigati_reprozip_2016 ; @guo_burrito_2012 ;
 @pham_sharing_2015 ; @davison_sumatra_2014]. Experiment packing is an 
 automated way of creating a virtual machine or environment and thus 
 suffers from the same limitations: external dependencies such as large 
-datasets can't be packaged; the experiment is a black-box without 
+datasets cannot be packaged; the experiment is a black-box without 
 contextual information (e.g. history of modifications) that is hard to 
 introspect, making difficult to build upon existing work; and 
-packaging doesn't explicitly capture validation criteria.
+packaging does not explicitly capture validation criteria.
 
 ## _Eyeball_ Validation
 
@@ -184,7 +183,7 @@ domain-scientists.
 ## Desiderata for a New Methodology
 
 A diagram of a generic experimentation workflow is shown in 
-@fig:exp_workflow (top). The problem with current practices is that 
+@Fig:exp_workflow (top). The problem with current practices is that 
 each of them partially cover the workflow. For example, sharing source 
 code only covers the first task (source code); experiment packing only 
 covers the second one (packaging); and so on. Based on this, we see 
@@ -210,14 +209,14 @@ the need for a new methodology that has the following properties:
 
 # The DevOps Toolkit {#sec:toolkit}
 
-In this section we review and highlight salient features of items from 
-the DevOps toolbox that make them amenable to organize all the 
-artifacts associated to an academic article. To guide our discussion, 
-we refer to the generic experimentation workflow (top) in 
-@Fig:exp_workflow viewed through a DevOps looking glass (bottom). In 
-@sec:popper we analyze more closely the composability of these tools 
-and describe general guidelines (a convention) on how to structure 
-projects making use of these tools.
+In this section we review and highlight salient features of the DevOps 
+toolbox that makes it amenable to organize all the artifacts 
+associated to an academic article. To guide our discussion, we refer 
+to the generic experimentation workflow (top) in @Fig:exp_workflow, 
+viewed through a DevOps looking glass (bottom). In @Sec:popper we 
+analyze more closely the composability of these tools and describe 
+general guidelines (the convention) on how to structure projects that 
+make use of the DevOps toolbox.
 
 ## Version Control
 
@@ -245,7 +244,7 @@ monolithic repositories to manage their internal infrastructure
 
 [^difficult-platforms]: For large-scale experiments or those that run 
 on specialized platforms, re-executing an experiment might be 
-difficult. However, this doesn't exclude such research projects from 
+difficult. However, this does not exclude such research projects from 
 being able to version-control the article's associated assets.
 
 **Tools and services**: git, svn and mercurial are popular VCS tools. 
@@ -261,9 +260,9 @@ history of the project and its artifacts.
 researchers in projects with a computational component. Some of the 
 reasons to iterate (backwards-going arrows) are: fixing a bug in the 
 code of a system, changing a parameter of an experiment or running the 
-same experiment a new type of data or platform. Although not usually 
-done, in some cases researchers keep a chronological record on how 
-experiments evolve over time (the analogy of the lab notebook in 
+same experiment on a new workload or compute platform. Although not 
+usually done, in some cases researchers keep a chronological record on 
+how experiments evolve over time (the analogy of the lab notebook in 
 experimental sciences). The bottom half represents the same workflow 
 viewed through a DevOps looking glass. The logos correspond to 
 commonly used tools from the "DevOps toolkit". From left-to-right, 
@@ -293,7 +292,7 @@ computational sciences [@boettiger_introduction_2014].
 **Tools and services**: Docker [@merkel_docker_2014] automates the 
 deployment of applications inside software containers by providing an 
 additional layer of abstraction and automation of 
-operating-system-level virtualization on Linux. Alternatives to docker 
+operating-system-level virtualization on Linux. Alternatives to Docker 
 are modern package managers such as Nix [@dolstra_nixos_2008] or Spack 
 [@gamblin_spack_2015], or even virtual machines.
 
@@ -385,15 +384,14 @@ reason, in a convened way, about how to structure all the dependencies
 and generated artifacts associated to an experiment. This convention 
 provides the following unique features:
 
- 1. Provides a methodology (or experimentation protocol) for 
-    generating self-contained experiments, including the explicit 
-    specification of validation criteria.
- 2. Abstracts research workflows and provide a tool that is agnostic 
-    of specific tools.
- 3. Works for commonly used toolchains.
- 4. Benefits the individual researcher.
- 5. Provides re-usable experiment templates that provide with curated 
-    experiments that are commonly used in a community.
+ 1. Provides with a methodology (or experimentation protocol) for 
+    generating self-contained experiments.
+ 2. Makes it easier for researchers to explicitly specify validation 
+    criteria.
+ 3. Abstracts domain-specific experimentation workflows and 
+    toolchains.
+ 4. Re-usable experiment templates that provide curated experiments 
+    commonly used in a research community.
 
 ## Self-containment
 
@@ -403,9 +401,9 @@ by reference, in one single source-code repository: experiment code,
 experiment orchestration code, reference to data dependencies, 
 parametrization of experiment, validation criteria and results. In 
 other words, a popper repository contains all the dependencies for an 
-article, including its manuscript (@lst:dir). The structure of a 
-Popper repo is simple, there are `paper/` and `experiments/` folders, 
-and every experiment has a `datasets/` folder in it.
+article, including its manuscript. The structure of a Popper repo is 
+simple, there are `paper/` and `experiments/` folders, and every 
+experiment has a `datasets/` folder in it.
 
 ```{#lst:dir .bash caption="Sample contents of a Popper repository."}
 paper-repo
@@ -429,12 +427,12 @@ paper-repo
 |    -- references.bib
 ```
 
-A paper repository is mainly composed of the article text and 
-experiment orchestration logic. The actual code that gets executed by 
-an experiment is not part of the repository. This, as well as any 
-large datasets that are used as input to an experiment reside in their 
-own repositories and are stored in the experiment folder of paper 
-repository as references.
+An example paper project is shown in @Lst:dir. A paper repository is 
+mainly composed of the article text and experiment orchestration 
+logic. The actual code that gets executed by an experiment is not part 
+of the repository. This, as well as any large datasets that are used 
+as input to an experiment reside in their own repositories and are 
+stored in the experiment folder of paper repository as references.
 
 With all these artifacts available, the reader can easily deploy an 
 experiment or rebuild the article's PDF that might include new 
@@ -497,7 +495,7 @@ to. Examples of these type of assertions are: "the runtime of our
 algorithm is 10x better than the baseline when the level of 
 parallelism exceeds 4 concurrent threads"; or "for dataset A, our 
 model predicts the outcome with an error of 95%". More concrete 
-examples are given in @sec:cases.
+examples are given in @Sec:cases.
 
 When validating assertions that depend on the underlying hardware, 
 i.e. that come from capturing runtime performance metrics, an 
@@ -548,21 +546,22 @@ properties:
  2. The tool is scriptable (e.g. can be invoked in a CLI) and can act 
     upon given asset IDs.
 
-In @sec:toolkit we have provided a list of tools for every category of 
-the generic experimentation workflow (@fig:exp_workflow) that comply 
+In @Sec:toolkit we have provided a list of tools for every category of 
+the generic experimentation workflow (@Fig:exp_workflow) that comply 
 with the two properties given above. In order to illustrate better why 
-these are important, we give examples of non-compliant tools:
+these are important, we give examples of non-compliant tools 
+(**TODO**: this list will be improved):
 
  * source-code management: Visual SourceSafe (VSS) or StarTeam
- * packaging: virtualbox.
+ * packaging: **TODO**.
  * manuscript: word.
- * experiment orchestration: foo.
+ * experiment orchestration: **TODO**.
  * monitoring: a GUI-based thing (top or a Java-based one?)
  * viz: excel, https://github.com/densitydesign/raw
 
-In general, tools that are hard to script e.g. because they only have 
-a programmatic API for a non-interpreted language or they don't 
-provide a command-line interface (can only interact via GUI) are 
+In general, tools that are hard to script e.g. because they don't 
+provide a command-line interface (can only interact via GUI) or they 
+only have a programmatic API for a non-interpreted language or, are 
 "unpopperizable" tools.
 
 ## Experiment Templates
@@ -577,22 +576,24 @@ As part of our efforts, we maintain a list of experiment templates
 that have been "popperized"[^link:templates]. These are end-to-end 
 experiments that use a particular toolchain and for which execution, 
 production of results and generation of figures has been implemented 
-(see @sec:cases for examples; each use case is available as an 
+(see @Sec:cases for examples; each use case is available as an 
 experiment in the templates repository). The CLI tool can list and 
 show information about available experiments. Assuming a git 
 repository has been initialized, the tool allows to add experiments to 
-the repository (@lst:poppercli).
+the repository (@Lst:poppercli).
 
 ```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
-$> cd mypaper-repo
-$> popper init
+> cd mypaper-repo
+> popper init
 Initialized Popper repo
-$> popper experiment list
-ceph-rados
-cloverleaf
+
+> popper experiment list
+- ceph-rados
+- cloverleaf
 - spark-standalone
-- …
-$> popper add cloverleaf myexp
+…
+
+> popper add cloverleaf myexp
 ```
 
 [^link:cli]: https://github.com/systemslab/popper/popper
@@ -603,181 +604,176 @@ $> popper add cloverleaf myexp
 We now show use cases for different toolchains that illustrate how 
 Popper is tool-agnostic.
 
-## PrometeusTM
+## ProteusTM
 
-This is an ASPLOS paper.
+Reproducing systems experiments is sometimes challenging due to their 
+sensitivity to the underlying hardware and low-level software stack 
+(firmware and OS). In this use case we exemplify how an experiment 
+that is potentially sensible to a customized version of the OS can be 
+"Popperized", e.g. because it needs particular features of a custom 
+kernel or specific drivers.
+
+ProteusTM [@didona_proteustm_2016] is a system that automatically 
+identifies the best transactional memory (TM) implementation for a 
+given workload. Behind the TM programming interface, ProteusTM hides a 
+large library of TM implementations. Underneath, it leverages a novel 
+multi-dimensional online optimization scheme, combining two popular 
+learning techniques: Collaborative Filtering and Bayesian 
+Optimization.
+
+Since we're interested in "pinning" a particular kernel 
+version[^notreally], a natural option is to use a virtual machine to 
+package the experiment. Vagrant [@hashicorp_vagrant_2016] is a 
+higher-level wrapper around virtualization software that provides the 
+framework and configuration format (Ruby language scripts) to create 
+and manage complete portable development environments.
+
+The experiment (VM) is a black box that gets input and produces 
+results ()
+
+Once the VM runs, the results are placed in the folder where vagrant 
+is invoked. These are CSV files. The analysis is done in gnuplot, 
+which in this case runs on the host but could be packaged in a docker 
+container or another VM. Gnuplot generates the figure that is included 
+in the paper.
+
+Due to space constraints, we can't show all the experiment files. 
+They're available at 
+<https://github.com/systemslab/popper-paper/asplos17/> .
 
 Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot
 
+[^notreally]: Strictly speaking, ProteusTM doesn't necessarily depend 
+on a particular Linux version but we selected this publication since 
+the original authors made the code available and is relatively easy to 
+compile and run.
+
+## GassyFS
+
+![GassyFS has facilities for explicitly managing  persistence to 
+different storage targets. A checkpointing infrastructure gives 
+GassyFS flexible policies for persisting namespaces and federating 
+data.
+](figures/gassyfs-arch.pdf){#fig:gassyfs-arch}
+
+This use case illustrates how multi-node experiments can be easily 
+ported between multiple platforms. It also exemplifies how the 
+validation criteria of an experiment can be made explicitly and be 
+automatically checked with currently available tools.
+
+GassyFS [@watkins_gassyfs_2016] is a new prototype filesystem system 
+that stores files in distributed remote memory and provides support 
+for checkpointing file system state. The architecture of GassyFS is 
+illustrated in @Fig:gassyfs-arch. The core of the file system is a 
+user-space library that implements a POSIX file interface. File system 
+metadata is managed locally in memory, and file data is distributed 
+across a pool of network-attached RAM managed by worker nodes and 
+accessible over RDMA or Ethernet. Applications access GassyFS through 
+a standard FUSE mount, or may link directly to the library to avoid 
+any overhead that FUSE may introduce. By default all data in GassyFS 
+is non-persistent. That is, all metadata and file data is kept in 
+memory, and any node failure will result in data loss. In this mode 
+GassyFS can be thought of as a high-volume tmpfs that can be 
+instantiated and destroyed as needed, or kept mounted and used by 
+applications with multiple stages of execution. The differences 
+between GassyFS and tmpfs become apparent when we consider how users 
+deal with durability concerns.
+
+Although GassyFS is simple in design, it is relatively complex to 
+setup. The combinatorial space of possible ways in which the system 
+can be compiled, packaged and configured is large. For example, 
+current version of GCC (4.9) has approximately $10^{8}$ possible ways 
+of compiling a binary. For the version of GASNet that we use (2.6), 
+there are 64 flags for additional packages and 138 flags for 
+additional features[^more]. To mount GassyFS, we use FUSE, which can 
+be given more than 30 different options, many of them taking multiple 
+values.
+
+[^more]: These are the flags that are documented. There are many more 
+that can be configured but not shown in the official documentation.
+
+![\[[source](https://github.com)\] Scalability of GassyFS as the 
+number of nodes in the GASNet cluster increases. The workload in 
+question compiles `git`.
+](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
+
+In figure @Fig:gassyfs-git we show one of multiple experiments that 
+evaluate the performance of GassyFS[^note-to-reviewers]. We note that 
+while the performance numbers obtained are relevant, they are not our 
+main focus. Instead, we put more emphasis on the goals of the 
+experiments, how we can reproduce results on multiple environments 
+with minimal effort and how we can ensure the validity of the results.
+
+[^note-to-reviewers]: Due to time constraints we had to limit the 
+amount of experiments that we include, as well as the description of 
+the experimental setup.
+
+In this experiment we aim to evaluate the scalability of GassyFS, i.e. 
+how it performs when we increase the number of nodes in the underlying 
+GASNet-backed FUSE mount. Figure @Fig:gassyfs-git shows the results of 
+compiling `git` on GassyFS. We observe that once the cluster gets to 2 
+nodes, performance degrades sublinearly with the number of nodes. This 
+is expected for workloads such as the one in question. The following 
+Aver assertion is used to check the integrity of this result:
+
+```sql
+  when
+    workload=* and machine=*
+  expect
+    sublinear(nodes,time)
+```
+
+The above expresses our expectation of GassyFS performing sublinearly 
+with respect to the number of nodes. After the experiment runs, Aver 
+is invoked to test the above statement against the experiment results 
+obtained.
+
 ## MPI Performance Variability
 
-An HPC scenario (LULESH experiment) 
-<http://dl.acm.org/citation.cfm?id=2503247>
+In scenarios where OS- and hardware-level virtualization is prohibited 
+such as HPC, one still can recreate the software stack. Modern package 
+managers such as Spack and Nix can help.
+
+To recreate, one provides a list of packages with specific versions 
+and, when necessary, specification of compiler and compilation flags. 
+For example, we can recreate an experiment from 
+<http://dl.acm.org/citation.cfm?id=2503247>, which is an HPC scenario 
+(LULESH experiment):
+
+```bash
+spack install mpi@3.4
+spack instll
+```
+
+In this experiment, we assume there is a batch manager that runs the 
+job.
+
+Reproduction steps: clone the repository, execute install.sh
+
+The repo:
+
+```
+lulesh/
+  setup.sh
+  run.sh
+  simulation-output.hdf5
+  visualize.py
+  perf-metris.csv
+```
+
+What run does: sanitize environment (check kernel/os versions), clone 
+(install) spack and install packages (setup.sh); then it runs an mpi 
+experiment, which produces 1) output of simulation (output.hdf5) and 
+2) performance metrics.
 
 Toolchain: Latex, Spack, Slurm and Paraview
 
-## BAMS
+## Numerical Weather Prediction: Data Science papers
 
 This is a "data science" paper showing the power of Popper for 
 properly referencing/tracking datasets
 
 Toolchain: restructuredtext, Bash, datapackages and Jupyter
-
-## Ceph Scalability Experiment
-
-Distributed, multi-node experiment showing the power of orchestration 
-(ansible) and validation
-
-Toolchain: Markdown, Docker, Ansible, Gnuplot and Aver
-
-<!--
-![End-to-end workflow for an article that follows the Popper 
-convention.
-](figures/wflow.png){#fig:sampletoolchain}
-
-In the remaining of this paper we use GitHub, Docker, Binder, 
-CloudLab, Travis CI and Aver as the tools/services for every component 
-described in the previous section. As stated in goal 2, any of these 
-should be swappable for other tools, for example: VMs instead of 
-Docker; Puppet instead of Ansible; Jenkins instead of Travis CI; and 
-so on and so forth. Our approach can be summarized as follows. The 
-contents of the paper repository have:
-
-  * A version control repository stores all details for the paper. It 
-    stores the metadata necessary to build the paper and re-run 
-    experiments.
-  * Docker images capture the experimental environment, packages and 
-    tunables.
-  * Ansible playbook deploy and execute the experiments.
-  * Travis tests the integrity of all experiments.
-  * Jupyter notebooks analyze and visualize experimental data produced 
-    by the authors.
-  * Every image in an article has a link in its caption that takes the 
-    reader to a Jupyter notebook that visualizes the experimental 
-    results.
-  * Every experiment involving performance metrics can be launched in 
-    CloudLab, Chameleon or PRObE.
-  * The reproducibility of every experiment can be checked by running 
-    assertions of the aver language on top of the newly obtained 
-    results.
-
-Figure 2 shows the end-to-end workflow for reviewers and authors. 
-Given all the elements listed above, readers of a paper can look at a 
-figure and click the associated link that takes them to a notebook. 
-Then, if desired, they instantiate a Binder and can analyze the data 
-further. After this, they might be interested in re-executing an 
-experiment, which they can do by cloning the github repository and, if 
-they have resources available to them (i.e. one or more docker hosts), 
-they just point Ansible to them and re-execute the experiment locally 
-in their environment. If resources are not available, an alternative 
-is to launch a Cloudlab, Chameleon or PRObE instance (one or more 
-docker nodes hosted in Cloudlab) and point Ansible to the assigned IP 
-addresses. An open question is how do we deal with datasets that are 
-too big to fit in Git. An alternative is to use `git-lfs` to version 
-and store large datasets.
-
-### Organizing Files
-
-The structure of an example "paper repo" is shown in Figure 3. A paper 
-is written in any desired format. Here we use markdown as an example 
-(`main.md` file). There is a `build.sh` command that generates the 
-output format (e.g. `PDF`). Every experiment in the paper has a 
-corresponding folder in the repo. For example, for a `scalability` 
-experiment referred in the paper, there is a 
-`experiments/scalability/` folder in the repository.
-
-Inside each experiment folder there is a Jupyter notebook that, at the 
-very least, displays the figures for the experiment that appear in the 
-paper. It can serve as an extended version of what figures in the 
-paper display, including other figures that contain analysis that show 
-similar results. If readers wants to do more analysis on the results 
-data, they can instantiate a Binder by pointing to the github 
-repository. Alternatively, If the repository is checked out locally 
-into another person's machine, it's a nice way of having readers play 
-with the result's data (although they need to know how to instantiate 
-a local notebook server). Every figure in the paper has a `[source]` 
-link in its caption that points to the URL of the corresponding 
-notebook in GitHub[^github-ipy].
-
-[^github-ipy]: GitHub has the ability to render jupyter notebooks on 
-its web interface. This is a static view of the notebook (as produced 
-by the original author). In order to have a live version of the 
-notebook, one has to instantiate a Binder or run a local notebook 
-server.
-
-For every experiment, there is an ansible playbook that can be used to 
-re-execute the experiment. In order to do so, readers clone the 
-repository, edit the `inventory` file by adding the IP addresses or 
-hostnames of the machines they have available. The absolutely 
-necessary files for an experiment are `run.sh` which bootstraps the 
-experiment (by invoking a containerized ansible); `inventory`, 
-`playbook.yml` and `vars.yml` which are given to ansible. The 
-execution of the experiment will produce output that is either 
-consumed by a postprocessing script, or directly by the notebook. The 
-output can be in any format (CSVs, HDF, NetCDF, etc.). `output.csv` is 
-the ultimate output of the experiment and what it gets displayed in 
-the notebook. An important component of the experiment playbook is 
-that it should assert the environment and corroborate as much as 
-possible the assumptions made by the original (e.g. via the `assert` 
-task, check that the Linux kernel is the required one). `vars.yml` 
-contains the parametrization of the experiment.
-
-At the root of the project, there is a `.travis.yml` file that Travis 
-CI uses to run unit tests on every commit of the repository. For 
-example, if an experiment playbook is changed, say, by adding a new 
-variable, Travis will ensure that, at the very least, the experiments 
-can be launched without any issues.
-
-Aver can be used for checking that the original findings of an 
-experiment are valid for new re-executions. An `assertions.aver` file 
-contains assertions in the Aver language. This file is is given to 
-Aver's assertion checking engine, which also takes as input the files 
-corresponding to the output of the experiment. Aver then checks that 
-the given assertions hold on the given performance metrics. This 
-allows to automatically check that high-level statements about the 
-outcome of an experiment are true.
-
-### Organizing Dependencies
-
-A paper repo is mainly composed of the article text and experiment 
-orchestration logic. The actual code that gets executed by an 
-experiment is not part of the paper repository. Similarly for any 
-datasets that are used as input to an experiment. These dependencies 
-should reside in their own repositories and be referenced in an 
-experiment playbook.
-
-#### Executables
-
-For every execution element in the experiment playbook, there is a 
-repository that has the source code of the executables, and an 
-artifact repository (package manager or software image repository) 
-that holds the executables for referenced versions. In our example, we 
-use git and docker. Assume the execution of an scalability experiment 
-refers to code of a `mysystem` codebase. Then:
-
-  * there's a git repo for `mysystem` that holds its source code and 
-    there's a tag/sha1 that we refer to in our experiment. This can 
-    optionally be also tracked via git submodules (e.g. placed in a 
-    `vendor/` folder).
-
-  * for the version that we are pointing to, there is a docker image 
-    in the docker hub. For example, if we reference version `v3.0.3` 
-    of `mysystem` in our experiment, then there's a docker image 
-    `mysystem#v3.0.3` in the docker hub repository. We can also 
-    optionally track the docker image's source (the `Dockerfile`) with 
-    git submodules in the paper repository (`vendor/` folder).
-
-#### Datasets
-
-Input/output files should be also versioned. For small datasets, we 
-can can put them in the git repository of the paper. For large 
-datasets we can use `git-lfs`.
-
--->
-
-## Genomics
-
-Toolchain: toil
 
 # Discussion
 
@@ -856,7 +852,7 @@ virtualization works and do not realize that there is no performance
 hit, no network port remapping, and no layers of indirection. Lastly, 
 first encounters with Docker require users to understand that Docker 
 containers do not represent baremetal hardware but immutable 
-infrastructure, i.e. one can't ssh into them to start services, one 
+infrastructure, i.e. one cannot ssh into them to start services, one 
 need to have a service per image, and one cannot install software 
 inside of them and expect those installations to persist after 
 relaunching a container.
@@ -909,7 +905,6 @@ the setup of an experiment systems researchers typically strive for making resul
 and analysis of results [@hoefler_scientific_2015].
 
 The Popper Convention makes controlled experiments practical by managing all aspects of the setup of an experiment and leveraging shared infrastructure.
-
 
 ## Providing Performance Profiles Alongside Experimental Results
 

@@ -1,8 +1,0 @@
-- name: stop tmpfs container
-  command: docker stop tmpfs-master
-  ignore_errors: true
-  when: "{{ tmpfs.enabled | bool }}"
-- name: remove tmpfs container
-  command: docker rm -f tmpfs-master
-  ignore_errors: true
-  when: "{{ tmpfs.enabled | bool }}"

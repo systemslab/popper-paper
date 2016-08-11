@@ -1,0 +1,26 @@
+---
+# These variables are common to all systems (infiniband, udp, tmpfs)
+
+repetitions: "[0, 1, 2]"
+download: True
+
+##########
+# DOCKER #
+##########
+install_docker: True
+gassyfs_docker_username: "michaelsevilla"
+gassyfs_docker_imagename: "gassyfs"
+container_name_master: "gassyfs-master"
+container_name_worker: "gassyfs-worker"
+master_sshd_port: 2222
+worker_sshd_port: 2223
+
+###########
+# EMASTER # These must be full paths!
+###########
+fetch_directory: "/tmp/fetch/"
+src_directory: "/tmp/gassyfs"
+home_directory: "/users/msevilla"
+ssh_tmpdir: "/tmp/ssh"
+ssh_dir: "~/.ssh"
+authkey: "{{ lookup('file', '{{ ssh_dir }}/id_rsa.pub') }}"

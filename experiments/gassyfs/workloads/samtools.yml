@@ -1,0 +1,56 @@
+---
+# Author: Michael Sevilla
+# Subject GassyFS to some BAMtools
+
+- hosts: client
+  tasks:
+    - set_fact:
+        inputs:
+          - "wgEncodeCaltechRnaSeqGm12878R1x75dSplicesRep1V2.bam"
+          - "wgEncodeCaltechRnaSeqH1hescR1x75dSplicesRep1V2.bam"
+          - "wgEncodeCaltechRnaSeqGm12878R1x75dAlignsRep1V2.bam"
+          - "wgEncodeCaltechRnaSeqH1hescR1x75dSplicesRep1V2.bam"
+          - "wgEncodeCaltechRnaSeqHct116R2x75Il200AlignsRep1V2.bam"
+        url: "http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeCaltechRnaSeq"
+
+    # we should use get_url here, but it downloads to temporary files to /tmp... 
+    # and our container doesn't have enough space to handle this
+    - name: pull input files from the interwebs
+      command: "wget {{ url }}/{{ item }} /home/{{ item }}"
+      with_items: "{{ inputs }}"
+
+    - name: put the input into the mount
+      shell: "cp /home/{{ item }} /mount/{{ item }}"
+      register: copy
+      with_nested:
+        - "{{ repetitions }}"
+        - "{{ inputs }}"
+
+    - name: run the sort benchmark
+      shell: "samtools sort -@ 16 -m640M -o /mount/output-{{ item }} /mount/{{ item }}"
+      register: sort
+      with_nested:
+        - "{{ repetitions }}"
+        - "{{ inputs }}"
+
+    - name: get the sizes
+      command: ls -al /mount
+      register: size
+    - name: size of files
+      debug: var=size.stdout_lines
+
+    - name: checkpoint the data back to ext4
+      shell: "cp /mount/output-{{ item }} /home/output-{{ item }}"
+      register: checkpoint
+      with_nested:
+        - "{{ repetitions }}"
+        - "{{ inputs }}"
+
+    - set_fact:
+        result: "{{ copy.results + sort.results + checkpoint.results }}"
+
+    - name: "parse results"
+      connection: local
+      template: src=parse-samtools.j2 dest=results/{{ site }}-samtools-{{ nnodes }}.csv
+      with_items: 
+        - "{{ result }}"
