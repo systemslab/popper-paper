@@ -98,13 +98,12 @@ $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
 
-$if(verbatim-in-note)$
 \usepackage{fancyvrb}
 \VerbatimFootnotes % allows verbatim text in footnotes
 $if(monofont-size)$
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=$monofont-size$}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\$monofont-size$}
 $endif$
-$endif$
+
 % tables {
 $if(tables)$
 \usepackage{longtable}
