@@ -420,16 +420,6 @@ provides the following unique features:
 
 ## Self-containment
 
-We say that an experiment is Popper-compliant (or that it has been 
-"Popperized") if all of the following is available, either directly or 
-by reference, in one single source-code repository: experiment code, 
-experiment orchestration code, reference to data dependencies, 
-parametrization of experiment, validation criteria and results. In 
-other words, a popper repository contains all the dependencies for an 
-article, including its manuscript. The structure of a Popper repo is 
-simple, there are `paper/` and `experiments/` folders, and every 
-experiment has a `datasets/` folder in it.
-
 ```{#lst:dir .bash caption="Sample contents of a Popper repository."}
 paper-repo
 | README.md
@@ -452,17 +442,22 @@ paper-repo
 |    -- references.bib
 ```
 
+We say that an experiment is Popper-compliant (or that it has been 
+"Popperized") if all of the following is available, either directly or 
+by reference, in one single source-code repository: experiment code, 
+experiment orchestration code, reference to data dependencies, 
+parametrization of experiment, validation criteria and results. In 
+other words, a popper repository contains all the dependencies for an 
+article, including its manuscript. The structure of a Popper repo is 
+simple, there are `paper/` and `experiments/` folders, and every 
+experiment has a `datasets/` folder in it.
+
 An example paper project is shown in @Lst:dir. A paper repository is 
 mainly composed of the article text and experiment orchestration 
 logic. The actual code that gets executed by an experiment is not part 
 of the repository. This, as well as any large datasets that are used 
 as input to an experiment reside in their own repositories and are 
 stored in the experiment folder of paper repository as references.
-
-![A workflow depicting the steps that a reader or reviewer take when 
-going through a Popperized article.
-](figures/wflow.png){#fig:review-workflow}
-
 
 With all these artifacts available, the reader can easily deploy an 
 experiment or rebuild the article's PDF that might include new 
@@ -477,17 +472,22 @@ logic, each experiment folder contains the necessary information such
 as setup, output post-processing (data analysis) and scripts for 
 generating an image from the results. The execution of the experiment 
 will produce output that is either consumed by a post-processing 
-script, or directly by the scripts that generate an image. The output 
-can be in any format (CSVs, HDF, NetCDF, etc.), as long as it is 
-versioned and referenced. An important component of the experiment 
-logic is that it should assert the original assumptions made about 
-environment (a `setup.yml` file in the example), for example, the 
-operating system version (if the experiment assumes one). Also, it's 
-important to parametrize the experiment explicitly (e.g. `vars.yml`), 
-so that readers can quickly get an idea of what's the parameter space 
-of the experiment and what they can modify in order to obtain 
-different results. One common practice we follow is to place in every 
-figure's caption a `[source]` link that points to the URL of the 
+script, or directly by the scripts that generate an image.
+
+![A workflow depicting the steps that a reader or reviewer take when 
+going through a Popperized article.
+](figures/wflow.png){#fig:review-workflow}
+
+The output can be in any format (CSVs, HDF, NetCDF, etc.), as long as 
+it is versioned and referenced. An important component of the 
+experiment logic is that it should assert the original assumptions 
+made about environment (a `setup.yml` file in the example), for 
+example, the operating system version (if the experiment assumes one). 
+Also, it's important to parametrize the experiment explicitly (e.g. 
+`vars.yml`), so that readers can quickly get an idea of what's the 
+parameter space of the experiment and what they can modify in order to 
+obtain different results. One common practice we follow is to place in 
+every figure's caption a `[source]` link that points to the URL of the 
 corresponding post-processing script in the version control web 
 interface (e.g. GitHub[^github-ipy]).
 
@@ -580,18 +580,30 @@ properties:
  2. The tool is scriptable (e.g. can be invoked in a CLI) and can act 
     upon given asset IDs.
 
+```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
+$ cd mypaper-repo
+$ popper init
+-- Initialized Popper repo
+
+$ popper experiment list
+-- available templates ---------------
+ceph-rados        proteustm  mpi-comm-variability
+cloverleaf        gassyfs    zlog
+spark-standalone  torpor     malacology
+
+$ popper add torpor myexp
+```
+
 In @Sec:toolkit we have provided a list of tools for every category of 
 the generic experimentation workflow (@Fig:exp_workflow) that comply 
 with the two properties given above. In order to illustrate better why 
-these are important, we give examples of non-compliant tools 
-(**TODO**: this list will be improved):
+these are important, we give examples of non-compliant tools:
 
  * source-code management: Visual SourceSafe (VSS) or StarTeam
- * packaging: **TODO**.
- * manuscript: word.
- * experiment orchestration: **TODO**.
- * monitoring: a GUI-based thing (top or a Java-based one?)
- * viz: excel, https://github.com/densitydesign/raw
+ * packaging: visual package installers.
+ * manuscript: Word.
+ * experiment orchestration: GUI-based workflow systems.
+ * visualization/analysis: Excel
 
 In general, tools that are hard to script e.g. because they don't 
 provide a command-line interface (can only interact via GUI) or they 
@@ -615,20 +627,6 @@ experiment in the templates repository). The CLI tool can list and
 show information about available experiments. Assuming a git 
 repository has been initialized, the tool allows to add experiments to 
 the repository (@Lst:poppercli).
-
-```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
-$ cd mypaper-repo
-$ popper init
--- Initialized Popper repo
-
-$ popper experiment list
--- available templates ---------------
-ceph-rados        proteustm  mpi-comm-variability
-cloverleaf        gassyfs    zlog
-spark-standalone  torpor     malacology
-
-$ popper add torpor myexp
-```
 
 [^link:cli]: https://github.com/systemslab/popper/tree/master/popper
 [^link:templates]: https://github.com/systemslab/popper-templates
@@ -689,7 +687,12 @@ experiments with minimal 3rd party and effort requirements.
 <!-- Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot -->
 
 ![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
-Variability profile of benchmarks.
+Variability profile of a set of CPU-bound benchmarks. Each data point 
+in the histogram corresponds to the speedup of a stress-ng 
+microbenchmark that a node in CloudLab has with respect to one of our 
+machines in our lab, a 10 year old Xeon. For example, the 
+architectural improvements of the newer machine cause 7 stressors to 
+have a speedup within the `(2.2, 2.3]` range over the base machine.
 ](experiments/torpor/variability_profile.png){#fig:torpor-variability}
 
 [^notreally]: Strictly speaking, this Torpor experiment doesn't 
@@ -780,6 +783,13 @@ the root of the git repository. This creates a `.popper.yml` file that
 contains configuration options for the CLI tool. This file is 
 committed to the paper (git) repository.
 
+```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
+$ popper add jupyter-bww airtemp-analysis
+$ cd experiments/airtemp-analysis
+$ dpm install datapackages/air-temperature
+$ ./visualize.sh
+```
+
 **Adding a New Experiment**: As mentioned before, we maintain a list 
 of experiment templates that have been "Popperized" (@Lst:poppercli). 
 In this example we want to analyze data from an experiment in the area 
@@ -792,13 +802,6 @@ Other types of data science projects might involve generating their
 input datasets and/or process data in a cluster of machines. Popper 
 still can be followed in these scenarios, as shown in previous 
 sections.
-
-```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
-$ popper add jupyter-bww airtemp-analysis
-$ cd experiments/airtemp-analysis
-$ dpm install datapackages/air-temperature
-$ ./visualize.sh
-```
 
 This data analysis experiment consists of one dataset and a Jupyter 
 notebook. Relatively large datasets aren't managed well by git, so 
@@ -823,16 +826,11 @@ reference it from the LATeX file. We then regenerate the article (with
 a `build.sh` command inside the `paper` folder) and see the new image 
 like the one shown in @Fig:bww-airtempanalysis.
 
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
-The output of analysis of weather prediction data. The output comes 
-from data processed with the `xarray` Python library. The data 
-corresponds to the NCEP/NCAR Reanalysis 1.
-](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
-
 **Documenting Changes to Experiments**: The paper repository is the 
 analogy to the lab notebook in experimental science. There are many 
 ways in which these changes can be registered in the form of code 
-repository commits. A couple of tips:
+repository commits. The following are practices that we have found to 
+be useful when documenting changes to an experiment:
 
   * Make changes small. Avoid having large commits since that makes it 
     harder to document.
@@ -842,7 +840,11 @@ repository commits. A couple of tips:
     changes to the experiment, or the new results being added to the 
     repository.
 
-## Popper Review Workflow
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
+The output of analysis of weather prediction data. The output comes 
+from data processed with the `xarray` Python library. The data 
+corresponds to the NCEP/NCAR Reanalysis 1.
+](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
 
 # Discussion
 
@@ -999,6 +1001,18 @@ their prospects of future employment. In other words, these are skills
 that will hardly represent wasted time investments, on the contrary, 
 this might be motivation enough for students to learn at least one 
 tool from each of the stages of the DevOps pipeline.
+
+## Popper Complements Existing Efforts
+
+**TODO**: Explain how Popper complements other efforts/projects:
+
+  * ctuning
+  * BEE
+  * parallel algorithms encyclopedia
+  * proxy applications in HPC
+  * SC16, PLDI,ASPLOS,OOPSLA efforts to incentivize reproducibility
+  * collage authoring environment (executablepapers.com)
+  * "A collaborative approach to computational reproducibility"
 
 # Conclusion
 
