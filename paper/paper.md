@@ -768,6 +768,38 @@ with respect to the number of nodes. After the experiment runs, Aver
 is invoked to test the above statement against the experiment results 
 obtained.
 
+## MPI Noisy Neighborhood Characterization
+
+In this use case we exemplify the scenario where OS- and 
+hardware-level virtualization is prohibited such as HPC. In this case, 
+one still can capture most of the software environment by making use 
+of modern package managers such as Spack or Nix. To restore the 
+software stack, one provides the package manager with a list of 
+packages with specific versions and, when necessary, compiler and 
+compilation flags. The package manager then is in charge of restoring 
+the environment, re-compiling binaries if needed.
+
+```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
+$ popper add jupyter-bww airtemp-analysis
+$ cd experiments/airtemp-analysis
+$ dpm install datapackages/air-temperature
+$ ./visualize.sh
+```
+
+We took an experiment from [@bhatele_there_2013] in which an MPI 
+application runs multiple times and its communication performance is 
+measured with mpiP[^willrerun]. The goal is to identify root causes of 
+variability across executions. From an environmental point of view, 
+the execution goes as follows: sanitize environment (check kernel/os 
+versions), clone (install) spack and install packages (setup.sh); then 
+it runs an mpi experiment, which produces 1) output of simulation 
+(output.hdf5) and 2) generate MPI communication performance metrics.
+
+[^willrerun]: **Note to reviewers**. Due to time constraints, we 
+weren't able to allocate time in an HPC site to re-run this 
+experiment. The final version of the paper will include a figure with 
+the result of the re-execution of this experiment.
+
 ## Numerical Weather Prediction: A Data-centric Use Case
 
 In this use case we show how to bootstrap a data science paper that 
@@ -782,13 +814,6 @@ and initialize the Popper files by issuing a `popper init` command in
 the root of the git repository. This creates a `.popper.yml` file that 
 contains configuration options for the CLI tool. This file is 
 committed to the paper (git) repository.
-
-```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
-$ popper add jupyter-bww airtemp-analysis
-$ cd experiments/airtemp-analysis
-$ dpm install datapackages/air-temperature
-$ ./visualize.sh
-```
 
 **Adding a New Experiment**: As mentioned before, we maintain a list 
 of experiment templates that have been "Popperized" (@Lst:poppercli). 
@@ -810,6 +835,12 @@ they should be managed by other tools. We use `dpm` in this case
 can open the notebook to visualize and interact with the data analysis 
 of this experiment. The last line above opens a browser and points it 
 to the notebook.
+
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
+The output of analysis of weather prediction data. The output comes 
+from data processed with the `xarray` Python library. The data 
+corresponds to the NCEP/NCAR Reanalysis 1.
+](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
 
 **Documenting the Experiment**: After we're done with our experiment, 
 we might want to document it and add a paper. The Popper-CLI also 
@@ -839,12 +870,6 @@ be useful when documenting changes to an experiment:
   * Commit messages should describe in as much detail as possible the 
     changes to the experiment, or the new results being added to the 
     repository.
-
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
-The output of analysis of weather prediction data. The output comes 
-from data processed with the `xarray` Python library. The data 
-corresponds to the NCEP/NCAR Reanalysis 1.
-](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
 
 # Discussion
 
