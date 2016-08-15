@@ -359,6 +359,22 @@ servers themselves. Alternatives to Jupyter are Gnuplot, Zeppelin and
 Beaker. Other scientific visualization such as Paraview tools can also 
 fit in this category.
 
+## Performance Monitoring
+
+Prior and during the execution of an experiment, capturing performance 
+metrics can be beneficial. In the case of systems research articles, 
+where performance is the main subject of study, capturing performance 
+metrics is fundamental. Instead of creating ad-hoc tools to achieve 
+this we can benefit by adopting and extending existing tools. At the 
+end of the execution, the captured data can be analyzed and many of 
+the graphs included in the article can come directly from running 
+analysis scripts on top of this data.
+
+**Tools and services**: Many mature monitoring tools exist such as 
+Nagios, Ganglia, StatD, CollectD, among many others. For measuring 
+single-machine baseline performance, tools like Conceptual (network), 
+stress-ng (CPU, memory, filesystem) and many others exist.
+
 ## Continuous Integration
 
 Continuous Integration (CI) is a development practice that requires 
@@ -524,12 +540,12 @@ functionality for obtaining "facts" about the environment, information
 that is useful to have when corroborating assumptions; other 
 monitoring tools such as Nagios [@nagioscontributors_nagios_2016] can 
 capture raw system-level performance; and existing frameworks such as 
-baseliner are designed to obtain baseline profiles that are associated 
-to experimental results. All these different sources of baseline 
-performance characteristics can serve as a "fingerprint" of the 
-underlying platform and can be given to tools such as Aver so that 
-assertions about the environment are executed before an experiment 
-runs, as a way of sanitizing the execution.
+baseliner [@jimenez_baseliner_2016] are designed to obtain baseline 
+profiles that are associated to experimental results. All these 
+different sources of baseline performance characteristics can serve as 
+a "fingerprint" of the underlying platform and can be given to tools 
+such as Aver so that assertions about the environment are executed 
+before an experiment runs, as a way of sanitizing the execution.
 
 ## Toolchain Agnosticism
 
@@ -861,10 +877,13 @@ that complexity is likely to increase in the future. Perfect
 repeatability will be very difficult to achieve. Recent empirical 
 studies in computer systems [@hoefler_scientific_2015 ; 
 @collberg_repeatability_2015] have brought attention to the main 
-issues that permeate the current practice of our research communities. 
-We don't aim at perfect repeatability but to minimize the issues we 
-face and to have a common language that can be used while 
-collaborating to fix all these reproducibility issues.
+issues that permeate the current practice of our research communities, 
+where scenarios like the lack of information on how a particular 
+package was compiled, or which statistical functions were used make it 
+difficult to reproduce or even interpret results. We don't aim at 
+perfect repeatability but to minimize issues that we currently face 
+and to have a common language that can be used while collaborating to 
+fix all these type of reproducibility issues.
 
 ## Drawing the line between packaging and deployment
 
