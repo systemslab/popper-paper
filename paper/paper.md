@@ -391,7 +391,7 @@ provides the following unique features:
  3. Abstracts domain-specific experimentation workflows and 
     toolchains.
  4. Re-usable experiment templates that provide curated experiments 
-    commonly used in a research community.
+    commonly used by a research community.
 
 ## Self-containment
 
@@ -583,28 +583,33 @@ repository has been initialized, the tool allows to add experiments to
 the repository (@Lst:poppercli).
 
 ```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
-> cd mypaper-repo
-> popper init
-Initialized Popper repo
+$ cd mypaper-repo
+$ popper init
+-- Initialized Popper repo
 
-> popper experiment list
-- ceph-rados
-- cloverleaf
-- spark-standalone
-…
+$ popper experiment list
+-- available templates ---------------
+ceph-rados        proteustm  mpi-comm-variability
+cloverleaf        gassyfs    zlog
+spark-standalone  torpor     malacology
 
-> popper add cloverleaf myexp
+$ popper add mpi myexp
 ```
 
-[^link:cli]: https://github.com/systemslab/popper/popper
+[^link:cli]: https://github.com/systemslab/popper/tree/master/popper
 [^link:templates]: https://github.com/systemslab/popper-templates
 
 # Use Cases {#sec:cases}
 
 We now show use cases for different toolchains that illustrate how 
-Popper is tool-agnostic.
+Popper is tool-agnostic. Due to space constraints we have to reduce 
+the number of experiments we show for each use case. We refer the 
+reader to this paper's Popper repository 
+<https://github.com/systemslab/popper-paper/tree/asplos17/> for more 
+detailed information about the experimental setup as well as more 
+comprehensive results.
 
-## ProteusTM
+## Torpor: Quantifying Cross-platform Performance Variability
 
 Reproducing systems experiments is sometimes challenging due to their 
 sensitivity to the underlying hardware and low-level software stack 
@@ -613,58 +618,60 @@ that is potentially sensible to a customized version of the OS can be
 "Popperized", e.g. because it needs particular features of a custom 
 kernel or specific drivers.
 
-ProteusTM [@didona_proteustm_2016] is a system that automatically 
-identifies the best transactional memory (TM) implementation for a 
-given workload. Behind the TM programming interface, ProteusTM hides a 
-large library of TM implementations. Underneath, it leverages a novel 
-multi-dimensional online optimization scheme, combining two popular 
-learning techniques: Collaborative Filtering and Bayesian 
-Optimization.
+Torpor [@jimenez_characterizing_2016] is a workload- and 
+architecture-independent technique for characterizing the performance 
+of a computing platform. In short, Torpor works by executing a battery 
+of micro-benchmarks and using these as the performance profile of a 
+system. Given two profiles of two distinct platforms A and B, Torpor 
+generates a variability range of B with respect to A. These 
+variability profiles can then be used to predict the variability of 
+any application running on B, that originally ran A. The goal is to 
+predict as well as recreate performance of applications that run on 
+newer (and faster) platforms using OS-level virtualization.
 
-Since we're interested in "pinning" a particular kernel 
+In this case, we take the experiment from 
+[@jimenez_characterizing_2016] that quantifies the variability of a 
+list of machines with respect to a 10 year old system. Due to space 
+constraints, we only show the variability profile for one machine but 
+results for all the other machines are available in this paper's 
+repository. Since we're interested in "pinning" a particular kernel 
 version[^notreally], a natural option is to use a virtual machine to 
 package the experiment. Vagrant [@hashicorp_vagrant_2016] is a 
 higher-level wrapper around virtualization software that provides the 
 framework and configuration format (Ruby language scripts) to create 
 and manage complete portable development environments.
 
-The experiment (VM) is a black box that gets input and produces 
-results ()
+The experiment folder contains all necessary files to easily invoke it 
+and generate figures. A bash `run.sh` script installs Vagrant if it's 
+not present; downloads the VM or builds it if links are broken; and 
+lastly executes the experiment. Once the VM runs, the results are 
+placed in the folder where the experiment was invoked (CSV files). The 
+analysis is done in Gnuplot, which in this case runs on the host but 
+could be packaged in a Docker container or another VM. The result of 
+executing the Gnuplot script generates @Fig:torpor-variability. As 
+mentioned before, the goal of Popper is to provide self-contained 
+experiments with minimal 3rd party and effort requirements.
 
-Once the VM runs, the results are placed in the folder where vagrant 
-is invoked. These are CSV files. The analysis is done in gnuplot, 
-which in this case runs on the host but could be packaged in a docker 
-container or another VM. Gnuplot generates the figure that is included 
-in the paper.
+<!-- Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot -->
 
-Due to space constraints, we can't show all the experiment files. 
-They're available at 
-<https://github.com/systemslab/popper-paper/asplos17/> .
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
+Variability profile of benchmarks.
+](experiments/torpor/variability_profile.png){#fig:torpor-variability}
 
-Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot
+[^notreally]: Strictly speaking, these Torpor experiment doesn't 
+necessarily depend on a particular Linux version but we assume it does 
+to illustrate the need of running a specific version of the kernel.
 
-[^notreally]: Strictly speaking, ProteusTM doesn't necessarily depend 
-on a particular Linux version but we selected this publication since 
-the original authors made the code available and is relatively easy to 
-compile and run.
-
-## GassyFS
-
-![GassyFS has facilities for explicitly managing  persistence to 
-different storage targets. A checkpointing infrastructure gives 
-GassyFS flexible policies for persisting namespaces and federating 
-data.
-](figures/gassyfs-arch.pdf){#fig:gassyfs-arch}
+## GassyFS: Scalability of an In-memory Filesystem
 
 This use case illustrates how multi-node experiments can be easily 
 ported between multiple platforms. It also exemplifies how the 
-validation criteria of an experiment can be made explicitly and be 
+validation criteria of an experiment can be made explicit and be 
 automatically checked with currently available tools.
 
 GassyFS [@watkins_gassyfs_2016] is a new prototype filesystem system 
 that stores files in distributed remote memory and provides support 
-for checkpointing file system state. The architecture of GassyFS is 
-illustrated in @Fig:gassyfs-arch. The core of the file system is a 
+for checkpointing file system state. The core of the file system is a 
 user-space library that implements a POSIX file interface. File system 
 metadata is managed locally in memory, and file data is distributed 
 across a pool of network-attached RAM managed by worker nodes and 
@@ -692,21 +699,17 @@ values.
 [^more]: These are the flags that are documented. There are many more 
 that can be configured but not shown in the official documentation.
 
-![\[[source](https://github.com)\] Scalability of GassyFS as the 
-number of nodes in the GASNet cluster increases. The workload in 
-question compiles `git`.
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
+Scalability of GassyFS as the number of nodes in the GASNet cluster 
+increases. The workload in question compiles `git`.
 ](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
 
 In figure @Fig:gassyfs-git we show one of multiple experiments that 
-evaluate the performance of GassyFS[^note-to-reviewers]. We note that 
-while the performance numbers obtained are relevant, they are not our 
-main focus. Instead, we put more emphasis on the goals of the 
-experiments, how we can reproduce results on multiple environments 
-with minimal effort and how we can ensure the validity of the results.
-
-[^note-to-reviewers]: Due to time constraints we had to limit the 
-amount of experiments that we include, as well as the description of 
-the experimental setup.
+evaluate the performance of GassyFS. We note that while the 
+performance numbers obtained are relevant, they are not our main 
+focus. Instead, we put more emphasis on the goals of the experiments, 
+how we can reproduce results on multiple environments with minimal 
+effort and how we can ensure the validity of the results.
 
 In this experiment we aim to evaluate the scalability of GassyFS, i.e. 
 how it performs when we increase the number of nodes in the underlying 
@@ -728,7 +731,7 @@ with respect to the number of nodes. After the experiment runs, Aver
 is invoked to test the above statement against the experiment results 
 obtained.
 
-## MPI Performance Variability
+## Quantifying MPI Performance Variability
 
 In scenarios where OS- and hardware-level virtualization is prohibited 
 such as HPC, one still can recreate the software stack. Modern package 
@@ -768,12 +771,6 @@ experiment, which produces 1) output of simulation (output.hdf5) and
 
 Toolchain: Latex, Spack, Slurm and Paraview
 
-## Numerical Weather Prediction: Data Science papers
-
-This is a "data science" paper showing the power of Popper for 
-properly referencing/tracking datasets
-
-Toolchain: restructuredtext, Bash, datapackages and Jupyter
 
 # Discussion
 

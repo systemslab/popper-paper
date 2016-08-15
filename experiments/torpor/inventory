@@ -1,0 +1,9 @@
+[base]
+piha.soe.ucsc.edu ansible_user=ivo
+
+[targets]
+192.168.140.82 ansible_user=issdm
+192.168.140.86 ansible_user=issdm
+clnode056.clemson.cloudlab.us ansible_user=ivotron
+dwill.soe.ucsc.edu ansible_user=ivo
+nibbler.soe.ucsc.edu ansible_user=ivo

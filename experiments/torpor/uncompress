@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for f in tests/*bz2 ; do
+  n=`basename $f .bz2`
+  mkdir tests/$n
+  tar xfj $f --directory tests/$n --strip-components=1
+done

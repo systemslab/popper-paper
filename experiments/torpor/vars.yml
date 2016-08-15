@@ -1,0 +1,32 @@
+---
+benchmarks:
+- 'ivotron/stress-ng'
+mem_period:
+  'piha.soe.ucsc.edu': 1
+  '192.168.140.82': 1
+  '192.168.140.86': 1
+  'clnode056.clemson.cloudlab.us': 1
+  'dwill.soe.ucsc.edu': 1
+  'nibbler.soe.ucsc.edu': 1
+mem_bw:
+  'piha.soe.ucsc.edu': 1
+  '192.168.140.82': 1
+  '192.168.140.86': 10
+  'clnode056.clemson.cloudlab.us': 1
+  'dwill.soe.ucsc.edu': 1
+  'nibbler.soe.ucsc.edu': 1
+cpu_quota:
+  'piha.soe.ucsc.edu': 1
+  '192.168.140.82': 7111
+  '192.168.140.86': 6352
+  'clnode056.clemson.cloudlab.us': 7009
+  'dwill.soe.ucsc.edu': 5465
+  'nibbler.soe.ucsc.edu': 7116
+cpu_period:
+  'piha.soe.ucsc.edu': 1
+  '192.168.140.82': 10000
+  '192.168.140.86': 10000
+  'clnode056.clemson.cloudlab.us': 10000
+  'dwill.soe.ucsc.edu': 10000
+  'nibbler.soe.ucsc.edu': 10000
+repetitions: [1,2]

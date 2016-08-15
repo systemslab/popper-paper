@@ -1,0 +1,112 @@
+- hosts: all
+  vars:
+    cpus: "0"
+    mem: 512M
+    fldr: "{{ansible_env.HOME}}/var/porta/base-vs-limited-targets"
+    skip_base: false
+    skip_memory_limit: true
+  pre_tasks:
+  - name: Assert preconditions
+    assert:
+      that:
+      - "ansible_distribution == 'Ubuntu'"
+      - "ansible_lsb.major_release|int >= 12"
+      - "('3.13' in ansible_kernel or '3.15' in ansible_kernel or '3.19' in ansible_kernel)"
+      - "'base' in groups"
+      - "'targets' in groups"
+      - "groups.base|length == 1"
+      - "groups.targets|length > 0"
+      - "benchmarks is defined"
+      - "cpu_period is defined"
+      - "cpu_quota is defined"
+      - "mem_period is defined"
+      - "mem_bw is defined"
+  - name: Get jq version
+    local_action: command jq --version
+    register: jq_version
+    failed_when: "'1.5' not in jq_version.stdout"
+    sudo: false
+  - name: check that results for base exist when we skip it
+    local_action: stat path=tests/{{groups.base}}
+    register: results_for_base
+    when: skip_base|bool
+    failed_when: results_for_base.stat.exists
+    sudo: false
+
+  tasks:
+# setup
+  - name: install linux linux-headers
+    package: name=linux-headers-{{ ansible_kernel }} state=present
+  - name: delete previous results
+    file: path={{fldr}} state=absent
+    ignore_errors: true
+  - name: create test folder
+    file: path={{fldr}}/tests state=directory mode=0755
+  - name: delete any previous local results
+    local_action: file path=tests state=absent
+    run_once: true
+    when: not skip_base|bool
+    sudo: false
+    ignore_errors: true
+  - name: create test folder locally
+    local_action: file path=tests state=directory mode=0755
+    run_once: true
+    sudo: false
+  - name: pull memguard image
+    command: docker pull ivotron/memguard
+
+# execute test benchmarks
+  - name: pull benchmark images
+    command: docker pull {{ item }}
+    with_items: benchmarks
+  - name: execute benchmarks without limits
+    shell: docker run --rm --memory={{mem}} --memory-swap={{mem}} --cpuset-cpus={{cpus}} {{item[0]}} > {{fldr}}/tests/{{item[0].replace('/','.')}}_without_{{item[1]}}.json
+    with_nested:
+    - benchmarks
+    - repetitions
+    when: inventory_hostname in groups.targets or (inventory_hostname in groups.base and not skip_base|bool)
+  - name: execute benchmarks with CPU limits
+    shell: docker run --rm --memory={{mem}} --memory-swap={{mem}} --cpuset-cpus={{cpus}} --cpu-period={{cpu_period[inventory_hostname]}} --cpu-quota={{cpu_quota[inventory_hostname]}} {{item[0]}} > {{fldr}}/tests/{{item[0].replace('/','.')}}_withcpu_{{item[1]}}.json
+    with_nested:
+    - benchmarks
+    - repetitions
+    when: inventory_hostname in groups.targets
+  - name: execute benchmarks with CPU and memory limits
+    shell: docker run --rm --privileged --entrypoint=docker-run-wrapper -v /sys/kernel/debug:/sys/kernel/debug -v /usr/src:/usr/src -v /lib/modules:/lib/modules -v `which docker`:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock ivotron/memguard {{mem_period[inventory_hostname]}} {{mem_bw[inventory_hostname]}} --rm --memory={{mem}} --memory-swap={{mem}} --cpuset-cpus={{cpus}} --cpu-period={{cpu_period[inventory_hostname]}} --cpu-quota={{cpu_quota[inventory_hostname]}} {{item[0]}} > {{fldr}}/tests/{{item[0].replace('/','.')}}_withmemcpu_{{item[1]}}.json
+    with_nested:
+    - benchmarks
+    - repetitions
+    when: inventory_hostname in groups.targets and not skip_memory_limit|bool
+
+# fetch results
+  - name: compress tests folder
+    command: tar cvfj tests.bz2 tests chdir={{fldr}}
+  - name: get result tar balls
+    fetch: src={{fldr}}/tests.bz2 dest=tests/{{inventory_hostname}}.bz2 flat=yes
+    when: inventory_hostname in groups.targets or (inventory_hostname in groups.base and not skip_base|bool)
+  - name: uncompress locally
+    local_action: command ./uncompress
+    run_once: true
+    sudo: false
+
+# postprocess on localhost
+  - name: merge results
+    local_action: command ./merge_results
+    run_once: true
+    sudo: false
+  - name: obtain normalized results
+    local_action: command docker run --rm -v `pwd`:/data --entrypoint=/data/normalize.py ivotron/jupyter-pd-mpl-h5 {{ item }}
+    run_once: true
+    sudo: false
+    with_items: groups.base
+
+# store facts
+  - name: create facts folder
+    local_action: file path=facts state=directory mode=0755
+    run_once: true
+    sudo: false
+  - name: store facts about remotes
+    local_action: copy content="{{ hostvars[item] | to_nice_json }}" dest=./facts/{{ item }}.json
+    run_once: true
+    sudo: false
+    with_items: groups['all']
