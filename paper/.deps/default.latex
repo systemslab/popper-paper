@@ -300,6 +300,10 @@ $endif$
 
 \begin{document}
 
+$if(titlebanner)$
+\titlebanner{$titlebanner$}
+$endif$
+
 % copyright conference {
 $if(acm-sig-alternate)$
 \global\copyrightetc{Copyright \the\copyrtyr\ ACM \the\acmcopyr}
