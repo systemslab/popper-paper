@@ -830,7 +830,9 @@ reproducibility, we can dramatically increase the value of scientific
 experiments for education and for research. The Popper Convention 
 makes not only the result of a systems experiment available but the 
 entire experiment and allows researchers to study and reuse all 
-aspects of it.
+aspects of it, making it practical to "stand in the shoulders of 
+giants" by building upon the work of the community to improve the 
+state-of-the-art without having to start from scratch every time.
 
 ## The power of "crystallization points."
 
@@ -845,11 +847,11 @@ Crystallization points encode community knowledge and are therefore
 useful for leveraging past research efforts for ongoing research as 
 well as education and training. They help people to form abstractions 
 and common understanding that enables them to more effectively 
-communicate reproducible science. By having docker/ansible as a lingua 
-franca for researchers, and Popper to guide them in how to structure 
-their paper repos, we can expedite collaboration and at the same time 
-benefit from all the new advances done in the cloud-computing/DevOps 
-world.
+communicate reproducible science. By having popular tools such as 
+Docker/Ansible as a lingua franca for researchers, and Popper to guide 
+them in how to structure their paper repos, we can expedite 
+collaboration and at the same time benefit from all the new advances 
+done in the cloud-computing/DevOps world.
 
 ## Perfect is the enemy of good
 
