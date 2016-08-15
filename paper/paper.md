@@ -858,12 +858,15 @@ done in the cloud-computing/DevOps world.
 No matter how hard we try, there will always be something that goes 
 wrong. The context of systems experiments is often very complex and 
 that complexity is likely to increase in the future. Perfect 
-repeatability will be very difficult to achieve. We don't aim at 
-perfect repeatability but to minimize the issues we face and have a 
-common language that can be used while collaborating to fix all these 
-reproducibility issues.
+repeatability will be very difficult to achieve. Recent empirical 
+studies in computer systems [@hoefler_scientific_2015 ; 
+@collberg_repeatability_2015] have brought attention to the main 
+issues that permeate the current practice of our research communities. 
+We don't aim at perfect repeatability but to minimize the issues we 
+face and to have a common language that can be used while 
+collaborating to fix all these reproducibility issues.
 
-## Drawing the line between deploy and packaging
+## Drawing the line between packaging and deployment
 
 Figuring out where something should be in the deploy framework (e.g., 
 Ansible) or in the package framework (e.g., Docker) must be 
@@ -873,9 +876,9 @@ permantently installs packages on the host. Alternatively, one could
 use Docker to orchestrate services but this requires "chaining" images 
 together. This process is hard to develop since containers must be 
 recompiled and shared around the cluster. We expect that communities 
-of practice will find the right balance between these technologies by 
-improving on the co-design of Ansible playbooks and Docker images 
-within their communities.
+of practice will find the right balance between these technologies, 
+e.g. by improving on the co-design of Ansible playbooks and Docker 
+images within their communities.
 
 ## Usability is the key to make this work
 
@@ -892,7 +895,7 @@ to get used to new concepts these tools introduce. In our experience,
 experimental setups that do not ensure any reproducibility are still a 
 lot easier to create than the ones that do. Not everyone knows git and 
 people are irritated by the number of files and submodules in the 
-paper repo. They also usuaually misunderstand how OS-level 
+paper repository. They also usually misunderstand how OS-level 
 virtualization works and do not realize that there is no performance 
 hit, no network port remapping, and no layers of indirection. Lastly, 
 first encounters with Docker require users to understand that Docker 
@@ -941,15 +944,17 @@ Our convention can be used to either of these two approaches.
 
 ## Controlled Experiments become Practical
 
-Almost all publications about systems experiments underreport the context of an
-experiment, making it very difficult for someone trying to reproduce the experiment
-to control for differences between the context of the reported experiment and the
-reproduced one. Due to traditional intractability of controlling for all aspects of
-the setup of an experiment systems researchers typically strive for making results
-"understandable" by applying sound statistical analysis to the experimental design
-and analysis of results [@hoefler_scientific_2015].
-
-The Popper Convention makes controlled experiments practical by managing all aspects of the setup of an experiment and leveraging shared infrastructure.
+Almost all publications about systems experiments underreport the 
+context of an experiment, making it very difficult for someone trying 
+to reproduce the experiment to control for differences between the 
+context of the reported experiment and the reproduced one. Due to 
+traditional intractability of controlling for all aspects of the setup 
+of an experiment systems researchers typically strive for making 
+results "understandable" by applying sound statistical analysis to the 
+experimental design and analysis of results 
+[@hoefler_scientific_2015]. The Popper Convention makes controlled 
+experiments practical by managing all aspects of the setup of an 
+experiment and leveraging shared infrastructure.
 
 ## Providing Performance Profiles Alongside Experimental Results
 
