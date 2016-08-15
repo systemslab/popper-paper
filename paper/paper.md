@@ -459,28 +459,37 @@ of the repository. This, as well as any large datasets that are used
 as input to an experiment reside in their own repositories and are 
 stored in the experiment folder of paper repository as references.
 
+![A workflow depicting the steps that a reader or reviewer take when 
+going through a Popperized article.
+](figures/wflow.png){#fig:review-workflow}
+
+
 With all these artifacts available, the reader can easily deploy an 
 experiment or rebuild the article's PDF that might include new 
-results. A paper is written in any desired markup language. In the 
-above listing we use LATeX as an example (`paper.tex` file). There is 
-a `build.sh` command that generates the output format (e.g. `PDF`). 
-For the experiment execution logic, each experiment folder contains 
-the necessary information such as setup, output post-processing (data 
-analysis) and scripts for generating an image from the results. The 
-execution of the experiment will produce output that is either 
-consumed by a post-processing script, or directly by the scripts that 
-generate an image. The output can be in any format (CSVs, HDF, NetCDF, 
-etc.), as long as it is versioned and referenced. An important 
-component of the experiment logic is that it should assert the 
-original assumptions made about environment (a `setup.yml` file in the 
-example), for example, the operating system version (if the experiment 
-assumes one). Also, it's important to parametrize the experiment 
-explicitly (e.g. `vars.yml`), so that readers can quickly get an idea 
-of what's the parameter space of the experiment and what they can 
-modify in order to obtain different results. One common practice we 
-follow is to place in every figure's caption a `[source]` link that 
-points to the URL of the corresponding post-processing script in the 
-version control web interface (e.g. GitHub[^github-ipy]).
+results. In @Fig:review-workflow we show a generic reviewing workflow 
+for a Popperized article. The diagram makes reference to Ansible and 
+Docker, as well as particular cloud storage services but, as mentioned 
+earlier, these can be swapped by equivalent tools. A paper is written 
+in any desired markup language. In the above listing we use LATeX as 
+an example (`paper.tex` file). There is a `build.sh` command that 
+generates the output format (e.g. `PDF`). For the experiment execution 
+logic, each experiment folder contains the necessary information such 
+as setup, output post-processing (data analysis) and scripts for 
+generating an image from the results. The execution of the experiment 
+will produce output that is either consumed by a post-processing 
+script, or directly by the scripts that generate an image. The output 
+can be in any format (CSVs, HDF, NetCDF, etc.), as long as it is 
+versioned and referenced. An important component of the experiment 
+logic is that it should assert the original assumptions made about 
+environment (a `setup.yml` file in the example), for example, the 
+operating system version (if the experiment assumes one). Also, it's 
+important to parametrize the experiment explicitly (e.g. `vars.yml`), 
+so that readers can quickly get an idea of what's the parameter space 
+of the experiment and what they can modify in order to obtain 
+different results. One common practice we follow is to place in every 
+figure's caption a `[source]` link that points to the URL of the 
+corresponding post-processing script in the version control web 
+interface (e.g. GitHub[^github-ipy]).
 
 [^github-ipy]: GitHub has the ability to render jupyter notebooks on 
 its web interface. This is a static view of the notebook (as produced 
@@ -538,7 +547,7 @@ where the bottleneck is in the network (e.g. because storage is
 faster). Many of the commonly used orchestration tools incorporate 
 functionality for obtaining "facts" about the environment, information 
 that is useful to have when corroborating assumptions; other 
-monitoring tools such as Nagios [@nagioscontributors_nagios_2016] can 
+monitoring tools such as Nagios [@nagiosenterprises_nagios_2016] can 
 capture raw system-level performance; and existing frameworks such as 
 baseliner [@jimenez_baseliner_2016] are designed to obtain baseline 
 profiles that are associated to experimental results. All these 
@@ -683,7 +692,7 @@ experiments with minimal 3rd party and effort requirements.
 Variability profile of benchmarks.
 ](experiments/torpor/variability_profile.png){#fig:torpor-variability}
 
-[^notreally]: Strictly speaking, these Torpor experiment doesn't 
+[^notreally]: Strictly speaking, this Torpor experiment doesn't 
 necessarily depend on a particular Linux version but we assume it does 
 to illustrate the need of running a specific version of the kernel.
 
@@ -833,6 +842,7 @@ repository commits. A couple of tips:
     changes to the experiment, or the new results being added to the 
     repository.
 
+## Popper Review Workflow
 
 # Discussion
 
