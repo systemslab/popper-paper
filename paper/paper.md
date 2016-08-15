@@ -967,9 +967,8 @@ people run several executions (usually 10) on the same machine and
 report averages. Our research focuses in looking at the challenges of 
 providing controlled environments by leveraging OS-level 
 virtualization. [@jimenez_characterizing_2016] reports some 
-preliminary work.
-
-Our convention can be used to either of these two approaches.
+preliminary work. Our convention can be used to either of these two 
+approaches.
 
 ## Controlled Experiments become Practical
 
@@ -983,13 +982,23 @@ results "understandable" by applying sound statistical analysis to the
 experimental design and analysis of results 
 [@hoefler_scientific_2015]. The Popper Convention makes controlled 
 experiments practical by managing all aspects of the setup of an 
-experiment and leveraging shared infrastructure.
+experiment and leveraging shared infrastructure. By providing 
+performance profiles alongside experimental results, this allows to 
+preserve the performance characteristics of the underlying hardware 
+that an experiment executed on and facilitates the interpretation of 
+results in the future.
 
-## Providing Performance Profiles Alongside Experimental Results
+## DevOps Skills Are Highly Valued by Industry
 
-This allows to preserve the performance characteristics of the 
-underlying hardware that an experiment executed on and facilitates the 
-interpretation of results in the future.
+While the learning curve for the DevOps toolkit is steep, having these 
+as part of the skillset of students or researchers-in-training can 
+only improve their curriculum. Since industry and many 
+industrial/national laboratories have embraced a DevOps approach (or 
+are in the process of embracing), making use of these tools improves 
+their prospects of future employment. In other words, these are skills 
+that will hardly represent wasted time investments, on the contrary, 
+this might be motivation enough for students to learn at least one 
+tool from each of the stages of the DevOps pipeline.
 
 # Conclusion
 
