@@ -11,24 +11,23 @@ author:
 number-of-authors: 4
 abstract: |
   Independent validation of experimental results in the field of 
-  systems research is a challenging task, mainly due to changes and 
-  differences in software and hardware in computational environments. 
-  Recreating an environment that resembles the original is difficult 
-  and time-consuming. In this paper we introduce _Popper_, a 
-  convention based on a set of modern open source software (OSS) 
-  development principles for producing scientific publications. 
+  systems research is a challenging task, mainly due to differences in 
+  software and hardware in computational environments. Recreating an 
+  environment that resembles the original is difficult and 
+  time-consuming. In this paper we introduce _Popper_, a convention 
+  based on a set of modern open source software (OSS) development 
+  principles for generating reproducible scientific publications. 
   Concretely, we make the case for treating an article as an OSS 
   project following a DevOps approach and applying software 
   engineering best-practices to manage its associated artifacts and 
   maintain the reproducibility of its findings. Popper leverages 
   existing cloud-computing infrastructure and DevOps tools to produce 
   academic articles that are easy to validate, reproduce and extend. 
-  We present three use cases that illustrate the usefulness of this 
+  We present four use cases that illustrate the usefulness of this 
   approach. We show how, by following the _Popper_ convention, 
   re-executing experiments on multiple platforms is more practical, 
-  allowing reviewers and students to quickly get to the point of 
-  getting results without relying on the original author's 
-  intervention.
+  allowing reviewers and students quickly get to the point of getting 
+  results without relying on the original author's intervention.
 documentclass: sigplanconf
 sigplanconf: true
 classoption: preprint
@@ -71,8 +70,9 @@ software (OSS) project. We introduce _Popper_, a convention for
 organizing an article's artifacts following a DevOps 
 [@httermann_devops_2012 ; @loukides_what_2012] approach that allows 
 researchers to make all the associated artifacts publicly available 
-with the goal of easing the re-execution of experiments and validation 
-of results. There are two main goals for Popper:
+with the goal of maximizing automation in the re-execution of 
+experiments and validation of results. There are two main goals for 
+Popper:
 
  1. It should be usable in as many research projects as possible, 
     regardless of their domain.
@@ -89,7 +89,7 @@ contributions:
     experiments following the DevOps model;
   * Popper-CLI: an experiment bootstrapping tool that makes 
     Popper-compliant experiments readily available to researchers; and
-  * Three use cases detailing how to follow Popper in practice.
+  * Four use cases detailing how to follow Popper in practice.
 
 The use cases illustrate the benefits of following the Popper 
 convention: it brings order to personal research workflows and makes 
@@ -101,6 +101,11 @@ reproducibility integrity of experiments.
 
 # Common Practice
 
+We have examined the collective experiences of many researchers and 
+have identified common practices. In this section we look at each of 
+these and mention examples of how they fall short of providing a way 
+of generating reproducible articles.
+
 ## Ad-hoc Personal Workflows
 
 A typical practice is the use of custom bash scripts to automate some 
@@ -110,8 +115,9 @@ of their time, or at least that's the belief. Since these are
 personalized scripts, they usually hard-code many of the parameters or 
 paths to files in the local machine. Worst of all, a lot of the 
 contextual information is in the mind of researchers. Without a list 
-of guiding principles, going back to an experiment, even for the 
-original author on the same machine, represents a time-consuming task.
+of guiding principles, going back to an experiment, _even for the 
+original author on the same machine_, represents a time-consuming 
+task.
 
 ## Sharing source code
 
@@ -132,13 +138,13 @@ unavailable.
 An alternative to sharing source code is experiment repositories 
 [@stodden_researchcompendiaorg_2015 ; @stodden_runmycodeorg_2012 ; 
 @roure_designing_2007]. These allow researchers to upload artifacts 
-associated to a paper. Similarly to code repositories, one of the main 
-problems is the lack of automation and structure for the artifacts. 
-The availability of the artifacts does not guarantee the reproduction 
-of results since a significant amount of manual work needs to be done 
-after these have been downloaded. Additionally, large data 
-dependencies cannot be uploaded since there is usually a limit on the 
-artifact file size.
+associated with a paper, such as input data sets. Similar to code 
+repositories, one of the main problems is the lack of automation and 
+structure for the artifacts. The availability of the artifacts does 
+not guarantee the reproduction of results since a significant amount 
+of manual work needs to be done after these have been downloaded. 
+Additionally, large data dependencies cannot be uploaded since there 
+is usually a limit on the artifact file size.
 
 ## Virtual Machines
 
@@ -189,7 +195,7 @@ code only covers the first task (source code); experiment packing only
 covers the second one (packaging); and so on. Based on this, we see 
 the need for a new methodology that has the following properties:
 
-  * Reproducible from the get-go without incurring in extra work for 
+  * Reproducible from the get-go without incurring any extra work for 
     the researcher. To the contrary, it should require the same or 
     less effort but in a convened way.
   * Improve the personal workflows of scientists by having a common 
@@ -219,13 +225,13 @@ articles, which can be seen as taking the idea of an executable paper
 and implementing it with a DevOps approach.
 
 In this section we review and highlight salient features of the DevOps 
-toolbox that makes it amenable to organize all the artifacts 
+toolkit that makes it amenable to organize all the artifacts 
 associated to an academic article. To guide our discussion, we refer 
 to the generic experimentation workflow (top) in @Fig:exp_workflow, 
 viewed through a DevOps looking glass (bottom). In @Sec:popper we 
 analyze more closely the composability of these tools and describe 
 general guidelines (the convention) on how to structure projects that 
-make use of the DevOps toolbox.
+make use of the DevOps toolkit
 
 ## Version Control
 
@@ -263,8 +269,6 @@ management (SCM) functionality of Git as well as adding their own
 features. They give new users the ability to look at the entire 
 history of the project and its artifacts.
 
-## Package Management
-
 ![A generic experimentation workflow (top) typically followed by 
 researchers in projects with a computational component. Some of the 
 reasons to iterate (backwards-going arrows) are: fixing a bug in the 
@@ -285,8 +289,10 @@ markdown (manuscript); gitlab, bitbucket and github (experiment
 changes).
 ](figures/devops_approach.png){#fig:exp_workflow}
 
+## Package Management
+
 Availability of code does not guarantee reproducibility of results 
-[@collberg_repeatability_2015]. The second main component on 
+[@collberg_repeatability_2015]. The second main component in the 
 experimentation pipeline is the packaging of applications so that 
 users don't have to. Software containers (e.g. Docker, OpenVZ or 
 FreeBSD's jails) complement package managers by packaging all the 
@@ -406,7 +412,7 @@ statements about the runtime metrics gathered of an experiment.
 
 The goal for _Popper_ is to give researchers a common framework to 
 reason, in a convened way, about how to structure all the dependencies 
-and generated artifacts associated to an experiment. This convention 
+and generated artifacts associated with an experiment. This convention 
 provides the following unique features:
 
  1. Provides with a methodology (or experimentation protocol) for 
@@ -419,6 +425,23 @@ provides the following unique features:
     commonly used by a research community.
 
 ## Self-containment
+
+We say that an experiment is Popper-compliant (or that it has been 
+"Popperized") if all of the following is available, either directly or 
+by reference, in one single source-code repository: experiment code, 
+experiment orchestration code, reference to data dependencies, 
+parametrization of experiment, validation criteria and results. In 
+other words, a Popper repository contains all the dependencies for an 
+article, including its manuscript. The structure of a Popper repo is 
+simple, there are `paper/` and `experiments/` folders, and every 
+experiment has a `datasets/` folder in it.
+
+An example paper project is shown in @Lst:dir. A paper repository is 
+mainly composed of the article text and experiment orchestration 
+logic. The actual code that gets executed by an experiment is not part 
+of the repository. This, as well as any large datasets that are used 
+as input to an experiment reside in their own repositories and are 
+stored in the experiment folder of paper repository as references.
 
 ```{#lst:dir .bash caption="Sample contents of a Popper repository."}
 paper-repo
@@ -441,23 +464,6 @@ paper-repo
 |   |-- paper.tex
 |    -- references.bib
 ```
-
-We say that an experiment is Popper-compliant (or that it has been 
-"Popperized") if all of the following is available, either directly or 
-by reference, in one single source-code repository: experiment code, 
-experiment orchestration code, reference to data dependencies, 
-parametrization of experiment, validation criteria and results. In 
-other words, a popper repository contains all the dependencies for an 
-article, including its manuscript. The structure of a Popper repo is 
-simple, there are `paper/` and `experiments/` folders, and every 
-experiment has a `datasets/` folder in it.
-
-An example paper project is shown in @Lst:dir. A paper repository is 
-mainly composed of the article text and experiment orchestration 
-logic. The actual code that gets executed by an experiment is not part 
-of the repository. This, as well as any large datasets that are used 
-as input to an experiment reside in their own repositories and are 
-stored in the experiment folder of paper repository as references.
 
 With all these artifacts available, the reader can easily deploy an 
 experiment or rebuild the article's PDF that might include new 
@@ -491,7 +497,7 @@ every figure's caption a `[source]` link that points to the URL of the
 corresponding post-processing script in the version control web 
 interface (e.g. GitHub[^github-ipy]).
 
-[^github-ipy]: GitHub has the ability to render jupyter notebooks on 
+[^github-ipy]: GitHub has the ability to render Jupyter notebooks on 
 its web interface. This is a static view of the notebook (as produced 
 by the original author). In order to have a live version of the 
 notebook, one has to instantiate a Binder or run a local notebook 
@@ -502,14 +508,14 @@ server.
 Validation of experiments can be classified in two categories. In the 
 first one, the integrity of the experimentation logic is checked using 
 existing continuous-integration (CI) services such as TravisCI, which 
-expects a `.travis.yml` file at the root folder that. This 
-specification consists of a list of tests that get executed every time 
-a new commit is added to the repository. This type of checks can 
-verify that the paper can be built (generate the PDF correctly); that 
-the syntax of orchestration files is correct to ensure that, if an 
-experiment is changed, say, by adding a new variable, it can be 
-executed without any issues; or checking that the post-processing 
-routines can be executed without problems.
+expects a `.travis.yml` file at the root folder. This file contains a 
+specification that consists of a list of tests that get executed every 
+time a new commit is added to the repository. These type of checks can 
+verify that the paper is always in a state that can be built (generate 
+the PDF correctly); that the syntax of orchestration files is correct 
+to ensure that, if an experiment is changed, say, by adding a new 
+variable, it can be executed without any issues; or checking that the 
+post-processing routines can be executed without problems.
 
 The second category of validations is related to the integrity of the 
 experiment results. These domain-specific tests ensure that the claims 
@@ -517,10 +523,10 @@ made in the paper are valid for every re-execution of the experiment;
 analogous to performance regression tests done in software projects 
 that can be implemented using the same class of tools. Alternatively, 
 claims can also be corroborated as part of the analysis code. When 
-experiments are not sensible to the effects of virtualized platforms, 
+experiments are not sensitive to the effects of virtualized platforms, 
 these assertions can be executed on public/free CI platforms (e.g. 
-TravisCI runs tests in VMs). However, when results are sensible to the 
-underlying hardware, it is preferable to leave this out of the CI 
+TravisCI runs tests in VMs). However, when results are sensitive to 
+the underlying hardware, it is preferable to leave this out of the CI 
 pipeline and make them part of the post-processing routines of the 
 experiment. In the example above, an `assertions.aver` file contains 
 validations in the Aver [@jimenez_aver_2016] language that check the 
@@ -558,8 +564,22 @@ before an experiment runs, as a way of sanitizing the execution.
 
 ## Toolchain Agnosticism
 
-We designed Popper as a general tool, applicable to a wide variety of 
-environments, from cloud to HPC. Figure 2 In general, Popper can be 
+```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
+$ cd mypaper-repo
+$ popper init
+-- Initialized Popper repo
+
+$ popper experiment list
+-- available templates ---------------
+ceph-rados        proteustm  mpi-comm-variability
+cloverleaf        gassyfs    zlog
+spark-standalone  torpor     malacology
+
+$ popper add torpor myexp
+```
+
+We thought of Popper as a general convention, applicable to a wide 
+variety of environments, from cloud to HPC. In general, Popper can be 
 applied in any scenario where a component (data, code, infrastructure, 
 hardware, etc.) is referenceable, and where there is an underlying 
 tool that consumes these IDs so that they can be acted upon (install, 
@@ -580,20 +600,6 @@ properties:
  2. The tool is scriptable (e.g. can be invoked in a CLI) and can act 
     upon given asset IDs.
 
-```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
-$ cd mypaper-repo
-$ popper init
--- Initialized Popper repo
-
-$ popper experiment list
--- available templates ---------------
-ceph-rados        proteustm  mpi-comm-variability
-cloverleaf        gassyfs    zlog
-spark-standalone  torpor     malacology
-
-$ popper add torpor myexp
-```
-
 In @Sec:toolkit we have provided a list of tools for every category of 
 the generic experimentation workflow (@Fig:exp_workflow) that comply 
 with the two properties given above. In order to illustrate better why 
@@ -607,14 +613,14 @@ these are important, we give examples of non-compliant tools:
 
 In general, tools that are hard to script e.g. because they don't 
 provide a command-line interface (can only interact via GUI) or they 
-only have a programmatic API for a non-interpreted language or, are 
-"unpopperizable" tools.
+only have a programmatic API for a non-interpreted language, are 
+beyond the scope of Popper.
 
 ## Experiment Templates
 
 Researchers that decide to follow Popper are faced with a steep 
 learning curve, especially if they have only used a couple of tools 
-from the DevOps toolbox. To lower the entry barrier, we have developed 
+from the DevOps toolkit. To lower the entry barrier, we have developed 
 a CLI tool[^link:cli] to help bootstrap a paper repository that 
 follows the Popper convention.
 
@@ -646,7 +652,7 @@ comprehensive results.
 Reproducing systems experiments is sometimes challenging due to their 
 sensitivity to the underlying hardware and low-level software stack 
 (firmware and OS). In this use case we exemplify how an experiment 
-that is potentially sensible to a customized version of the OS can be 
+that is potentially sensitive to a customized version of the OS can be 
 "Popperized", e.g. because it needs particular features of a custom 
 kernel or specific drivers.
 
@@ -673,6 +679,15 @@ higher-level wrapper around virtualization software that provides the
 framework and configuration format (Ruby language scripts) to create 
 and manage complete portable development environments.
 
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
+Variability profile of a set of CPU-bound benchmarks. Each data point 
+in the histogram corresponds to the speedup of a stress-ng 
+microbenchmark that a node in CloudLab has with respect to one of our 
+machines in our lab, a 10 year old Xeon. For example, the 
+architectural improvements of the newer machine cause 7 stressors to 
+have a speedup within the `(2.2, 2.3]` range over the base machine.
+](experiments/torpor/variability_profile.png){#fig:torpor-variability}
+
 The experiment folder contains all necessary files to easily invoke it 
 and generate figures. A bash `run.sh` script installs Vagrant if it's 
 not present; downloads the VM or builds it if links are broken; and 
@@ -685,15 +700,6 @@ mentioned before, the goal of Popper is to provide self-contained
 experiments with minimal 3rd party and effort requirements.
 
 <!-- Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot -->
-
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
-Variability profile of a set of CPU-bound benchmarks. Each data point 
-in the histogram corresponds to the speedup of a stress-ng 
-microbenchmark that a node in CloudLab has with respect to one of our 
-machines in our lab, a 10 year old Xeon. For example, the 
-architectural improvements of the newer machine cause 7 stressors to 
-have a speedup within the `(2.2, 2.3]` range over the base machine.
-](experiments/torpor/variability_profile.png){#fig:torpor-variability}
 
 [^notreally]: Strictly speaking, this Torpor experiment doesn't 
 necessarily depend on a particular Linux version but we assume it does 
@@ -723,6 +729,11 @@ applications with multiple stages of execution. The differences
 between GassyFS and tmpfs become apparent when we consider how users 
 deal with durability concerns.
 
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
+Scalability of GassyFS as the number of nodes in the GASNet cluster 
+increases. The workload in question compiles `git`.
+](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
+
 Although GassyFS is simple in design, it is relatively complex to 
 setup. The combinatorial space of possible ways in which the system 
 can be compiled, packaged and configured is large. For example, 
@@ -736,11 +747,6 @@ values.
 [^more]: These are the flags that are documented. There are many more 
 that can be configured but not shown in the official documentation.
 
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
-Scalability of GassyFS as the number of nodes in the GASNet cluster 
-increases. The workload in question compiles `git`.
-](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
-
 In figure @Fig:gassyfs-git we show one of multiple experiments that 
 evaluate the performance of GassyFS. We note that while the 
 performance numbers obtained are relevant, they are not our main 
@@ -753,10 +759,11 @@ how it performs when we increase the number of nodes in the underlying
 GASNet-backed FUSE mount. Figure @Fig:gassyfs-git shows the results of 
 compiling `git` on GassyFS. We observe that once the cluster gets to 2 
 nodes, performance degrades sublinearly with the number of nodes. This 
-is expected for workloads such as the one in question. The following 
-Aver assertion is used to check the integrity of this result:
+is expected for workloads such as the one in question. The Aver 
+assertion in @Lst:aver-assertion is used to check the integrity of 
+this result.
 
-```sql
+```{#lst:aver-assertion .sql caption="Assertion to check scalability behavior."}
   when
     workload=* and machine=*
   expect
@@ -770,6 +777,13 @@ obtained.
 
 ## MPI Noisy Neighborhood Characterization
 
+```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
+$ popper add jupyter-bww airtemp-analysis
+$ cd experiments/airtemp-analysis
+$ dpm install datapackages/air-temperature
+$ ./visualize.sh
+```
+
 In this use case we exemplify the scenario where OS- and 
 hardware-level virtualization is prohibited such as HPC. In this case, 
 one still can capture most of the software environment by making use 
@@ -778,13 +792,6 @@ software stack, one provides the package manager with a list of
 packages with specific versions and, when necessary, compiler and 
 compilation flags. The package manager then is in charge of restoring 
 the environment, re-compiling binaries if needed.
-
-```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
-$ popper add jupyter-bww airtemp-analysis
-$ cd experiments/airtemp-analysis
-$ dpm install datapackages/air-temperature
-$ ./visualize.sh
-```
 
 We took an experiment from [@bhatele_there_2013] in which an MPI 
 application runs multiple times and its communication performance is 
@@ -815,6 +822,12 @@ the root of the git repository. This creates a `.popper.yml` file that
 contains configuration options for the CLI tool. This file is 
 committed to the paper (git) repository.
 
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
+The output of analysis of weather prediction data. The output comes 
+from data processed with the `xarray` Python library. The data 
+corresponds to the NCEP/NCAR Reanalysis 1.
+](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
+
 **Adding a New Experiment**: As mentioned before, we maintain a list 
 of experiment templates that have been "Popperized" (@Lst:poppercli). 
 In this example we want to analyze data from an experiment in the area 
@@ -835,12 +848,6 @@ they should be managed by other tools. We use `dpm` in this case
 can open the notebook to visualize and interact with the data analysis 
 of this experiment. The last line above opens a browser and points it 
 to the notebook.
-
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
-The output of analysis of weather prediction data. The output comes 
-from data processed with the `xarray` Python library. The data 
-corresponds to the NCEP/NCAR Reanalysis 1.
-](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
 
 **Documenting the Experiment**: After we're done with our experiment, 
 we might want to document it and add a paper. The Popper-CLI also 
