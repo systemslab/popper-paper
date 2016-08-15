@@ -1,6 +1,5 @@
 ---
-title: "The Popper Convention: Making Reproducible Systems Evaluation 
-Practical"
+title: "The Popper Convention: Making Reproducible Systems Evaluation Practical"
 titlebanner: "ASPLOS Submission \\#390 - Confidential Draft - Do Not Distribute!!"
 author:
 - name: "  "
@@ -209,6 +208,15 @@ the need for a new methodology that has the following properties:
     existing work.
 
 # The DevOps Toolkit {#sec:toolkit}
+
+While is difficult to find a globally accepted definition of DevOps, 
+for our purposes we use the term to refer to a set of common practices 
+that have the goal of expediting the delivery of a software project, 
+allowing to iterate as fast as possible on improvements and new 
+features, without undermining the quality of the software product. In 
+our work, we make the case for achieving the same outcome for academic 
+articles, which can be seen as taking the idea of an executable paper 
+and implementing it with a DevOps approach.
 
 In this section we review and highlight salient features of the DevOps 
 toolbox that makes it amenable to organize all the artifacts 
