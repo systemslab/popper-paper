@@ -593,7 +593,7 @@ ceph-rados        proteustm  mpi-comm-variability
 cloverleaf        gassyfs    zlog
 spark-standalone  torpor     malacology
 
-$ popper add mpi myexp
+$ popper add torpor myexp
 ```
 
 [^link:cli]: https://github.com/systemslab/popper/tree/master/popper
@@ -731,45 +731,82 @@ with respect to the number of nodes. After the experiment runs, Aver
 is invoked to test the above statement against the experiment results 
 obtained.
 
-## Quantifying MPI Performance Variability
+## Numerical Weather Prediction: A Data-centric Use Case
 
-In scenarios where OS- and hardware-level virtualization is prohibited 
-such as HPC, one still can recreate the software stack. Modern package 
-managers such as Spack and Nix can help.
+In this use case we show how to bootstrap a data science paper that 
+follows the Popper convention using the Popper-CLI tool. Popper in 
+this scenario is followed so that datasets are properly referenced and 
+analysis scripts used to process data are versioned and associated to 
+an article.
 
-To recreate, one provides a list of packages with specific versions 
-and, when necessary, specification of compiler and compilation flags. 
-For example, we can recreate an experiment from 
-<http://dl.acm.org/citation.cfm?id=2503247>, which is an HPC scenario 
-(LULESH experiment):
+**Initializing a Popper Repository**: Our Popper-CLI tool assumes a 
+git repository exists. Given a git repo, we invoke the Popper-CLI tool 
+and initialize the Popper files by issuing a `popper init` command in 
+the root of the git repository. This creates a `.popper.yml` file that 
+contains configuration options for the CLI tool. This file is 
+committed to the paper (git) repository.
 
-```bash
-spack install mpi@3.4
-spack instll
+**Adding a New Experiment**: As mentioned before, we maintain a list 
+of experiment templates that have been "Popperized" (@Lst:poppercli). 
+In this example we want to analyze data from an experiment in the area 
+of meteorological sciences (a template created as part of the [Big 
+Weather Web project](http://bigweatherweb.org)). For this experiment, 
+sensor data has been generated elsewhere and we are interested in 
+properly referencing the dataset, i.e. dataset creation is not part of 
+the experiment. Additionally, the analysis runs on a single machine. 
+Other types of data science projects might involve generating their 
+input datasets and/or process data in a cluster of machines. Popper 
+still can be followed in these scenarios, as shown in previous 
+sections.
+
+```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
+$ popper add jupyter-bww airtemp-analysis
+$ cd experiments/airtemp-analysis
+$ dpm install datapackages/air-temperature
+$ ./visualize.sh
 ```
 
-In this experiment, we assume there is a batch manager that runs the 
-job.
+This data analysis experiment consists of one dataset and a Jupyter 
+notebook. Relatively large datasets aren't managed well by git, so 
+they should be managed by other tools. We use `dpm` in this case 
+(third line in @Lst:bootstrap). Once the datasets are downloaded, one 
+can open the notebook to visualize and interact with the data analysis 
+of this experiment. The last line above opens a browser and points it 
+to the notebook.
 
-Reproduction steps: clone the repository, execute install.sh
+**Documenting the Experiment**: After we're done with our experiment, 
+we might want to document it and add a paper. The Popper-CLI also 
+provides with manuscript templates. We can use the generic `article` 
+latex template or other more domain-specific ones. To display the 
+available templates we do `popper paper list`. In this example we'll 
+use the latex template for articles that appear in the [Bulletin of 
+the American meteorological Society 
+(BAMS)](http://journals.ametsoc.org/loi/bams).
 
-The repo:
+Let's assume we have a new section in the LATeX file where we describe 
+our experiment. We make use of the figure that we have generated and 
+reference it from the LATeX file. We then regenerate the article (with 
+a `build.sh` command inside the `paper` folder) and see the new image 
+like the one shown in @Fig:bww-airtempanalysis.
 
-```
-lulesh/
-  setup.sh
-  run.sh
-  simulation-output.hdf5
-  visualize.py
-  perf-metris.csv
-```
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
+The output of analysis of weather prediction data. The output comes 
+from data processed with the `xarray` Python library. The data 
+corresponds to the NCEP/NCAR Reanalysis 1.
+](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
 
-What run does: sanitize environment (check kernel/os versions), clone 
-(install) spack and install packages (setup.sh); then it runs an mpi 
-experiment, which produces 1) output of simulation (output.hdf5) and 
-2) performance metrics.
+**Documenting Changes to Experiments**: The paper repository is the 
+analogy to the lab notebook in experimental science. There are many 
+ways in which these changes can be registered in the form of code 
+repository commits. A couple of tips:
 
-Toolchain: Latex, Spack, Slurm and Paraview
+  * Make changes small. Avoid having large commits since that makes it 
+    harder to document.
+  * Separate commits that change the logic of the experiment and 
+    analysis, from the ones that record changes to results.
+  * Commit messages should describe in as much detail as possible the 
+    changes to the experiment, or the new results being added to the 
+    repository.
 
 
 # Discussion
