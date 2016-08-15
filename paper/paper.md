@@ -26,8 +26,9 @@ abstract: |
   We present four use cases that illustrate the usefulness of this 
   approach. We show how, by following the _Popper_ convention, 
   re-executing experiments on multiple platforms is more practical, 
-  allowing reviewers and students quickly get to the point of getting 
-  results without relying on the original author's intervention.
+  allowing reviewers and researchers quickly get to the point of 
+  getting results without relying on the original author's 
+  intervention.
 documentclass: sigplanconf
 sigplanconf: true
 classoption: preprint
@@ -64,19 +65,20 @@ In this work, we revisit the idea of an executable paper
 [@strijkers_executable_2011 ; @dolfi_model_2014 ; 
 @leisch_executable_2011 ; @kauppinen_linked_2011], which proposes the 
 integration of executables and data with scholarly articles to help 
-facilitate its reproducibility, but look at implementing it in today's 
-cloud-computing world by treating an article as an open source 
+facilitate its reproducibility. Our approach is to implement it in 
+today's cloud-computing world by treating an article as an open source 
 software (OSS) project. We introduce _Popper_, a convention for 
 organizing an article's artifacts following a DevOps 
 [@httermann_devops_2012 ; @loukides_what_2012] approach that allows 
-researchers to make all the associated artifacts publicly available 
-with the goal of maximizing automation in the re-execution of 
-experiments and validation of results. There are two main goals for 
-Popper:
+researchers to make all associated artifacts publicly available with 
+the goal of maximizing automation in the re-execution of experiments 
+and validation of results. There are two main goals for Popper:
 
  1. It should be usable in as many research projects as possible, 
     regardless of their domain.
- 2. It should abstract the underlying technologies.
+ 2. It should abstract underlying technologies without requiring a 
+    strict set of tools, making it possible to apply it on multiple 
+    toolchains.
 
 This paper describes our experiences with the Popper convention which 
 we have successfully followed to aid in producing papers and classroom 
@@ -84,56 +86,57 @@ lessons that are easy to reproduce. This paper makes the following
 contributions:
 
   * An analysis of how the DevOps practice can be repurposed to an 
-    academic article;
+    academic article (@Sec:common-practice and @Sec:toolkit);
   * Popper: A methodology for writing academic articles and associated 
-    experiments following the DevOps model;
+    experiments following the DevOps model (@Sec:popper);
   * Popper-CLI: an experiment bootstrapping tool that makes 
     Popper-compliant experiments readily available to researchers; and
-  * Four use cases detailing how to follow Popper in practice.
+  * Four use cases detailing how to follow Popper in practice 
+    (@Sec:cases).
 
-The use cases illustrate the benefits of following the Popper 
+In this work we demonstrate the benefits of following the Popper 
 convention: it brings order to personal research workflows and makes 
 it practical for others to re-execute experiments on multiple 
 platforms with minimal effort, without having to speculate on what the 
 original authors did to compile and configure the system; and shows 
 how automated performance regression testing aids in maintaining the 
-reproducibility integrity of experiments.
+reproducibility integrity of experiments (@Sec:discussion discusses 
+more extensively these points).
 
-# Common Practice
+# Experimental Practices {#sec:common-practice}
 
-We have examined the collective experiences of many researchers and 
-have identified common practices. In this section we look at each of 
-these and mention examples of how they fall short of providing a way 
-of generating reproducible articles.
+In this section we examine common practices and identify desired 
+features for a new experimental methodology.
 
-## Ad-hoc Personal Workflows
+## Common Practice
+
+### Ad-hoc Personal Workflows
 
 A typical practice is the use of custom bash scripts to automate some 
-of the tasks of executing experiments. From the point of view of 
-researchers, having an ad-hoc framework results in more efficient use 
-of their time, or at least that's the belief. Since these are 
-personalized scripts, they usually hard-code many of the parameters or 
-paths to files in the local machine. Worst of all, a lot of the 
-contextual information is in the mind of researchers. Without a list 
-of guiding principles, going back to an experiment, _even for the 
+of the tasks of executing experiments and analyzing results. From the 
+point of view of researchers, having an ad-hoc framework results in 
+more efficient use of their time, or at least that's the belief. Since 
+these are personalized scripts, they usually hard-code many of the 
+parameters or paths to files in the local machine. Worst of all, a lot 
+of the contextual information is in the mind of researchers. Without a 
+list of guiding principles, going back to an experiment, _even for the 
 original author on the same machine_, represents a time-consuming 
 task.
 
-## Sharing source code
+### Sharing Source Code
 
 Version-control systems give authors, reviewers and readers access to 
 the same code base [@brown_how_2014] but the availability of source 
 code does not guarantee reproducibility 
 [@collberg_repeatability_2015]; code may not compile, and even it 
-does, results may differ due to differences coming from other 
-components in the software stack. While sharing source code is 
-beneficial, it leaves readers with the daunting task of recompiling, 
-reconfiguring, deploying and re-executing an experiment. Things like 
-compilation flags, experiment parameters and results is fundamental 
-contextual information for re-executing an experiment that is 
-unavailable.
+does, results may differ due to differences from other components in 
+the software stack. While sharing source code is beneficial, it leaves 
+readers with the daunting task of recompiling, reconfiguring, 
+deploying and re-executing an experiment. Things like compilation 
+flags, experiment parameters and results are fundamental contextual 
+information for re-executing an experiment.
 
-## Experiment repositories
+### Experiment Repositories
 
 An alternative to sharing source code is experiment repositories 
 [@stodden_researchcompendiaorg_2015 ; @stodden_runmycodeorg_2012 ; 
@@ -146,7 +149,7 @@ of manual work needs to be done after these have been downloaded.
 Additionally, large data dependencies cannot be uploaded since there 
 is usually a limit on the artifact file size.
 
-## Virtual Machines
+### Virtual Machines
 
 A Virtual Machine (VM) can be used to partially address the 
 limitations of only sharing source code. However, in the case of 
@@ -154,10 +157,11 @@ systems research where the performance is the subject of study, the
 overheads in terms of performance (the hypervisor "tax") and 
 management (creating, storing and transferring) can be high and, in 
 some cases, they cannot be accounted for easily [@clark_xen_2004 ; 
-@klimeck_nanohuborg_2008]. An alternative to this is OS-level 
+@klimeck_nanohuborg_2008]. In scenarios where OS-level virtualization 
+is a viable alternative, it can be used instead of hardware-level 
 virtualization [@jimenez_role_2015].
 
-## Experiment Packing
+### Experiment Packing
 
 Experiment packing entails tracing an experiment at runtime to capture 
 all its dependencies and generating a package that can be shared with 
@@ -170,7 +174,7 @@ contextual information (e.g. history of modifications) that is hard to
 introspect, making difficult to build upon existing work; and 
 packaging does not explicitly capture validation criteria.
 
-## _Eyeball_ Validation
+### _Eyeball_ Validation
 
 Assuming the reader is able to recreate the environment of an 
 experiment, validating the outcome requires domain-specific expertise 
@@ -186,52 +190,52 @@ changes in the outcome of an experiment [@saavedra-barrera_cpu_1992 ;
 subjective task, based entirely on the intuition and expertise of 
 domain-scientists.
 
-## Desiderata for a New Methodology
+## Goals for a New Methodology
 
 A diagram of a generic experimentation workflow is shown in 
 @Fig:exp_workflow (top). The problem with current practices is that 
 each of them partially cover the workflow. For example, sharing source 
 code only covers the first task (source code); experiment packing only 
 covers the second one (packaging); and so on. Based on this, we see 
-the need for a new methodology that has the following properties:
+the need for a new methodology that:
 
-  * Reproducible from the get-go without incurring any extra work for 
-    the researcher. To the contrary, it should require the same or 
-    less effort but in a convened way.
-  * Improve the personal workflows of scientists by having a common 
+  * Is reproducible without incurring any extra work for the 
+    researcher. It should require the same or less effort than current 
+    practices with the difference of doing things in a convened way.
+  * Improves the personal workflows of scientists by having a common 
     methodology that works for as many projects as possible and that 
     can be used as the basis of collaboration.
-  * Capture the end-to-end workflow in a modern (DevOps) way, 
-    including the history of changes that are made to an article 
-    throughout its lifecycle.
-  * Make use of existing tools (don't reinvent the wheel!). The DevOps 
-    toolkit is already comprehensive and easy to use.
-  * Take into account large datasets.
-  * Capture validation criteria in an explicit manner so that 
+  * Captures the end-to-end workflow in a modern way, including the 
+    history of changes that are made to an article throughout its 
+    lifecycle.
+  * Makes use of existing tools (don't reinvent the wheel!). The 
+    DevOps toolkit is already comprehensive and easy to use.
+  * Has the ability to handle large datasets.
+  * Captures validation criteria in an explicit manner so that 
     subjective evaluation of results of a re-execution is minimized.
-  * Result in experiments that are amenable to improvement and allows 
+  * Results in experiments that are amenable to improvement and allows 
     easy collaboration, as well as making it easier to build upon 
     existing work.
 
 # The DevOps Toolkit {#sec:toolkit}
 
-While is difficult to find a globally accepted definition of DevOps, 
-for our purposes we use the term to refer to a set of common practices 
-that have the goal of expediting the delivery of a software project, 
-allowing to iterate as fast as possible on improvements and new 
-features, without undermining the quality of the software product. In 
-our work, we make the case for achieving the same outcome for academic 
-articles, which can be seen as taking the idea of an executable paper 
-and implementing it with a DevOps approach.
+We use the term DevOps [@httermann_devops_2012 ; @loukides_what_2012] 
+to refer to a set of common practices that have the goal of expediting 
+the delivery of a software project, allowing to iterate as fast as 
+possible on improvements and new features, without undermining the 
+quality of the software product. In our work, we make the case for 
+achieving the same outcome for academic articles, which can be seen as 
+taking the idea of an executable paper and implementing it with a 
+DevOps approach.
 
 In this section we review and highlight salient features of the DevOps 
-toolkit that makes it amenable to organize all the artifacts 
-associated to an academic article. To guide our discussion, we refer 
-to the generic experimentation workflow (top) in @Fig:exp_workflow, 
-viewed through a DevOps looking glass (bottom). In @Sec:popper we 
-analyze more closely the composability of these tools and describe 
-general guidelines (the convention) on how to structure projects that 
-make use of the DevOps toolkit
+toolkit that makes it amenable to organize all artifacts associated 
+with an academic article. To guide our discussion, we refer to the 
+generic experimentation workflow (top) in @Fig:exp_workflow, viewed 
+through a DevOps looking glass (bottom). In @Sec:popper we analyze 
+more closely the composability of these tools and describe general 
+guidelines (the convention) on how to structure projects that make use 
+of the DevOps toolkit
 
 ## Version Control
 
@@ -247,22 +251,24 @@ the paper, changing the parameters of the experiment (both its
 components and its configuration), as well as storing the experiment 
 results.
 
-Ideally, one would like to version-control the entire end-to-end 
-pipeline for all the experiments contained in an article. With the 
-advent of cloud-computing, this is possible for most research 
-articles[^difficult-platforms]. One of the mantras of the DevOps 
-movement [@wiggins_twelvefactor_2011] is to make "infrastructure as 
-code". In a sense, having all the article's dependencies in the same 
-repository is analogous to how large cloud companies maintain 
-monolithic repositories to manage their internal infrastructure 
-[@tang_holistic_2015 ; @metz_google_2015] but at a lower scale.
+Ideally, one would like the entire end-to-end pipeline for all the 
+experiments contained in an article to be managed by a version control 
+system. With the advent of cloud-computing, this is possible for most 
+research articles[^difficult-platforms]. One of the mantras of the 
+DevOps movement [@wiggins_twelvefactor_2011] is to make 
+"infrastructure as code". In a sense, having all the article's 
+dependencies in the same repository is analogous to how large cloud 
+companies maintain monolithic repositories to manage their internal 
+infrastructure [@tang_holistic_2015 ; @metz_google_2015] but at a 
+lower scale.
 
 [^difficult-platforms]: For large-scale experiments or those that run 
 on specialized platforms, re-executing an experiment might be 
 difficult. However, this does not exclude such research projects from 
-being able to version-control the article's associated assets.
+being able to keep the article's associated assets under version 
+control.
 
-**Tools and services**: git, svn and mercurial are popular VCS tools. 
+**Tools and services**: Git, Svn and Mercurial are popular VCS tools. 
 GitHub and BitBucket are web-based Git repository hosting services. 
 They offer all of the distributed revision control and source code 
 management (SCM) functionality of Git as well as adding their own 
@@ -294,15 +300,15 @@ changes).
 Availability of code does not guarantee reproducibility of results 
 [@collberg_repeatability_2015]. The second main component in the 
 experimentation pipeline is the packaging of applications so that 
-users don't have to. Software containers (e.g. Docker, OpenVZ or 
-FreeBSD's jails) complement package managers by packaging all the 
-dependencies of an application in an entire filesystem snapshot that 
-can be deployed in systems "as is" without having to worry about 
-problems such as package dependencies or specific OS versions. From 
-the point of view of an academic article, these tools can be leveraged 
-to package the dependencies of an experiment. Software containers like 
-Docker have the great potential for being of great use in 
-computational sciences [@boettiger_introduction_2014].
+users don't have to do it themselves. Software containers (e.g. 
+Docker, OpenVZ or FreeBSD's jails) complement package managers by 
+packaging all the dependencies of an application in an entire file 
+system snapshot that can be deployed in systems "as is" without having 
+to worry about problems such as package dependencies or specific OS 
+versions. From the point of view of an academic article, these tools 
+can be leveraged to package the dependencies of an experiment. 
+Software containers like Docker have the great potential for being of 
+great use in computational sciences [@boettiger_introduction_2014].
 
 **Tools and services**: Docker [@merkel_docker_2014] automates the 
 deployment of applications inside software containers by providing an 
@@ -313,10 +319,12 @@ are modern package managers such as Nix [@dolstra_nixos_2008] or Spack
 
 ## Multi-node Orchestration
 
-Experiments that require a cluster need a tool that automatically 
-manages binaries and updates packages across machines. Traditionally, 
-this has been done with an ad-hoc bash script but for experiments that 
-are continually tested there needs to be an automated solution.
+Experiments that require a set of machines to be orchestrated can make 
+use of a tool that automatically manages binaries, updates packages 
+across machines and drives the end-to-end execution of the experiment. 
+Traditionally, this has been done with an ad-hoc bash script but for 
+experiments that are continually tested there needs to be an automated 
+solution.
 
 **Tools and services**: Ansible is a configuration management utility 
 for configuring and managing computers, as well as deploying and 
@@ -325,9 +333,9 @@ Chef, Salt, among others.
 
 ## Bare-metal-as-a-Service
 
-For experiments that cannot run on consolidated infrastructures due to 
-noisy-neighborhood phenomena (e.g. EC2), bare-metal as a service is an 
-alternative.
+For experiments that are sensitive to the inherent variability 
+associated to executing on consolidated infrastructures (e.g. Amazon's 
+EC2), bare-metal as a service is an alternative.
 
 **Tools and services**: Cloudlab [@ricci_introducing_2014], Chameleon 
 and PRObE [@gibson_probe_2013] are NSF-sponsored infrastructures for 
@@ -358,23 +366,23 @@ results.
 application. It facilitates the sharing of documents containing live 
 code (in Julia, Python or R), equations, visualizations and 
 explanatory text. Other domain-specific visualization tools can also 
-fit into this category. [Binder](mybinder.org) is an online service 
-that allows one to turn a GitHub repository into a collection of 
-interactive Jupyter notebooks so that readers don't need to deploy web 
-servers themselves. Alternatives to Jupyter are Gnuplot, Zeppelin and 
-Beaker. Other scientific visualization such as Paraview tools can also 
-fit in this category.
+fit into this category. Binder is an online service that allows one to 
+turn a GitHub repository into a collection of interactive Jupyter 
+notebooks so that readers don't need to deploy web servers themselves. 
+Alternatives to Jupyter are Gnuplot, Zeppelin and Beaker. Other 
+scientific visualization such as Paraview tools can also fit in this 
+category.
 
 ## Performance Monitoring
 
-Prior and during the execution of an experiment, capturing performance 
-metrics can be beneficial. In the case of systems research articles, 
-where performance is the main subject of study, capturing performance 
-metrics is fundamental. Instead of creating ad-hoc tools to achieve 
-this we can benefit by adopting and extending existing tools. At the 
-end of the execution, the captured data can be analyzed and many of 
-the graphs included in the article can come directly from running 
-analysis scripts on top of this data.
+Prior to and during the execution of an experiment, capturing 
+performance metrics can be beneficial. In the case of systems research 
+articles, where performance is the main subject of study, capturing 
+performance metrics is fundamental. Instead of creating ad-hoc tools 
+to achieve this we can benefit by adopting and extending existing 
+tools. At the end of the execution, the captured data can be analyzed 
+and many of the graphs included in the article can come directly from 
+running analysis scripts on top of this data.
 
 **Tools and services**: Many mature monitoring tools exist such as 
 Nagios, Ganglia, StatD, CollectD, among many others. For measuring 
@@ -386,7 +394,7 @@ stress-ng (CPU, memory, filesystem) and many others exist.
 Continuous Integration (CI) is a development practice that requires 
 developers to integrate code into a shared repository frequently with 
 the purpose of catching errors as early as possible. The experiments 
-associated to an article is not absent of this type of issues. If an 
+associated with an article can also benefit from CI. If an 
 experiment's findings can be codified in the form of a unit test, this 
 can be verified on every change to the article's repository.
 
@@ -397,32 +405,33 @@ CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
 
 ## Automated Performance Regression Testing
 
-OSS projects such as the Linux kernel go through rigorous performance 
-testing [@intel_linux_2016] to ensure that newer version don't 
-introduce any problems. Performance regression testing is usually an 
-ad-hoc activity but can be automated using high-level languages 
-[@jimenez_aver_2016] or statistical techniques 
+Open source projects such as the Linux kernel go through rigorous 
+performance testing [@intel_linux_2016] to ensure that newer versions 
+don't introduce any problems. Performance regression testing is 
+usually an ad-hoc activity but can be automated using high-level 
+languages [@jimenez_aver_2016] or statistical techniques 
 [@nguyen_automated_2012].
 
-**Tools and services**: Aver is an example of a language and 
-validation tool that allows authors to express and corroborate 
-statements about the runtime metrics gathered of an experiment.
+**Tools and services**: Aver [@jimenez_aver_2016] is an example of a 
+language and validation tool that allows authors to express and 
+corroborate statements about the runtime metrics gathered of an 
+experiment.
 
 # The Popper Convention: A DevOps Approach to Producing Academic Papers {#sec:popper}
 
 The goal for _Popper_ is to give researchers a common framework to 
-reason, in a convened way, about how to structure all the dependencies 
-and generated artifacts associated with an experiment. This convention 
-provides the following unique features:
+reason, in a systematic way, about how to structure all the 
+dependencies and generated artifacts associated with an experiment. 
+This convention provides the following unique features:
 
- 1. Provides with a methodology (or experimentation protocol) for 
-    generating self-contained experiments.
+ 1. Provides a methodology (or experiment protocol) for generating 
+    self-contained experiments.
  2. Makes it easier for researchers to explicitly specify validation 
     criteria.
  3. Abstracts domain-specific experimentation workflows and 
     toolchains.
- 4. Re-usable experiment templates that provide curated experiments 
-    commonly used by a research community.
+ 4. Provides reusable experiment templates that provide curated 
+    experiments commonly used by a research community.
 
 ## Self-containment
 
@@ -437,10 +446,10 @@ simple, there are `paper/` and `experiments/` folders, and every
 experiment has a `datasets/` folder in it.
 
 An example paper project is shown in @Lst:dir. A paper repository is 
-mainly composed of the article text and experiment orchestration 
+composed primarily of the article text and experiment orchestration 
 logic. The actual code that gets executed by an experiment is not part 
 of the repository. This, as well as any large datasets that are used 
-as input to an experiment reside in their own repositories and are 
+as input to an experiment, reside in their own repositories and are 
 stored in the experiment folder of paper repository as references.
 
 ```{#lst:dir .bash caption="Sample contents of a Popper repository."}
@@ -487,14 +496,14 @@ going through a Popperized article.
 The output can be in any format (CSVs, HDF, NetCDF, etc.), as long as 
 it is versioned and referenced. An important component of the 
 experiment logic is that it should assert the original assumptions 
-made about environment (a `setup.yml` file in the example), for 
+made about the environment (a `setup.yml` file in the example), for 
 example, the operating system version (if the experiment assumes one). 
-Also, it's important to parametrize the experiment explicitly (e.g. 
-`vars.yml`), so that readers can quickly get an idea of what's the 
+Also, it is important to parametrize the experiment explicitly (e.g. 
+`vars.yml`), so that readers can quickly get an idea of what is the 
 parameter space of the experiment and what they can modify in order to 
 obtain different results. One common practice we follow is to place in 
-every figure's caption a `[source]` link that points to the URL of the 
-corresponding post-processing script in the version control web 
+the caption of every figure a `[source]` link that points to the URL 
+of the corresponding post-processing script in the version control web 
 interface (e.g. GitHub[^github-ipy]).
 
 [^github-ipy]: GitHub has the ability to render Jupyter notebooks on 
@@ -508,33 +517,33 @@ server.
 Validation of experiments can be classified in two categories. In the 
 first one, the integrity of the experimentation logic is checked using 
 existing continuous-integration (CI) services such as TravisCI, which 
-expects a `.travis.yml` file at the root folder. This file contains a 
+expects a `.travis.yml` file in the root folder. This file contains a 
 specification that consists of a list of tests that get executed every 
-time a new commit is added to the repository. These type of checks can 
-verify that the paper is always in a state that can be built (generate 
-the PDF correctly); that the syntax of orchestration files is correct 
-to ensure that, if an experiment is changed, say, by adding a new 
-variable, it can be executed without any issues; or checking that the 
-post-processing routines can be executed without problems.
+time a new commit is added to the repository. These types of checks 
+can verify that the paper is always in a state that can be built 
+(generate the PDF correctly); that the syntax of orchestration files 
+is correct so that if changes occur, e.g., addition of a new variable, 
+it can be executed without any issues; or that the post-processing 
+routines can be executed without problems.
 
 The second category of validations is related to the integrity of the 
-experiment results. These domain-specific tests ensure that the claims 
-made in the paper are valid for every re-execution of the experiment; 
-analogous to performance regression tests done in software projects 
-that can be implemented using the same class of tools. Alternatively, 
-claims can also be corroborated as part of the analysis code. When 
-experiments are not sensitive to the effects of virtualized platforms, 
-these assertions can be executed on public/free CI platforms (e.g. 
-TravisCI runs tests in VMs). However, when results are sensitive to 
-the underlying hardware, it is preferable to leave this out of the CI 
-pipeline and make them part of the post-processing routines of the 
-experiment. In the example above, an `assertions.aver` file contains 
-validations in the Aver [@jimenez_aver_2016] language that check the 
-integrity of runtime performance metrics that claims make reference 
-to. Examples of these type of assertions are: "the runtime of our 
-algorithm is 10x better than the baseline when the level of 
-parallelism exceeds 4 concurrent threads"; or "for dataset A, our 
-model predicts the outcome with an error of 95%". More concrete 
+experimental results. These domain-specific tests ensure that the 
+claims made in the paper are valid for every re-execution of the 
+experiment, analogous to performance regression tests done in software 
+projects that can be implemented using the same class of tools. 
+Alternatively, claims can also be corroborated as part of the analysis 
+code. When experiments are not sensitive to the effects of virtualized 
+platforms, these assertions can be executed on public/free CI 
+platforms (e.g. TravisCI runs tests in VMs). However, when results are 
+sensitive to the underlying hardware, it is preferable to leave this 
+out of the CI pipeline and make them part of the post-processing 
+routines of the experiment. In the example above, an `assertions.aver` 
+file contains validations in the Aver [@jimenez_aver_2016] language 
+that check the integrity of runtime performance metrics that claims 
+make reference to. Examples of these type of assertions are: "the 
+runtime of our algorithm is 10x better than the baseline when the 
+level of parallelism exceeds 4 concurrent threads"; or "for dataset A, 
+our model predicts the outcome with an error of 95%". More concrete 
 examples are given in @Sec:cases.
 
 When validating assertions that depend on the underlying hardware, 
@@ -578,38 +587,39 @@ spark-standalone  torpor     malacology
 $ popper add torpor myexp
 ```
 
-We thought of Popper as a general convention, applicable to a wide 
-variety of environments, from cloud to HPC. In general, Popper can be 
-applied in any scenario where a component (data, code, infrastructure, 
-hardware, etc.) is referenceable, and where there is an underlying 
-tool that consumes these IDs so that they can be acted upon (install, 
-run, store, visualize, etc.). The core idea behind Popper is to borrow 
-from the DevOps movement [@wiggins_twelvefactor_2011] the idea of 
-treating every component as an immutable piece of information and 
-provide referenceable scripts/components for the 
-creation/execution/validation of experiments (in a convened structure) 
-rather than leaving to the reader the daunting task of inferring how 
-binaries/experiments were generated/configured.
+We designed Popper as a general convention, applicable to a wide 
+variety of environments, from cloud to high-performance computing 
+(HPC). In general, Popper can be applied in any scenario where a 
+component (data, code, infrastructure, hardware, etc.) can be 
+referenced by an identifier, and where there is an underlying tool 
+that consumes these identifiers so that they can be acted upon 
+(install, run, store, visualize, etc.). The core idea behind Popper is 
+to borrow from the DevOps movement [@wiggins_twelvefactor_2011] the 
+idea of treating every component as an immutable piece of information 
+and provide references to scripts and components for the creation, 
+execution and validation of experiments (in a systematic way) rather 
+than leaving to the reader the daunting task of inferring how binaries 
+and experiments were generated or configured.
 
 We say that a tool is Popper-compliant if it has the following two 
 properties:
 
- 1. Assets can be be associated to unique IDs. Code, packages, 
-    configurations, data, results, etc. can all be referenceable and 
+ 1. Assets can be be associated to unique identifiers. Code, packages, 
+    configurations, data, results, etc. can all be referenced and 
     uniquely identified.
- 2. The tool is scriptable (e.g. can be invoked in a CLI) and can act 
-    upon given asset IDs.
+ 2. The tool is scriptable (e.g. can be invoked from the command line) 
+    and can act upon given asset IDs.
 
-In @Sec:toolkit we have provided a list of tools for every category of 
-the generic experimentation workflow (@Fig:exp_workflow) that comply 
-with the two properties given above. In order to illustrate better why 
+In @Sec:toolkit we provided a list of tools for every category of the 
+generic experimentation workflow (@Fig:exp_workflow) that comply with 
+the two properties given above. In order to illustrate better why 
 these are important, we give examples of non-compliant tools:
 
  * source-code management: Visual SourceSafe (VSS) or StarTeam
  * packaging: visual package installers.
  * manuscript: Word.
  * experiment orchestration: GUI-based workflow systems.
- * visualization/analysis: Excel
+ * visualization/analysis: Google spreadsheets
 
 In general, tools that are hard to script e.g. because they don't 
 provide a command-line interface (can only interact via GUI) or they 
@@ -621,8 +631,8 @@ beyond the scope of Popper.
 Researchers that decide to follow Popper are faced with a steep 
 learning curve, especially if they have only used a couple of tools 
 from the DevOps toolkit. To lower the entry barrier, we have developed 
-a CLI tool[^link:cli] to help bootstrap a paper repository that 
-follows the Popper convention.
+a command line interface (CLI) tool[^link:cli] to help bootstrap a 
+paper repository that follows the Popper convention.
 
 As part of our efforts, we maintain a list of experiment templates 
 that have been "popperized"[^link:templates]. These are end-to-end 
@@ -689,7 +699,7 @@ have a speedup within the `(2.2, 2.3]` range over the base machine.
 ](experiments/torpor/variability_profile.png){#fig:torpor-variability}
 
 The experiment folder contains all necessary files to easily invoke it 
-and generate figures. A bash `run.sh` script installs Vagrant if it's 
+and generate figures. A bash `run.sh` script installs Vagrant if it is 
 not present; downloads the VM or builds it if links are broken; and 
 lastly executes the experiment. Once the VM runs, the results are 
 placed in the folder where the experiment was invoked (CSV files). The 
@@ -878,7 +888,7 @@ be useful when documenting changes to an experiment:
     changes to the experiment, or the new results being added to the 
     repository.
 
-# Discussion
+# Discussion {#sec:discussion}
 
 ## We did well for 50 years. Why fix it?
 
