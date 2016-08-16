@@ -151,13 +151,13 @@ is usually a limit on the artifact file size.
 
 ### Virtual Machines
 
-![A generic experimentation workflow (top) typically followed by 
-researchers in projects with a computational component. Some of the 
-reasons to iterate (backwards-going arrows) are: fixing a bug in the 
-code of a system, changing a parameter of an experiment or running the 
-same experiment on a new workload or compute platform. Although not 
-usually done, in some cases researchers keep a chronological record on 
-how experiments evolve over time (the analogy of the lab notebook in 
+![A generic experimentation workflow typically followed by researchers 
+in projects with a computational component. Some of the reasons to 
+iterate (backwards-going arrows) are: fixing a bug in the code of a 
+system, changing a parameter of an experiment or running the same 
+experiment on a new workload or compute platform. Although not usually 
+done, in some cases researchers keep a chronological record on how 
+experiments evolve over time (the analogy of the lab notebook in 
 experimental sciences). ](figures/exp_wflow.png){#fig:exp_workflow}
 
 A Virtual Machine (VM) can be used to partially address the 
@@ -255,6 +255,18 @@ composability of these tools and describe general guidelines (the
 convention) on how to structure projects that make use of the DevOps 
 toolkit
 
+![The same workflow as in @Fig:exp_workflow viewed through a DevOps 
+looking glass. The logos correspond to commonly used tools from the 
+"DevOps toolkit". From left-to-right, top-to-bottom: git, mercurial, 
+subversion (code); docker, vagrant, spack, nix (packaging); git-lfs, 
+datapackages, artifactory, archiva (input data); bash, ansible, 
+puppet, slurm (execution); git-lfs, datapackages, icinga, nagios 
+(output data and runtime metrics); jupyter, paraview, travis, jenkins 
+(analysis, visualization and continuous integration); restructured 
+text, latex, asciidoctor and markdown (manuscript); gitlab, bitbucket 
+and github (experiment changes).}
+](figures/devops_approach.png){#fig:devops-approach}
+
 ## Version Control
 
 Traditionally the content managed in a version-control system (VCS) is 
@@ -268,18 +280,6 @@ is useful, here we make the distinction between changing the prose of
 the paper, changing the parameters of the experiment (both its 
 components and its configuration), as well as storing the experiment 
 results.
-
-![The same workflow as in @Fig:exp_workflow viewed through a DevOps 
-looking glass. The logos correspond to commonly used tools from the 
-"DevOps toolkit". From left-to-right, top-to-bottom: git, mercurial, 
-subversion (code); docker, vagrant, spack, nix (packaging); git-lfs, 
-datapackages, artifactory, archiva (input data); bash, ansible, 
-puppet, slurm (execution); git-lfs, datapackages, icinga, nagios 
-(output data and runtime metrics); jupyter, paraview, travis, jenkins 
-(analysis, visualization and continuous integration); restructured 
-text, latex, asciidoctor and markdown (manuscript); gitlab, bitbucket 
-and github (experiment changes).}
-](figures/devops_approach.png){#fig:devops-approach}
 
 Ideally, one would like the entire end-to-end pipeline for all the 
 experiments contained in an article to be managed by a version control 
@@ -422,6 +422,28 @@ usually an ad-hoc activity but can be automated using high-level
 languages [@jimenez_aver_2016] or statistical techniques 
 [@nguyen_automated_2012].
 
+```{#lst:dir .bash caption="Sample contents of a Popper repository."}
+paper-repo
+| README.md
+| .travis.yml
+| experiments
+|   |-- myexp
+|   |   |-- datasets/
+|   |       |-- input-data.csv
+|   |   |-- figure.png
+|   |   |-- process-result.py
+|   |   |-- setup.yml
+|   |   |-- results.csv
+|   |   |-- run.sh
+|   |   |-- validations.aver
+|   |    -- vars.yml
+| paper
+|   |-- build.sh
+|   |-- figures/
+|   |-- paper.tex
+|    -- references.bib
+```
+
 **Tools and services**: Aver [@jimenez_aver_2016] is an example of a 
 language and validation tool that allows authors to express and 
 corroborate statements about the runtime metrics gathered of an 
@@ -455,6 +477,14 @@ article, including its manuscript. The structure of a Popper repo is
 simple, there are `paper/` and `experiments/` folders, and every 
 experiment has a `datasets/` folder in it.
 
+![A sample workflow a paper reviewer or reader would use to read a Popperized
+article. This article uses (1) Docker/GitHub to store source and deploy code,
+(2) Ansible/CloudLab to deploy the system on real hardware, and (3)
+cloud storage systems to store large data files. (4) Jupyter/Binder/Latex are
+then used to visualize and interact with the results post-mortem on the
+reader's local machine. Popper is tool agnostic, so GitHub can be replaced with
+SVN, Ansible with Puppet, etc.](figures/wflow.png){#fig:review-workflow}
+
 An example paper project is shown in @Lst:dir. A paper repository is 
 composed primarily of the article text and experiment orchestration 
 logic. The actual code that gets executed by an experiment is not part 
@@ -462,29 +492,8 @@ of the repository. This, as well as any large datasets that are used
 as input to an experiment, reside in their own repositories and are 
 stored in the experiment folder of paper repository as references.
 
-```{#lst:dir .bash caption="Sample contents of a Popper repository."}
-paper-repo
-| README.md
-| .travis.yml
-| experiments
-|   |-- myexp
-|   |   |-- datasets/
-|   |       |-- input-data.csv
-|   |   |-- figure.png
-|   |   |-- process-result.py
-|   |   |-- setup.yml
-|   |   |-- results.csv
-|   |   |-- run.sh
-|   |   |-- validations.aver
-|   |    -- vars.yml
-| paper
-|   |-- build.sh
-|   |-- figures/
-|   |-- paper.tex
-|    -- references.bib
-```
-
-With all these artifacts available, the reader can easily deploy an experiment
+With all these artifacts available, the reader can easily deploy an 
+experiment
 or rebuild the article's PDF that might include new results.
 @Fig:review-workflow shows our vision for the reader/reviewer workflow when
 reading a Popper for a Popperized article. The diagram uses tools we use in the
@@ -501,14 +510,6 @@ post-processing (data analysis) and scripts for generating an image from the
 results. The execution of the experiment will produce output that is either
 consumed by a post-processing script, or directly by the scripts that generate
 an image.
-
-![A sample workflow a paper reviewer or reader would use to read a Popperized
-article. This article uses (1) Docker/GitHub to store source and deploy code,
-(2) Ansible/CloudLab to deploy the system on real hardware, and (3)
-cloud storage systems to store large data files. (4) Jupyter/Binder/Latex are
-then used to visualize and interact with the results post-mortem on the
-reader's local machine. Popper is tool agnostic, so GitHub can be replaced with
-SVN, Ansible with Puppet, etc.](figures/wflow.png){#fig:review-workflow}
 
 The output can be in any format (CSVs, HDF, NetCDF, etc.), as long as 
 it is versioned and referenced. An important component of the 
@@ -624,19 +625,6 @@ these are important, we give examples of non-compliant tools:
  * experiment orchestration: GUI-based workflow systems.
  * visualization/analysis: Google spreadsheets
 
-In general, tools that are hard to script e.g. because they don't 
-provide a command-line interface (can only interact via GUI) or they 
-only have a programmatic API for a non-interpreted language, are 
-beyond the scope of Popper.
-
-## Experiment Templates
-
-Researchers that decide to follow Popper are faced with a steep 
-learning curve, especially if they have only used a couple of tools 
-from the DevOps toolkit. To lower the entry barrier, we have developed 
-a command line interface (CLI) tool[^link:cli] to help bootstrap a 
-paper repository that follows the Popper convention.
-
 ```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
 $ cd mypaper-repo
 $ popper init
@@ -650,6 +638,19 @@ spark-standalone  torpor     malacology
 
 $ popper add torpor myexp
 ```
+
+In general, tools that are hard to script e.g. because they don't 
+provide a command-line interface (can only interact via GUI) or they 
+only have a programmatic API for a non-interpreted language, are 
+beyond the scope of Popper.
+
+## Experiment Templates
+
+Researchers that decide to follow Popper are faced with a steep 
+learning curve, especially if they have only used a couple of tools 
+from the DevOps toolkit. To lower the entry barrier, we have developed 
+a command line interface (CLI) tool[^link:cli] to help bootstrap a 
+paper repository that follows the Popper convention.
 
 As part of our efforts, we maintain a list of experiment templates 
 that have been "popperized"[^link:templates]. These are end-to-end 
@@ -675,6 +676,15 @@ detailed information about the experimental setup as well as more
 comprehensive results.
 
 ## Torpor: Quantifying Cross-platform Performance Variability {#sec:torpor}
+
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
+Variability profile of a set of CPU-bound benchmarks. Each data point 
+in the histogram corresponds to the speedup of a stress-ng 
+microbenchmark that a node in CloudLab has with respect to one of our 
+machines in our lab, a 10 year old Xeon. For example, the 
+architectural improvements of the newer machine cause 7 stressors to 
+have a speedup within the `(2.2, 2.3]` range over the base machine.
+](experiments/torpor/variability_profile.png){#fig:torpor-variability}
 
 Reproducing systems experiments is sometimes challenging due to their 
 sensitivity to the underlying hardware and low-level software stack 
@@ -708,15 +718,6 @@ machine to package the experiment. Vagrant [@hashicorp_vagrant_2016]
 is a higher-level wrapper around virtualization software that provides 
 the framework and configuration format (Ruby language scripts) to 
 create and manage complete portable development environments.
-
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
-Variability profile of a set of CPU-bound benchmarks. Each data point 
-in the histogram corresponds to the speedup of a stress-ng 
-microbenchmark that a node in CloudLab has with respect to one of our 
-machines in our lab, a 10 year old Xeon. For example, the 
-architectural improvements of the newer machine cause 7 stressors to 
-have a speedup within the `(2.2, 2.3]` range over the base machine.
-](experiments/torpor/variability_profile.png){#fig:torpor-variability}
 
 The experiment folder contains all necessary files to easily invoke it 
 and generate figures. A bash `run.sh` script installs Vagrant if it is 
@@ -759,11 +760,6 @@ applications with multiple stages of execution. The differences
 between GassyFS and tmpfs become apparent when we consider how users 
 deal with durability concerns.
 
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
-Scalability of GassyFS as the number of nodes in the GASNet cluster 
-increases. The workload in question compiles Git.
-](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
-
 Although GassyFS is simple in design, it is relatively complex to 
 setup. The combinatorial space of possible ways in which the system 
 can be compiled, packaged and configured is large. For example, 
@@ -773,6 +769,11 @@ there are 64 flags for additional packages and 138 flags for
 additional features[^more]. To mount GassyFS, we use FUSE, which can 
 be given more than 30 different options, many of them taking multiple 
 values.
+
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
+Scalability of GassyFS as the number of nodes in the GASNet cluster 
+increases. The workload in question compiles Git.
+](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
 
 [^more]: These are the flags that are documented. There are many more 
 that can be configured but not shown in the official documentation.
@@ -861,12 +862,6 @@ the root of the git repository. This creates a `.popper.yml` file that
 contains configuration options for the CLI tool. This file is 
 committed to the paper (git) repository.
 
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
-The output of analysis of weather prediction data. The output comes 
-from data processed with the `xarray` Python library. The data 
-corresponds to the NCEP/NCAR Reanalysis 1.
-](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
-
 **Adding a New Experiment**: As mentioned before, we maintain a list 
 of experiment templates that have been "Popperized" (@Lst:poppercli). 
 In this example we want to analyze data from an experiment in the area 
@@ -880,12 +875,11 @@ input datasets and/or process data in a cluster of machines. Popper
 still can be followed in these scenarios, as shown in previous 
 sections.
 
-```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
-$ popper add jupyter-bww airtemp-analysis
-$ cd experiments/airtemp-analysis
-$ dpm install datapackages/air-temperature
-$ ./visualize.sh
-```
+![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/bww-airtemp/visualize.ipynb)\] 
+The output of analysis of weather prediction data. The output comes 
+from data processed with the `xarray` Python library. The data 
+corresponds to the NCEP/NCAR Reanalysis 1.
+](experiments/bww-airtemp/air-temperature.png){#fig:bww-airtempanalysis}
 
 This data analysis experiment consists of one dataset and a Jupyter 
 notebook. Relatively large datasets are not managed well by Git, so 
@@ -894,6 +888,13 @@ tool in this case (third line in @Lst:bootstrap). Once the datasets
 are downloaded, one can open the notebook to visualize and interact 
 with the data analysis of this experiment. The last line above opens a 
 browser and points it to the notebook.
+
+```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
+$ popper add jupyter-bww airtemp-analysis
+$ cd experiments/airtemp-analysis
+$ dpm install datapackages/air-temperature
+$ ./visualize.sh
+```
 
 **Documenting the Experiment**: After we are done with our experiment, 
 we might want to document it and add a paper. The Popper-CLI also 
@@ -1135,11 +1136,10 @@ In the words of Karl Popper: "_the criterion of the scientific status
 of a theory is its falsifiability, or refutability, or testability_". 
 The OSS development model and the DevOps practice have proven to be an 
 extraordinary way for people around the world to collaborate in 
-software projects. In this work, we apply them in an academic setting. 
-As the use cases presented here showed, by writing articles following 
-the _Popper_ convention, authors can improve their personal workflows, 
-while at the same time generate research that is easier to validate 
-and replicate.
+software projects. As the use cases presented here showed, by writing 
+articles following the _Popper_ convention, authors can improve their 
+personal workflows, while at the same time generate research that is 
+easier to validate and replicate.
 
 # Bibliography
 
