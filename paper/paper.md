@@ -387,7 +387,7 @@ running analysis scripts on top of this data.
 **Tools and services**: Many mature monitoring tools exist such as 
 Nagios, Ganglia, StatD, CollectD, among many others. For measuring 
 single-machine baseline performance, tools like Conceptual (network), 
-stress-ng (CPU, memory, filesystem) and many others exist.
+stress-ng (CPU, memory, file system) and many others exist.
 
 ## Continuous Integration
 
@@ -664,30 +664,33 @@ sensitivity to the underlying hardware and low-level software stack
 (firmware and OS). In this use case we exemplify how an experiment 
 that is potentially sensitive to a customized version of the OS can be 
 "Popperized", e.g. because it needs particular features of a custom 
-kernel or specific drivers.
+kernel or specific drivers. Torpor [@jimenez_characterizing_2016] is a 
+workload- and architecture-independent technique for characterizing 
+the performance of a computing platform. Given that the authors of the 
+Torpor paper followed the Popper convention, thus we just have taken 
+the experiment for this use case "as is" and include it in the Popper 
+repository of this article.
 
-Torpor [@jimenez_characterizing_2016] is a workload- and 
-architecture-independent technique for characterizing the performance 
-of a computing platform. In short, Torpor works by executing a battery 
-of micro-benchmarks and using these as the performance profile of a 
-system. Given two profiles of two distinct platforms A and B, Torpor 
-generates a variability range of B with respect to A. These 
-variability profiles can then be used to predict the variability of 
-any application running on B, that originally ran A. The goal is to 
-predict as well as recreate performance of applications that run on 
-newer (and faster) platforms using OS-level virtualization.
+In short, Torpor works by executing a battery of micro-benchmarks and 
+using these as the performance profile of a system. Given two profiles 
+of two distinct platforms A and B, Torpor generates a variability 
+range of B with respect to A. These variability profiles can then be 
+used to predict the variability of any application running on B, that 
+originally ran A. The goal is to predict as well as recreate 
+performance of applications that run on newer (and faster) platforms 
+using OS-level virtualization.
 
-In this case, we take the experiment from 
-[@jimenez_characterizing_2016] that quantifies the variability of a 
-list of machines with respect to a 10 year old system. Due to space 
-constraints, we only show the variability profile for one machine but 
-results for all the other machines are available in this paper's 
-repository. Since we're interested in "pinning" a particular kernel 
-version[^notreally], a natural option is to use a virtual machine to 
-package the experiment. Vagrant [@hashicorp_vagrant_2016] is a 
-higher-level wrapper around virtualization software that provides the 
-framework and configuration format (Ruby language scripts) to create 
-and manage complete portable development environments.
+We take the experiment from the original paper that quantifies the 
+variability of a list of machines with respect to a 10 year old system 
+[@jimenez_characterizing_2016] (Figure 2 of the original article). Due 
+to space constraints, we only show the variability profile for one 
+machine but results for all the other machines are available in this 
+paper's repository. Since we are interested in "pinning" a particular 
+kernel version[^notreally], a natural option is to use a virtual 
+machine to package the experiment. Vagrant [@hashicorp_vagrant_2016] 
+is a higher-level wrapper around virtualization software that provides 
+the framework and configuration format (Ruby language scripts) to 
+create and manage complete portable development environments.
 
 ![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
 Variability profile of a set of CPU-bound benchmarks. Each data point 
@@ -715,14 +718,14 @@ experiments with minimal 3rd party and effort requirements.
 necessarily depend on a particular Linux version but we assume it does 
 to illustrate the need of running a specific version of the kernel.
 
-## GassyFS: Scalability of an In-memory Filesystem
+## GassyFS: Scalability of an In-memory File System
 
 This use case illustrates how multi-node experiments can be easily 
 ported between multiple platforms. It also exemplifies how the 
 validation criteria of an experiment can be made explicit and be 
 automatically checked with currently available tools.
 
-GassyFS [@watkins_gassyfs_2016] is a new prototype filesystem system 
+GassyFS [@watkins_gassyfs_2016] is a new prototype file system system 
 that stores files in distributed remote memory and provides support 
 for checkpointing file system state. The core of the file system is a 
 user-space library that implements a POSIX file interface. File system 
@@ -741,7 +744,7 @@ deal with durability concerns.
 
 ![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
 Scalability of GassyFS as the number of nodes in the GASNet cluster 
-increases. The workload in question compiles `git`.
+increases. The workload in question compiles Git.
 ](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
 
 Although GassyFS is simple in design, it is relatively complex to 
@@ -757,17 +760,22 @@ values.
 [^more]: These are the flags that are documented. There are many more 
 that can be configured but not shown in the official documentation.
 
-In figure @Fig:gassyfs-git we show one of multiple experiments that 
-evaluate the performance of GassyFS. We note that while the 
-performance numbers obtained are relevant, they are not our main 
-focus. Instead, we put more emphasis on the goals of the experiments, 
-how we can reproduce results on multiple environments with minimal 
-effort and how we can ensure the validity of the results.
+In @Fig:gassyfs-git we show one of multiple experiments that evaluate 
+the performance of GassyFS. We note that while the performance numbers 
+obtained are relevant, they are not our main focus. Instead, we put 
+more emphasis on the goals of the experiments, how we can reproduce 
+results on multiple environments with minimal effort, and how we can 
+ensure the validity of the results.
+
+<!--
+    Re-executing this experiment on a new platform requires to have 
+    host nodes to run Docker and to provide a list of .
+-->
 
 In this experiment we aim to evaluate the scalability of GassyFS, i.e. 
 how it performs when we increase the number of nodes in the underlying 
-GASNet-backed FUSE mount. Figure @Fig:gassyfs-git shows the results of 
-compiling `git` on GassyFS. We observe that once the cluster gets to 2 
+GASNet-backed FUSE mount. @Fig:gassyfs-git shows the results of 
+compiling Git on GassyFS. We observe that once the cluster gets to 2 
 nodes, performance degrades sublinearly with the number of nodes. This 
 is expected for workloads such as the one in question. The Aver 
 assertion in @Lst:aver-assertion is used to check the integrity of 
@@ -803,9 +811,9 @@ packages with specific versions and, when necessary, compiler and
 compilation flags. The package manager then is in charge of restoring 
 the environment, re-compiling binaries if needed.
 
-We took an experiment from [@bhatele_there_2013] in which an MPI 
-application runs multiple times and its communication performance is 
-measured with mpiP[^willrerun]. The goal is to identify root causes of 
+We took an experiment in which an MPI application runs multiple times 
+and its communication performance is measured with mpiP[^willrerun] 
+[@bhatele_there_2013]. The goal is to identify root causes of 
 variability across executions. From an environmental point of view, 
 the execution goes as follows: sanitize environment (check kernel/os 
 versions), clone (install) spack and install packages (setup.sh); then 
@@ -852,43 +860,40 @@ still can be followed in these scenarios, as shown in previous
 sections.
 
 This data analysis experiment consists of one dataset and a Jupyter 
-notebook. Relatively large datasets aren't managed well by git, so 
-they should be managed by other tools. We use `dpm` in this case 
-(third line in @Lst:bootstrap). Once the datasets are downloaded, one 
-can open the notebook to visualize and interact with the data analysis 
-of this experiment. The last line above opens a browser and points it 
-to the notebook.
+notebook. Relatively large datasets are not managed well by Git, so 
+they should be managed by other tools. We use the datapackage manager 
+tool in this case (third line in @Lst:bootstrap). Once the datasets 
+are downloaded, one can open the notebook to visualize and interact 
+with the data analysis of this experiment. The last line above opens a 
+browser and points it to the notebook.
 
-**Documenting the Experiment**: After we're done with our experiment, 
+**Documenting the Experiment**: After we are done with our experiment, 
 we might want to document it and add a paper. The Popper-CLI also 
 provides with manuscript templates. We can use the generic `article` 
 latex template or other more domain-specific ones. To display the 
-available templates we do `popper paper list`. In this example we'll 
+available templates we do `popper paper list`. In this example we will 
 use the latex template for articles that appear in the [Bulletin of 
 the American meteorological Society 
 (BAMS)](http://journals.ametsoc.org/loi/bams).
 
-Let's assume we have a new section in the LATeX file where we describe 
-our experiment. We make use of the figure that we have generated and 
-reference it from the LATeX file. We then regenerate the article (with 
-a `build.sh` command inside the `paper` folder) and see the new image 
-like the one shown in @Fig:bww-airtempanalysis.
+Let us assume we have a new section in the LATeX file where we 
+describe our experiment. We make use of the figure that we have 
+generated and reference it from the LATeX file. We then regenerate the 
+article (with a `build.sh` command inside the `paper` folder) and see 
+the new image like the one shown in @Fig:bww-airtempanalysis.
 
 **Documenting Changes to Experiments**: The paper repository is the 
 analogy to the lab notebook in experimental science. There are many 
 ways in which these changes can be registered in the form of code 
-repository commits. The following are practices that we have found to 
-be useful when documenting changes to an experiment:
+repository commits. Same good practices of version control for 
+software projects apply: make changes small, i.e. commit early and 
+often; separate commits that change the logic of the experiment and 
+analysis, from the ones that record changes to results; and write 
+commit messages so they describe in as much detail as possible the 
+changes to the experiment, or the new results being added to the 
+repository.
 
-  * Make changes small. Avoid having large commits since that makes it 
-    harder to document.
-  * Separate commits that change the logic of the experiment and 
-    analysis, from the ones that record changes to results.
-  * Commit messages should describe in as much detail as possible the 
-    changes to the experiment, or the new results being added to the 
-    repository.
-
-# Discussion {#sec:discussion}
+# The Case for Popper {#sec:discussion}
 
 ## We did well for 50 years. Why fix it?
 
@@ -900,17 +905,17 @@ reproducibility, we can dramatically increase the value of scientific
 experiments for education and for research. The Popper Convention 
 makes not only the result of a systems experiment available but the 
 entire experiment and allows researchers to study and reuse all 
-aspects of it, making it practical to "stand in the shoulders of 
+aspects of it, making it practical to "stand on the shoulders of 
 giants" by building upon the work of the community to improve the 
 state-of-the-art without having to start from scratch every time.
 
 ## The power of "crystallization points."
 
 Docker images, Ansible playbooks, CI unit tests, Git repositories, and 
-Jupyter notebooks are all exemples of artifacts around which 
+Jupyter notebooks are all examples of artifacts around which 
 broad-based efforts can be organized. Crystallization points are 
 pieces of technology, and are intended to be easily shareable, have 
-the ability to grow and improvie over time, and ensure buy-in from 
+the ability to grow and improve over time, and ensure buy-in from 
 researchers and students. Examples of very successful crystallization 
 points are the Linux kernel, Wikipedia, and the Apache Project. 
 Crystallization points encode community knowledge and are therefore 
@@ -919,9 +924,9 @@ well as education and training. They help people to form abstractions
 and common understanding that enables them to more effectively 
 communicate reproducible science. By having popular tools such as 
 Docker/Ansible as a lingua franca for researchers, and Popper to guide 
-them in how to structure their paper repos, we can expedite 
+them in how to structure their paper repositories, we can expedite 
 collaboration and at the same time benefit from all the new advances 
-done in the cloud-computing/DevOps world.
+done in the DevOps world.
 
 ## Perfect is the enemy of good
 
