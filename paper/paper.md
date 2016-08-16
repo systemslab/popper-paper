@@ -664,7 +664,7 @@ reader to this paper's Popper repository
 detailed information about the experimental setup as well as more 
 comprehensive results.
 
-## Torpor: Quantifying Cross-platform Performance Variability
+## Torpor: Quantifying Cross-platform Performance Variability {#sec:torpor}
 
 Reproducing systems experiments is sometimes challenging due to their 
 sensitivity to the underlying hardware and low-level software stack 
@@ -725,7 +725,7 @@ experiments with minimal 3rd party and effort requirements.
 necessarily depend on a particular Linux version but we assume it does 
 to illustrate the need of running a specific version of the kernel.
 
-## GassyFS: Scalability of an In-memory File System
+## GassyFS: Scalability of an In-memory File System {#sec:gassyfs}
 
 This use case illustrates how multi-node experiments can be easily 
 ported between multiple platforms. It also exemplifies how the 
@@ -800,7 +800,7 @@ with respect to the number of nodes. After the experiment runs, Aver
 is invoked to test the above statement against the experiment results 
 obtained.
 
-## MPI Noisy Neighborhood Characterization
+## MPI Noisy Neighborhood Characterization {#sec:mpi}
 
 ```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
 $ popper add jupyter-bww airtemp-analysis
@@ -830,9 +830,9 @@ it runs an mpi experiment, which produces 1) output of simulation
 [^willrerun]: **Note to reviewers**. Due to time constraints, we 
 weren't able to allocate time in an HPC site to re-run this 
 experiment. The final version of the paper will include a figure with 
-the result of the re-execution of this experiment.
+the result of re-executing this experiment.
 
-## Numerical Weather Prediction: A Data-centric Use Case
+## Numerical Weather Prediction: A Data-centric Use Case {#sec:bww}
 
 In this use case we show how to bootstrap a data science paper that 
 follows the Popper convention using the Popper-CLI tool. Popper in 
@@ -899,6 +899,22 @@ analysis, from the ones that record changes to results; and write
 commit messages so they describe in as much detail as possible the 
 changes to the experiment, or the new results being added to the 
 repository.
+
+## Benefits and Limitations
+
+As illustrated in the previous scenarios, it is much easier to pull an 
+already Popperized experiment ([@Sec:torpor ; @Sec:gassyfs ; 
+@Sec:bww]) than "Popperizing" one (@Sec:mpi). While it might seem like 
+a burden at the beginning of an exploration to, following Popper 
+quickly pays-off. Consider the common situation of going back to an 
+experiment after a short amount of time and the struggle the 
+represents having to remember what was done, or why things were done 
+in a particular way. However, Popper is not perfect. Obvious issues 
+such as the lack of resources, either because of the use of special 
+hardware or due to the large-scale nature of an experiment, have to be 
+resolved before a Popperized experiment is re-executed. Nevertheless, 
+having access to the original experiment and all associated artifacts 
+is extremely valuable.
 
 # The Case for Popper {#sec:discussion}
 
