@@ -201,7 +201,7 @@ the need for a new methodology that:
 
   * Is reproducible without incurring any extra work for the 
     researcher. It should require the same or less effort than current 
-    practices with the difference of doing things in a convened way.
+    practices with the difference of doing things in a systematic way.
   * Improves the personal workflows of scientists by having a common 
     methodology that works for as many projects as possible and that 
     can be used as the basis of collaboration.
@@ -802,13 +802,6 @@ obtained.
 
 ## MPI Noisy Neighborhood Characterization {#sec:mpi}
 
-```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
-$ popper add jupyter-bww airtemp-analysis
-$ cd experiments/airtemp-analysis
-$ dpm install datapackages/air-temperature
-$ ./visualize.sh
-```
-
 In this use case we exemplify the scenario where OS- and 
 hardware-level virtualization is prohibited such as HPC. In this case, 
 one still can capture most of the software environment by making use 
@@ -816,16 +809,27 @@ of modern package managers such as Spack or Nix. To restore the
 software stack, one provides the package manager with a list of 
 packages with specific versions and, when necessary, compiler and 
 compilation flags. The package manager then is in charge of restoring 
-the environment, re-compiling binaries if needed.
+the environment, re-compiling binaries if needed. This use case also 
+illustrates the effort required to Popperize an experiment that didn't 
+follow Popper from its inception.
 
 We took an experiment in which an MPI application runs multiple times 
 and its communication performance is measured with mpiP[^willrerun] 
-[@bhatele_there_2013]. The goal is to identify root causes of 
-variability across executions. From an environmental point of view, 
-the execution goes as follows: sanitize environment (check kernel/os 
-versions), clone (install) spack and install packages (setup.sh); then 
-it runs an mpi experiment, which produces 1) output of simulation 
-(output.hdf5) and 2) generate MPI communication performance metrics.
+[@bhatele_there_2013]. The goal in this experiment is to identify root 
+causes of variability across executions. The goal of Popperizing this experiment is to fully automate 
+its execution and quantify the effort. The original authors kindly shared the workflow they 
+shared, which consisted of manually installing the software stack, 
+custom Excel spreadsheets with analysis (CSV files) as 
+well as visualization scripts in the Paraview tool. In the end, it 
+took a PhD student approximately 1 week to Popperize the experiment, 
+with the advice of one of the original authors. Once completed, the 
+end-to-end execution takes care of sanitizing the environment (check 
+kernel and OS versions) and installing packages; 
+execute the LULESH code and capture MPI communication metrics with 
+mpiP. The experiment produces 1) output of simulation (output.hdf5) 
+and 2) generate MPI communication performance metrics. The analysis 
+and visualization scripts run on top of these results to generate the 
+figures.
 
 [^willrerun]: **Note to reviewers**. Due to time constraints, we 
 weren't able to allocate time in an HPC site to re-run this 
@@ -866,6 +870,13 @@ input datasets and/or process data in a cluster of machines. Popper
 still can be followed in these scenarios, as shown in previous 
 sections.
 
+```{#lst:bootstrap .bash caption="A Data Analysis Experiment."}
+$ popper add jupyter-bww airtemp-analysis
+$ cd experiments/airtemp-analysis
+$ dpm install datapackages/air-temperature
+$ ./visualize.sh
+```
+
 This data analysis experiment consists of one dataset and a Jupyter 
 notebook. Relatively large datasets are not managed well by Git, so 
 they should be managed by other tools. We use the datapackage manager 
@@ -889,32 +900,23 @@ generated and reference it from the LATeX file. We then regenerate the
 article (with a `build.sh` command inside the `paper` folder) and see 
 the new image like the one shown in @Fig:bww-airtempanalysis.
 
-**Documenting Changes to Experiments**: The paper repository is the 
-analogy to the lab notebook in experimental science. There are many 
-ways in which these changes can be registered in the form of code 
-repository commits. Same good practices of version control for 
-software projects apply: make changes small, i.e. commit early and 
-often; separate commits that change the logic of the experiment and 
-analysis, from the ones that record changes to results; and write 
-commit messages so they describe in as much detail as possible the 
-changes to the experiment, or the new results being added to the 
-repository.
-
 ## Benefits and Limitations
 
-As illustrated in the previous scenarios, it is much easier to pull an 
+The use cases in this section illustrate how easier it is to pull an 
 already Popperized experiment ([@Sec:torpor ; @Sec:gassyfs ; 
 @Sec:bww]) than "Popperizing" one (@Sec:mpi). While it might seem like 
-a burden at the beginning of an exploration to, following Popper 
-quickly pays-off. Consider the common situation of going back to an 
-experiment after a short amount of time and the struggle the 
+a burden, at the beginning of an experimental exploration, following 
+Popper quickly pays-off. Consider the common situation of going back 
+to an experiment after a short amount of time and the struggle the 
 represents having to remember what was done, or why things were done 
 in a particular way. However, Popper is not perfect. Obvious issues 
 such as the lack of resources, either because of the use of special 
 hardware or due to the large-scale nature of an experiment, have to be 
 resolved before a Popperized experiment is re-executed. Nevertheless, 
 having access to the original experiment and all associated artifacts 
-is extremely valuable.
+is extremely valuable. Additionally, in some cases, the choice one 
+selects to package an experiment might affect its reproducibility such 
+as in cases where VMs introduce ineligible overheads.
 
 # The Case for Popper {#sec:discussion}
 
@@ -1097,10 +1099,10 @@ and projects that Popper complements well are the following.
     alternative that makes use of the DevOps toolkit, allowing 
     researchers to keep using their tools but to structure their 
     explorations in a systematic way.
-  * Proxy applications (Mini-apps) in HPC can be accompanied with a 
-    Popper repository to make it easier to validate performance 
-    results and facilitate the execution of these on different 
-    platforms.
+  * Proxy applications (Mini-apps) in HPC [@dosanjh_achieving_2011] 
+    can be accompanied with a Popper repository to make it easier to 
+    validate performance results and facilitate the execution of these 
+    on different platforms.
   * The Open Encyclopedia of Parallel Algorithmic Features 
     [@voevodin_algowiki_2015]. We envision having a Popper repository 
     for the encyclopedia to make it easier for readers to reuse the 
