@@ -3,15 +3,15 @@ mkdir -p out
 docker run \
   --rm \
   --workdir="/root" \
-  -v `pwd`/.deps/default.latex:/root/.pandoc/templates/default.latex \
-  -v `pwd`/.deps/ieee.csl:/root/ieee.csl \
-  -v `pwd`/.deps/latex-styles:/root/texmf/tex/latex \
-  -v `pwd`/.deps/pandoc-tabularize.py:/root/pandoc-tabularize.py \
-  -v `pwd`/refs.bib:/root/refs.bib \
-  -v `pwd`/paper.md:/root/paper.md \
-  -v `pwd`/figures:/root/figures \
-  -v `pwd`/../experiments:/root/experiments \
-  -v `pwd`/out:/root/out \
+  -v `pwd`/.deps/default.latex:/root/.pandoc/templates/default.latex:z \
+  -v `pwd`/.deps/ieee.csl:/root/ieee.csl:z \
+  -v `pwd`/.deps/latex-styles:/root/texmf/tex/latex:z \
+  -v `pwd`/.deps/pandoc-tabularize.py:/root/pandoc-tabularize.py:z \
+  -v `pwd`/refs.bib:/root/refs.bib:z \
+  -v `pwd`/paper.md:/root/paper.md:z \
+  -v `pwd`/figures:/root/figures:z \
+  -v `pwd`/../experiments:/root/experiments:z \
+  -v `pwd`/out:/root/out:z \
   ivotron/pandoc:1.17 \
     --standalone \
     --highlight-style tango \
