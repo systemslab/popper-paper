@@ -174,6 +174,15 @@ contextual information (e.g. history of modifications) that is hard to
 introspect, making difficult to build upon existing work; and 
 packaging does not explicitly capture validation criteria.
 
+### Data Analysis Ad-hoc Approaches
+
+A common approach to analyze data is to capture CSV files and manually 
+paste their contents into Excel or Google Spreadsheets. This manual 
+manipulation and plotting lacks the ability to record important steps 
+in the process of analyzing results, such as the series of steps that 
+took to go from a CSV to a figure. While available (if the spreadsheet 
+is public), it is not immediately clear what a researcher did.
+
 ### _Eyeball_ Validation
 
 Assuming the reader is able to recreate the environment of an 
@@ -693,11 +702,11 @@ variability of a list of machines with respect to a 10 year old system
 to space constraints, we only show the variability profile for one 
 machine but results for all the other machines are available in this 
 paper's repository. Since we are interested in "pinning" a particular 
-kernel version[^notreally], a natural option is to use a virtual 
-machine to package the experiment. Vagrant [@hashicorp_vagrant_2016] 
-is a higher-level wrapper around virtualization software that provides 
-the framework and configuration format (Ruby language scripts) to 
-create and manage complete portable development environments.
+kernel version, a natural option is to use a virtual machine to 
+package the experiment. Vagrant [@hashicorp_vagrant_2016] is a 
+higher-level wrapper around virtualization software that provides the 
+framework and configuration format (Ruby language scripts) to create 
+and manage complete portable development environments.
 
 ![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
 Variability profile of a set of CPU-bound benchmarks. Each data point 
@@ -720,10 +729,6 @@ mentioned before, the goal of Popper is to provide self-contained
 experiments with minimal 3rd party and effort requirements.
 
 <!-- Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot -->
-
-[^notreally]: Strictly speaking, this Torpor experiment doesn't 
-necessarily depend on a particular Linux version but we assume it does 
-to illustrate the need of running a specific version of the kernel.
 
 ## GassyFS: Scalability of an In-memory File System {#sec:gassyfs}
 
