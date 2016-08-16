@@ -580,20 +580,6 @@ before an experiment runs, as a way of sanitizing the execution.
 
 ## Toolchain Agnosticism
 
-```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
-$ cd mypaper-repo
-$ popper init
--- Initialized Popper repo
-
-$ popper experiment list
--- available templates ---------------
-ceph-rados        proteustm  mpi-comm-variability
-cloverleaf        gassyfs    zlog
-spark-standalone  torpor     malacology
-
-$ popper add torpor myexp
-```
-
 We designed Popper as a general convention, applicable to a wide 
 variety of environments, from cloud to high-performance computing 
 (HPC). In general, Popper can be applied in any scenario where a 
@@ -640,6 +626,20 @@ learning curve, especially if they have only used a couple of tools
 from the DevOps toolkit. To lower the entry barrier, we have developed 
 a command line interface (CLI) tool[^link:cli] to help bootstrap a 
 paper repository that follows the Popper convention.
+
+```{#lst:poppercli .bash caption="Initialization of a Popper repo."}
+$ cd mypaper-repo
+$ popper init
+-- Initialized Popper repo
+
+$ popper experiment list
+-- available templates ---------------
+ceph-rados        proteustm  mpi-comm-variability
+cloverleaf        gassyfs    zlog
+spark-standalone  torpor     malacology
+
+$ popper add torpor myexp
+```
 
 As part of our efforts, we maintain a list of experiment templates 
 that have been "popperized"[^link:templates]. These are end-to-end 
@@ -1058,15 +1058,48 @@ tool from each of the stages of the DevOps pipeline.
 
 ## Popper Complements Existing Efforts
 
-**TODO**: Explain how Popper complements other efforts/projects:
+There have been efforts to address the issues in subdomains of the 
+systems research community. We believe Popper complements many of 
+these since it encourages a practice (i.e. to follow a protocol) that 
+applies on top of tools that researchers already know how to use 
+rather than requiring scientists to to learn a whole new suite of 
+tools in addition to the protocol. Some examples of community efforts 
+and projects that Popper complements well are the following.
 
-  * ctuning
-  * BEE
-  * parallel algorithms encyclopedia
-  * proxy applications in HPC
-  * SC16, PLDI,ASPLOS,OOPSLA efforts to incentivize reproducibility
-  * collage authoring environment (executablepapers.com)
-  * "A collaborative approach to computational reproducibility"
+  * Ctuning Foundation's Extended Artifact Description Guide 
+    [@ctuningfoundation_extended_2016] is a set of high-level 
+    guidelines for authors on how to prepare an "Artifact Evaluation" 
+    appendix for academic articles. Conferences such as 
+    Supercomputing, TRUST@PLDI, CGO/PPoP and others are currently 
+    making use of it for their reproducibility initiatives. Popper 
+    implements a similar pipeline as the one described in the Artifact 
+    Description Guide. A Popper repository could even be used instead 
+    of an "Artifact Evaluation" appendix.
+  * Elsevier's 2011 Executable Paper Challenge 
+    [@elsevier_executable_2011] gave the first prize to the Collage 
+    Authoring Environment [@nowakowski_collage_2011]. Popper is an 
+    alternative that makes use of the DevOps toolkit, allowing 
+    researchers to keep using their tools but to structure their 
+    explorations in a systematic way.
+  * Proxy applications (Mini-apps) in HPC can be accompanied with a 
+    Popper repository to make it easier to validate performance 
+    results and facilitate the execution of these on different 
+    platforms.
+  * The Open Encyclopedia of Parallel Algorithmic Features 
+    [@voevodin_algowiki_2015]. We envision having a Popper repository 
+    for the encyclopedia to make it easier for readers to reuse the 
+    algorithms and their insights. Since MediaWiki is already 
+    versioned, the wiki and the experiments could reside on the same 
+    repository, with the `README` of the experiment being the wiki 
+    article, linking to figures that are obtained directly from the 
+    algorithm execution output.
+  * The Journal of Information Systems has recently adopted a new 
+    publication model that incentivizes reproducibility by inviting 
+    original authors to collaborate with independent reviewers and 
+    publish a subsequent paper on whether they could reproduce the 
+    original work [@chirigati_collaborative_2016]. By following Popper 
+    authors can potentially reduce the amount of work that these 
+    subsequent publications entail.
 
 # Conclusion
 
