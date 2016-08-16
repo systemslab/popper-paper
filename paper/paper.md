@@ -772,12 +772,11 @@ the performance of GassyFS. We note that while the performance numbers
 obtained are relevant, they are not our main focus. Instead, we put 
 more emphasis on the goals of the experiments, how we can reproduce 
 results on multiple environments with minimal effort, and how we can 
-ensure the validity of the results.
-
-<!--
-    Re-executing this experiment on a new platform requires to have 
-    host nodes to run Docker and to provide a list of .
--->
+ensure the validity of the results. Re-executing this experiment on a 
+new platform only requires to have host nodes to run Docker and to 
+modify the list of hosts given to Ansible (a list of IP addresses), 
+everything else, including the validation of results, is fully 
+automated.
 
 In this experiment we aim to evaluate the scalability of GassyFS, i.e. 
 how it performs when we increase the number of nodes in the underlying 
@@ -816,25 +815,26 @@ follow Popper from its inception.
 We took an experiment in which an MPI application runs multiple times 
 and its communication performance is measured with mpiP[^willrerun] 
 [@bhatele_there_2013]. The goal in this experiment is to identify root 
-causes of variability across executions. The goal of Popperizing this experiment is to fully automate 
-its execution and quantify the effort. The original authors kindly shared the workflow they 
-shared, which consisted of manually installing the software stack, 
-custom Excel spreadsheets with analysis (CSV files) as 
-well as visualization scripts in the Paraview tool. In the end, it 
-took a PhD student approximately 1 week to Popperize the experiment, 
-with the advice of one of the original authors. Once completed, the 
-end-to-end execution takes care of sanitizing the environment (check 
-kernel and OS versions) and installing packages; 
-execute the LULESH code and capture MPI communication metrics with 
-mpiP. The experiment produces 1) output of simulation (output.hdf5) 
-and 2) generate MPI communication performance metrics. The analysis 
-and visualization scripts run on top of these results to generate the 
-figures.
+causes of variability across executions. The goal of Popperizing this 
+experiment is to fully automate its execution and quantify the effort. 
+The original authors kindly shared the workflow they shared, which 
+consisted of manually installing the software stack, custom Excel 
+spreadsheets with analysis (CSV files) as well as visualization 
+scripts in the Paraview tool. In the end, it took a PhD student 
+approximately one week to Popperize the experiment, with the advice of 
+one of the original authors. Once completed, the end-to-end execution 
+takes care of sanitizing the environment (check kernel and OS 
+versions) and installing packages; execute the LULESH code and capture 
+MPI communication metrics with mpiP. The experiment produces 1) output 
+of simulation (output.hdf5) and 2) generate MPI communication 
+performance metrics. The analysis and visualization scripts run on top 
+of these results to generate the figures.
 
 [^willrerun]: **Note to reviewers**. Due to time constraints, we 
-weren't able to allocate time in an HPC site to re-run this 
-experiment. The final version of the paper will include a figure with 
-the result of re-executing this experiment.
+weren't able to prepare the experiment in time so that we could 
+allocate hours in an HPC site to re-run it. The final version of the 
+paper will include a figure with the result of re-executing this 
+experiment.
 
 ## Numerical Weather Prediction: A Data-centric Use Case {#sec:bww}
 
@@ -1129,8 +1129,7 @@ software projects. In this work, we apply them in an academic setting.
 As the use cases presented here showed, by writing articles following 
 the _Popper_ convention, authors can improve their personal workflows, 
 while at the same time generate research that is easier to validate 
-and replicate. The Popper-CLI tool is available at 
-<https://github.com/systemslab/popper>.
+and replicate.
 
 # Bibliography
 
