@@ -151,6 +151,15 @@ is usually a limit on the artifact file size.
 
 ### Virtual Machines
 
+![A generic experimentation workflow (top) typically followed by 
+researchers in projects with a computational component. Some of the 
+reasons to iterate (backwards-going arrows) are: fixing a bug in the 
+code of a system, changing a parameter of an experiment or running the 
+same experiment on a new workload or compute platform. Although not 
+usually done, in some cases researchers keep a chronological record on 
+how experiments evolve over time (the analogy of the lab notebook in 
+experimental sciences). ](figures/exp_wflow.png){#fig:exp_workflow}
+
 A Virtual Machine (VM) can be used to partially address the 
 limitations of only sharing source code. However, in the case of 
 systems research where the performance is the subject of study, the 
@@ -202,9 +211,9 @@ domain-scientists.
 ## Goals for a New Methodology
 
 A diagram of a generic experimentation workflow is shown in 
-@Fig:exp_workflow (top). The problem with current practices is that 
-each of them partially cover the workflow. For example, sharing source 
-code only covers the first task (source code); experiment packing only 
+@Fig:exp_workflow. The problem with current practices is that each of 
+them partially cover the workflow. For example, sharing source code 
+only covers the first task (source code); experiment packing only 
 covers the second one (packaging); and so on. Based on this, we see 
 the need for a new methodology that:
 
@@ -240,11 +249,11 @@ DevOps approach.
 In this section we review and highlight salient features of the DevOps 
 toolkit that makes it amenable to organize all artifacts associated 
 with an academic article. To guide our discussion, we refer to the 
-generic experimentation workflow (top) in @Fig:exp_workflow, viewed 
-through a DevOps looking glass (bottom). In @Sec:popper we analyze 
-more closely the composability of these tools and describe general 
-guidelines (the convention) on how to structure projects that make use 
-of the DevOps toolkit
+generic experimentation workflow viewed through a DevOps looking glass 
+@Fig:devos-approach. In @Sec:popper we analyze more closely the 
+composability of these tools and describe general guidelines (the 
+convention) on how to structure projects that make use of the DevOps 
+toolkit
 
 ## Version Control
 
@@ -259,6 +268,18 @@ is useful, here we make the distinction between changing the prose of
 the paper, changing the parameters of the experiment (both its 
 components and its configuration), as well as storing the experiment 
 results.
+
+![The same workflow as in @Fig:exp_workflow viewed through a DevOps 
+looking glass. The logos correspond to commonly used tools from the 
+"DevOps toolkit". From left-to-right, top-to-bottom: git, mercurial, 
+subversion (code); docker, vagrant, spack, nix (packaging); git-lfs, 
+datapackages, artifactory, archiva (input data); bash, ansible, 
+puppet, slurm (execution); git-lfs, datapackages, icinga, nagios 
+(output data and runtime metrics); jupyter, paraview, travis, jenkins 
+(analysis, visualization and continuous integration); restructured 
+text, latex, asciidoctor and markdown (manuscript); gitlab, bitbucket 
+and github (experiment changes).}
+](figures/devops_approach.png){#fig:devops-approach}
 
 Ideally, one would like the entire end-to-end pipeline for all the 
 experiments contained in an article to be managed by a version control 
@@ -283,26 +304,6 @@ They offer all of the distributed revision control and source code
 management (SCM) functionality of Git as well as adding their own 
 features. They give new users the ability to look at the entire 
 history of the project and its artifacts.
-
-![A generic experimentation workflow (top) typically followed by 
-researchers in projects with a computational component. Some of the 
-reasons to iterate (backwards-going arrows) are: fixing a bug in the 
-code of a system, changing a parameter of an experiment or running the 
-same experiment on a new workload or compute platform. Although not 
-usually done, in some cases researchers keep a chronological record on 
-how experiments evolve over time (the analogy of the lab notebook in 
-experimental sciences). The bottom half represents the same workflow 
-viewed through a DevOps looking glass. The logos correspond to 
-commonly used tools from the "DevOps toolkit". From left-to-right, 
-top-to-bottom: git, mercurial, subversion (code); docker, vagrant, 
-spack, nix (packaging); git-lfs, datapackages, artifactory, archiva 
-(input data); bash, ansible, puppet, slurm (execution); git-lfs, 
-datapackages, icinga, nagios (output data and runtime metrics); 
-jupyter, paraview, travis, jenkins (analysis, visualization and 
-continuous integration); restructured text, latex, asciidoctor and 
-markdown (manuscript); gitlab, bitbucket and github (experiment 
-changes).
-](figures/devops_approach.png){#fig:exp_workflow}
 
 ## Package Management
 
@@ -702,11 +703,11 @@ variability of a list of machines with respect to a 10 year old system
 to space constraints, we only show the variability profile for one 
 machine but results for all the other machines are available in this 
 paper's repository. Since we are interested in "pinning" a particular 
-kernel version, a natural option is to use a virtual machine to 
-package the experiment. Vagrant [@hashicorp_vagrant_2016] is a 
-higher-level wrapper around virtualization software that provides the 
-framework and configuration format (Ruby language scripts) to create 
-and manage complete portable development environments.
+kernel version[^notreally], a natural option is to use a virtual 
+machine to package the experiment. Vagrant [@hashicorp_vagrant_2016] 
+is a higher-level wrapper around virtualization software that provides 
+the framework and configuration format (Ruby language scripts) to 
+create and manage complete portable development environments.
 
 ![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
 Variability profile of a set of CPU-bound benchmarks. Each data point 
@@ -729,6 +730,10 @@ mentioned before, the goal of Popper is to provide self-contained
 experiments with minimal 3rd party and effort requirements.
 
 <!-- Toolchain: AsciiDoc, Vagrant, Bash and Gnuplot -->
+
+[^notreally]: Strictly speaking, this Torpor experiment doesn't 
+necessarily depend on a particular Linux version but we assume it does 
+to illustrate the need of running a specific version of the kernel.
 
 ## GassyFS: Scalability of an In-memory File System {#sec:gassyfs}
 
@@ -1084,10 +1089,10 @@ tool from each of the stages of the DevOps pipeline.
 There have been efforts to address the issues in subdomains of the 
 systems research community. We believe Popper complements many of 
 these since it encourages a practice (i.e. to follow a protocol) that 
-applies on top of tools that researchers already know how to use 
-rather than requiring scientists to to learn a whole new suite of 
-tools in addition to the protocol. Some examples of community efforts 
-and projects that Popper complements well are the following.
+applies on top of tools that researchers already know rather than 
+requiring scientists to learn a whole new suite of tools. Some 
+examples of community efforts and projects that Popper complements 
+well are the following.
 
   * Ctuning Foundation's Extended Artifact Description Guide 
     [@ctuningfoundation_extended_2016] is a set of high-level 
