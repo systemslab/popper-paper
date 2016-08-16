@@ -250,8 +250,8 @@ In this section we review and highlight salient features of the DevOps
 toolkit that makes it amenable to organize all artifacts associated 
 with an academic article. To guide our discussion, we refer to the 
 generic experimentation workflow viewed through a DevOps looking glass 
-@Fig:devos-approach. In @Sec:popper we analyze more closely the 
-composability of these tools and describe general guidelines (the 
+shown in @Fig:devops-approach. In @Sec:popper we analyze more closely 
+the composability of these tools and describe general guidelines (the 
 convention) on how to structure projects that make use of the DevOps 
 toolkit
 
