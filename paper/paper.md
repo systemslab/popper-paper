@@ -474,24 +474,31 @@ paper-repo
 |    -- references.bib
 ```
 
-With all these artifacts available, the reader can easily deploy an 
-experiment or rebuild the article's PDF that might include new 
-results. In @Fig:review-workflow we show a generic reviewing workflow 
-for a Popperized article. The diagram makes reference to Ansible and 
-Docker, as well as particular cloud storage services but, as mentioned 
-earlier, these can be swapped by equivalent tools. A paper is written 
-in any desired markup language. In the above listing we use LATeX as 
-an example (`paper.tex` file). There is a `build.sh` command that 
-generates the output format (e.g. `PDF`). For the experiment execution 
-logic, each experiment folder contains the necessary information such 
-as setup, output post-processing (data analysis) and scripts for 
-generating an image from the results. The execution of the experiment 
-will produce output that is either consumed by a post-processing 
-script, or directly by the scripts that generate an image.
+With all these artifacts available, the reader can easily deploy an experiment
+or rebuild the article's PDF that might include new results.
+@Fig:review-workflow shows our vision for the reader/reviewer workflow when
+reading a Popper for a Popperized article. The diagram uses tools we use in the
+use-case in Section 5.2, like Ansible and Docker, but as mentioned earlier,
+these can be swapped by equivalent tools. Using this workflow, the writer is
+completely transparent and the article consumer is free to explore results,
+re-run experiments, and contradict assetions in the paper. 
 
-![A workflow depicting the steps that a reader or reviewer take when 
-going through a Popperized article.
-](figures/wflow.png){#fig:review-workflow}
+A paper is written in any desired markup language. In the above listing we use
+LATeX as an example (`paper.tex` file). There is a `build.sh` command that
+generates the output format (e.g. `PDF`). For the experiment execution logic,
+each experiment folder contains the necessary information such as setup, output
+post-processing (data analysis) and scripts for generating an image from the
+results. The execution of the experiment will produce output that is either
+consumed by a post-processing script, or directly by the scripts that generate
+an image.
+
+![A sample workflow a paper reviewer or reader would use to read a Popperized
+article. This article uses (1) Docker/GitHub to store source and deploy code,
+(2) Ansible/CloudLab to deploy the system on real hardware, and (3)
+cloud storage systems to store large data files. (4) Jupyter/Binder/Latex are
+then used to visualize and interact with the results post-mortem on the
+reader's local machine. Popper is tool agnostic, so GitHub can be replaced with
+SVN, Ansible with Puppet, etc.](figures/wflow.png){#fig:review-workflow}
 
 The output can be in any format (CSVs, HDF, NetCDF, etc.), as long as 
 it is versioned and referenced. An important component of the 
