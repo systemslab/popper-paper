@@ -477,13 +477,18 @@ article, including its manuscript. The structure of a Popper repo is
 simple, there are `paper/` and `experiments/` folders, and every 
 experiment has a `datasets/` folder in it.
 
-![A sample workflow a paper reviewer or reader would use to read a Popperized
-article. This article uses (1) Docker/GitHub to store source and deploy code,
-(2) Ansible/CloudLab to deploy the system on real hardware, and (3)
-cloud storage systems to store large data files. (4) Jupyter/Binder/Latex are
-then used to visualize and interact with the results post-mortem on the
-reader's local machine. Popper is tool agnostic, so GitHub can be replaced with
-SVN, Ansible with Puppet, etc.](figures/wflow.png){#fig:review-workflow}
+![A sample workflow a paper reviewer or reader would use to read a 
+Popperized article. (1) The PDF, Jupyter or Binder are used to 
+visualize and interact with the results post-mortem on the reader's 
+local machine. (2) If needed the reader has the option of looking at 
+the code and clone it locally (GitHub); for single-node experiments, 
+they can be deployed locally too (Docker). (3) For multi-node 
+experiments, Ansible can then be used to deploy the experiment on a 
+public or private cloud (NSF's CloudLab in this case). (4) Lastly, 
+experiments producing large data sets can make use of cloud storage. 
+Popper is tool agnostic, so GitHub can be replaced with GitLab, 
+Ansible with Puppet, Docker with VMs, etc.
+](figures/wflow.png){#fig:review-workflow}
 
 An example paper project is shown in @Lst:dir. A paper repository is 
 composed primarily of the article text and experiment orchestration 
@@ -1046,13 +1051,10 @@ with 95\% confidence one system is 10x better than the other. The
 statistical reproducibility method is gaining popularity, e.g. 
 [@hoefler_scientific_2015].
 
-Current practices in the Systems Research community don't include 
+Current practices in the systems research community don't include 
 either controlled or statistical reproducibility experiments. Instead, 
 people run several executions (usually 10) on the same machine and 
-report averages. Our research focuses in looking at the challenges of 
-providing controlled environments by leveraging OS-level 
-virtualization. [@jimenez_characterizing_2016] reports some 
-preliminary work. Our convention can be used to either of these two 
+report averages. Our convention can be used to either of these two 
 approaches.
 
 ## Controlled Experiments become Practical
