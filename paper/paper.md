@@ -15,13 +15,12 @@ secPrefix: section
 
 Independently validating experimental results in the field of computer 
 systems research is a challenging task. Recreating an environment that 
-resembles the one where an experimental exploration was originally 
-executed is a time-consuming endeavour. In this article, we present 
-Popper[^popper], a convention (or protocol) for treating an 
-exploration following a DevOps approach that allows researchers to 
-make all associated artifacts publicly available with the goal of 
-maximizing automation in the re-execution of experimental exploration 
-and validation of results.
+resembles the one where an experiment was originally executed is a 
+time-consuming endeavour. In this article, we present Popper[^popper], 
+a convention (or protocol) for conducting experiments following a 
+DevOps approach that allows researchers to make all associated 
+artifacts publicly available with the goal of maximizing automation in 
+the re-execution of an experiment and validation of its results.
 
 [^popper]: The name makes reference to Karl Popper, the philosopher of 
 science that famously argued that _Falsifiability_ should be used as 
@@ -38,7 +37,7 @@ disciplines are relying on computational methods and data-intensive
 exploration, it has become urgent to develop software tools that help 
 document dependencies on data products, methodologies, and 
 computational environments; that safely archive data products and 
-documentations; and that reliably share data products and 
+documentation; and that reliably share data products and 
 documentations so that scientists can rely on their availability.
 
 Over the last decade software engineering and systems administration 
@@ -48,15 +47,16 @@ reproducibility”, i.e. the reproducibility of software artifacts and
 their behavior using versioning, dependency management, 
 containerization, orchestration, monitoring, testing and 
 documentation. The key idea behind the Popper Convention is to manage 
-every scientific exploration in computation and data exploration as a 
-software project, using tools and services that are readily available 
-now and enjoy wide popularity. By doing so, scientific explorations 
-become reproducible with the same convenience, efficiency, and 
-scalability as software reproducibility while fully leveraging 
-continuing improvements to these tools and services. Yet, the 
-Convention does not mandate a particular set of tools but requires 
-that the tool set as a whole implements functionality necessary for 
-software reproducibility. There are two main goals for Popper:
+every experiment in computation and data exploration as a software 
+project, using tools and services that are readily available now and 
+enjoy wide popularity. By doing so, scientific explorations become 
+reproducible with the same convenience, efficiency, and scalability as 
+software reproducibility while fully leveraging continuing 
+improvements to these tools and services. Rather than mandating a 
+particular set of tools, the Convention does not mandate a particular 
+set of tools but requires that the tool set as a whole implements 
+functionality necessary for software reproducibility. There are two 
+main goals for Popper:
 
  1. It should be usable in as many research projects as possible, 
     regardless of their domain.
@@ -66,10 +66,9 @@ software reproducibility. There are two main goals for Popper:
 
 # Common Experimental Practices {#sec:common-practice}
 
-To understand the motivation behind Popper, we can make use of a 
-generic experimentation workflow that many researchers apply when 
-working on an exploration. Common experimental practices can be 
-resumed as follow.
+To understand the motivation behind Popper, we first take a look at 
+common experimental practices that are currently in use. This allows 
+us to identify the requirements for a new methodology
 
 **Ad-hoc Personal Workflows**: A typical practice is the use of custom 
 bash scripts to automate some of the tasks of executing experiments 
@@ -134,25 +133,25 @@ the need for a new methodology that:
     lifecycle.
   * Makes use of existing tools (don't reinvent the wheel!). The 
     DevOps toolkit is already comprehensive and easy to use.
-  * Has the ability to handle large datasets.
+  * Has the ability to handle large datasets and scale to an arbitrary 
+    number of machines.
   * Captures validation criteria in an explicit manner so that 
     subjective evaluation of results of a re-execution is minimized.
   * Results in experiments that are amenable to improvement and allows 
     easy collaboration, as well as making it easier to build upon 
     existing work.
 
-# A DevOps Approach to Producing Experimental Explorations {#sec:popper}
+# A DevOps Approach to Conducting Experiments {#sec:popper}
 
-**The DevOps Toolkit**: The DevOps toolkit is 
-amenable to organize all artifacts associated with an academic 
-article. Version control, package management, multi-node 
-orchestration, bare-metal-as-a-service, dataset management, data 
-analysis and visualization, performance monitoring, continuous 
-integration; each of these categories has a corresponding OSS project 
-that is mature, well documented and that is easy to use (see 
-@Fig:devops-approach for examples). The goal for _Popper_ is to give 
-researchers a common framework to reason, in a systematic way, about 
-how to structure all the dependencies and generated artifacts 
+The DevOps toolkit is amenable to organize all artifacts associated 
+with an academic article. Version control, package management, 
+multi-node orchestration, bare-metal-as-a-service, dataset management, 
+data analysis and visualization, performance monitoring, continuous 
+integration; each of these categories has a corresponding open source 
+software (OSS) project that is mature, well documented and that is 
+easy to use (see @Fig:devops-approach for examples). The goal for 
+_Popper_ is to give researchers a common framework to systematically 
+about how to structure all the dependencies and generated artifacts 
 associated with an experiment by making use of these DevOps tools. The 
 convention provides the following unique features:
 
@@ -165,25 +164,27 @@ convention provides the following unique features:
  4. Provides reusable experiment templates that provide curated 
     experiments commonly used by a research community.
 
-**Self-containment**: We say that an experiment is Popper-compliant 
-(or that it has been "Popperized") if all of the following is 
-available, either directly or by reference, in one single source-code 
-repository: experiment code, experiment orchestration code, reference 
-to data dependencies, parametrization of experiment, validation 
-criteria and results. In other words, a Popper repository contains all 
-the dependencies for one or more explorations, optionally including a 
-manuscript (article or tech report) that documents them. The structure 
-of a Popper repo is simple, there are `paper/` and `experiments/` 
-folders, and every experiment has a `datasets/` folder in it.
+## Self-containment
+
+We say that an experiment is Popper-compliant (or that it has been 
+"Popperized") if all of the following are available, either directly 
+or by reference, in one single source code repository: experiment 
+code, experiment orchestration code, reference to data dependencies, 
+parametrization of experiment, validation criteria and results. In 
+other words, a Popper repository contains all the dependencies for one 
+or more experiments, optionally including a manuscript (article or 
+tech report) that documents them. The structure of a Popper repo is 
+simple, there are `paper/` and `experiments/` folders, and every 
+experiment has a `datasets/` folder in it.
 
 An example paper project is shown in @Lst:dir. A paper repository is 
 composed primarily of the article text and experiment orchestration 
-logic. The actual code that gets executed by an experiment is not part 
-of the repository. This, as well as any large datasets that are used 
-as input to an experiment, reside in their own repositories and are 
-stored in the experiment folder of paper repository as references.
+logic. The actual code that gets executed by an experiment and all 
+input datasets are not part of the repository; instead, they reside in 
+their own repositories and are stored in the experiment folder of the 
+paper repository as references.
 
-With all these artifacts available, the reader can easily deploy an 
+With all these artifacts available the reader can easily deploy an 
 experiment or rebuild the article's PDF that might include new 
 results. @Fig:review-workflow shows our vision for the reader/reviewer 
 workflow when reading a Popper for a Popperized article. The diagram 
@@ -222,18 +223,19 @@ by the original author). In order to have a live version of the
 notebook, one has to instantiate a Binder or run a local notebook 
 server.
 
-**Automated Validation**: Validation of experiments can be classified 
-in two categories. In the first one, the integrity of the 
-experimentation logic is checked using existing continuous-integration 
-(CI) services such as TravisCI, which expects a `.travis.yml` file in 
-the root folder. This file contains a specification that consists of a 
-list of tests that get executed every time a new commit is added to 
-the repository. These types of checks can verify that the paper is 
-always in a state that can be built (generate the PDF correctly); that 
-the syntax of orchestration files is correct so that if changes occur, 
-e.g., addition of a new variable, it can be executed without any 
-issues; or that the post-processing routines can be executed without 
-problems.
+## Automated Validation
+
+Validation of experiments can be classified in two categories. In the 
+first one, the integrity of the experimentation logic is checked using 
+existing continuous-integration (CI) services such as TravisCI, which 
+expects a `.travis.yml` file in the root folder. This file contains a 
+specification that consists of a list of tests that get executed every 
+time a new commit is added to the repository. These types of checks 
+can verify that the paper is always in a state that can be built 
+(generate the PDF correctly); that the syntax of orchestration files 
+is correct so that if changes occur, e.g., addition of a new variable, 
+it can be executed without any issues; or that the post-processing 
+routines can be executed without problems.
 
 The second category of validations is related to the integrity of the 
 experimental results. These domain-specific tests ensure that the 
@@ -252,23 +254,23 @@ that check the integrity of runtime performance metrics that claims
 make reference to. Examples of these type of assertions are: "the 
 runtime of our algorithm is 10x better than the baseline when the 
 level of parallelism exceeds 4 concurrent threads"; or "for dataset A, 
-our model predicts the outcome with an error of 95%". More concrete 
-examples are given in @Sec:cases.
+our model predicts the outcome with an error of 95%".
 
-**Toolchain Agnosticism**: We designed Popper as a general convention, 
-applicable to a wide variety of environments, from cloud to 
-high-performance computing (HPC). In general, Popper can be applied in 
-any scenario where a component (data, code, infrastructure, hardware, 
-etc.) can be referenced by an identifier, and where there is an 
-underlying tool that consumes these identifiers so that they can be 
-acted upon (install, run, store, visualize, etc.). The core idea 
-behind Popper is to borrow from the DevOps movement 
-[@wiggins_twelvefactor_2011] the idea of treating every component as 
-an immutable piece of information and provide references to scripts 
-and components for the creation, execution and validation of 
-experiments (in a systematic way) rather than leaving to the reader 
-the daunting task of inferring how binaries and experiments were 
-generated or configured.
+## Toolchain Agnosticism
+
+We designed Popper as a general convention, applicable to a wide 
+variety of environments, from cloud to high-performance computing 
+(HPC). In general, Popper can be applied in any scenario where a 
+component (data, code, infrastructure, hardware, etc.) can be 
+referenced by an identifier, and where there is an underlying tool 
+that consumes these identifiers so that they can be acted upon 
+(install, run, store, visualize, etc.). The core idea behind Popper is 
+to borrow from the DevOps movement [@wiggins_twelvefactor_2011] the 
+idea of treating every component as an immutable piece of information 
+and provide references to scripts and components for the creation, 
+execution and validation of experiments (in a systematic way) rather 
+than leaving to the reader the daunting task of inferring how binaries 
+and experiments were generated or configured.
 
 We say that a tool is Popper-compliant if it has the following two 
 properties:
@@ -284,21 +286,21 @@ provide a command-line interface (can only interact via GUI) or they
 only have a programmatic API for a non-interpreted language, are 
 beyond the scope of Popper.
 
-**Experiment Templates**: Researchers that decide to follow Popper are 
-faced with a steep learning curve, especially if they have only used a 
-couple of tools from the DevOps toolkit. To lower the entry barrier, 
-we have developed a command line interface (CLI) tool[^link:cli] to 
-help bootstrap a paper repository that follows the Popper convention.
+## Experiment Templates
+
+Researchers that decide to follow Popper are faced with a steep 
+learning curve, especially if they have only used a couple of tools 
+from the DevOps toolkit. To lower the entry barrier, we have developed 
+a command line interface (CLI) tool[^link:cli] to help bootstrap a 
+paper repository that follows the Popper convention.
 
 As part of our efforts, we maintain a list of experiment templates 
 that have been "popperized"[^link:templates]. These are end-to-end 
 experiments that use a particular toolchain and for which execution, 
-production of results and generation of figures has been implemented 
-(see @Sec:cases for examples; each use case is available as an 
-experiment in the templates repository). The CLI tool can list and 
-show information about available experiments. Assuming a git 
-repository has been initialized, the tool allows to add experiments to 
-the repository (@Lst:poppercli).
+production of results and generation of figures has been implemented. 
+The CLI tool can list and show information about available 
+experiments. Assuming a git repository has been initialized, the tool 
+allows to add experiments to the repository (@Lst:poppercli).
 
 [^link:cli]: https://github.com/systemslab/popper/tree/master/popper
 [^link:templates]: https://github.com/systemslab/popper-templates
@@ -357,8 +359,8 @@ GASNet-backed FUSE mount. @Fig:gassyfs-git shows the results of
 compiling Git on GassyFS. We observe that once the cluster gets to 2 
 nodes, performance degrades sublinearly with the number of nodes. This 
 is expected for workloads such as the one in question. The Aver 
-assertion in @Lst:aver-assertion is used to check the integrity of 
-this result.
+[@jimenez_aver_2016] assertion in @Lst:aver-assertion is used to check 
+the integrity of this result.
 
 The above expresses our expectation of GassyFS performing sublinearly 
 with respect to the number of nodes. After the experiment runs, Aver 
