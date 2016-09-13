@@ -19,12 +19,12 @@ secPrefix: section
 Independently validating experimental results in the field of computer 
 systems research is a challenging task. Recreating an environment that 
 resembles the one where an experiment was originally executed is a 
-time-consuming endeavour. In this article, we present Popper, a 
-convention (or protocol) for conducting experiments following a DevOps 
-[@httermann_devops_2012] approach that allows researchers to make all 
-associated artifacts publicly available with the goal of maximizing 
-automation in the re-execution of an experiment and validation of its 
-results.
+time-consuming endeavour. In this article, we present Popper 
+[@jimenez_popper_2016], a convention (or protocol) for conducting 
+experiments following a DevOps [@httermann_devops_2012] approach that 
+allows researchers to make all associated artifacts publicly available 
+with the goal of maximizing automation in the re-execution of an 
+experiment and validation of its results.
 
 A basic expectation in the practice of the scientific method is to 
 document, archive, and share all data and the methodologies used so 
