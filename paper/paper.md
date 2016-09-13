@@ -75,7 +75,7 @@ and analyzing results.
 **Sharing Source Code**: Version-control systems give authors, 
 reviewers and readers access to the same code base but the 
 availability of source code does not guarantee reproducibility 
-[@collberg_repeatability_2015]; code may not compile, and even it 
+[@collberg_repeatability_2016]; code may not compile, and even it 
 does, results may differ due to differences from other components in 
 the software stack. While sharing source code is beneficial, it leaves 
 readers with the daunting task of recompiling, reconfiguring, 
@@ -160,8 +160,8 @@ following unique features:
     criteria.
  3. Abstracts domain-specific experimentation workflows and 
     toolchains.
- 4. Provides reusable experiment templates that provide curated 
-    experiments commonly used by a research community.
+ 4. Provides reusable templates of curated experiments commonly used 
+    by a research community.
 
 ## Self-containment
 
@@ -200,7 +200,7 @@ execution of the experiment will produce output that is either
 consumed by a post-processing script, or directly by the scripts that 
 generate an image.
 
-The experiment output can be in any format (CSVs, HDF, NetCDF, etc.), 
+The experiment output can be in any format (CSV, HDF, NetCDF, etc.), 
 as long as it is versioned and referenced. An important component of 
 the experiment logic is that it should assert the original assumptions 
 made about the environment (`setup.yml`), for example, the operating 
@@ -276,64 +276,64 @@ Popper convention (available at
 
 # Use Case {#sec:gassyfs}
 
-We illustrate how one can quickly obtain an experiment that someone 
-else has already created in order to re-execute it or modify it with 
-the purpose of exploring the effects of modifications to en 
-experiment. This also exemplifies how the validation criteria of an 
-experiment can be made explicit and be automatically checked with 
-currently available tools.
+We now illustrate how to follow the Popper convention when 
+conducting an experiment.
 
 **Initializing a Popper Repository**: Our Popper-CLI tool assumes a 
-git repository exists (@Lst:poppercli). Given a git repo, we invoke 
-the Popper-CLI tool and initialize the Popper files by issuing a 
-`popper init` command in the root of the git repository. This creates 
-a `.popper.yml` file that contains configuration options for the CLI 
+git repository exists (@Lst:poppercli). Given a git repository, we invoke 
+the Popper-CLI tool and initialize Popper by issuing a `popper init` 
+command in the root of the git repository. This creates a 
+`.popper.yml` file that contains configuration options for the CLI 
 tool. This file is committed to the paper (git) repository.
 
-**Adding a New Experiment**: As mentioned before, we maintain a list 
-of experiment templates that have been "Popperized". In this case, we 
-select the `gassyfs` template from the experiment list. GassyFS 
-[@watkins_gassyfs_2016] is a new prototype in-memory file system 
-system that stores files in distributed remote memory. File system 
-metadata is managed locally in memory, and file data is distributed 
-across a pool of network-attached RAM managed by worker nodes (FUSE 
-mounts) and accessible over RDMA or Ethernet. Although GassyFS is 
-simple in design, it is relatively complex to setup. The combinatorial 
-space of possible ways in which the system can be compiled, packaged 
-and configured is large. For example, current version of GCC (4.9) has 
-approximately $10^{8}$ possible ways of compiling a binary. For the 
-version of GASNet that we use (2.6), there are 64 flags for additional 
-packages and 138 flags for additional features. To mount GassyFS, we 
-use FUSE, which can be given more than 30 different options, many of 
-them taking multiple values. In @Fig:gassyfs-git we show one of 
-multiple experiments that evaluate the performance of GassyFS. We note 
-that while the performance numbers obtained are relevant, they are not 
-our main focus. Instead, we put more emphasis on the goals of the 
-experiment, how we can reproduce results on multiple environments with 
-minimal effort, and how we can ensure the validity of the results. 
-Re-executing this experiment on a new platform only requires to have 
-host nodes to run Docker and to modify the list of hosts given to 
-Ansible (a list of hostnames), everything else, including the 
-validation of results, is fully automated. The only requirement on a 
-local machine is Ansible. The Aver [@jimenez_aver_2016] assertion in 
-@Lst:aver-assertion is used to check the integrity of this result and 
-expresses our expectation of GassyFS performing sublinearly with 
-respect to the number of nodes. After the experiment runs, Aver is 
-invoked to test the above statement against the experiment results 
-obtained.
+**Adding a New Experiment**: Assume the code of the system under study 
+has already been packaged. In order to add an experiment that 
+evaluates a particular aspect of the system, we first start by stating, in 
+either a language such as Aver [@jimenez_aver_2016] or in plain text, 
+the result validation criteria. We then proceed with the 
+implementation of the logic of the experiment, mainly 
+orchestration code: configuration, deployment, analysis and 
+visualization of performance metrics, and validation of results. All 
+these files are placed in the paper repository in order to make the 
+experiment Popper-compliant (self-contained).
 
-**Documenting the Experiment**: After we are done with our experiment, 
-we might want to document it and create a report or article. The 
+**Obtaining an Existing Experiment**: As mentioned before, we maintain 
+a list of experiment templates that have been "Popperized". For this 
+example, assume we select the `gassyfs` template from the list. 
+GassyFS [@watkins_gassyfs_2016] is a new prototype in-memory file 
+system system that stores data in distributed remote memory. Although 
+GassyFS is simple in design, it is relatively complex to setup. The 
+combinatorial space of possible ways in which the system can be 
+compiled, packaged and configured is large. Having all this 
+information in a git repository simplifies the setup since one doesn't 
+need to speculate on which things where done by the original authors; 
+all the information is available. In @Fig:gassyfs-git we show results 
+of an experiment that validates the scalability of GassyFS. We note 
+that while the obtained performance is relevant, it is not our main 
+focus. Instead, we put more emphasis on the goals of the experiment, 
+how we can reproduce results on multiple environments with minimal 
+effort, and how we can validate them. Re-executing this experiment on 
+a new platform only requires to have host nodes to run Docker and to 
+modify the list of hosts given to Ansible (a list of hostnames), 
+everything else, including validation, is fully automated. The Aver 
+[@jimenez_aver_2016] assertion in @Lst:aver-assertion is used to check 
+the integrity of this result and expresses our expectation of GassyFS 
+performing sublinearly with respect to the number of nodes. After the 
+experiment runs, Aver is invoked to test the above statement against 
+the experiment results obtained.
+
+**Documenting the Experiment**: After we are done with an experiment, 
+we might want to document it by creating a report or article. The 
 Popper-CLI also provides with manuscript templates. We can use the 
-generic `article` latex template or other more domain-specific ones. 
-To display the available templates we do `popper paper list`. In our 
+generic `article` template or other more domain-specific ones. To 
+display the available templates we do `popper paper list`. In our 
 example we use the template for USENIX articles by issuing a `popper 
 paper add usenix`, which creates a `paper/` folder in the project's 
-root folder, with a sample LATEX file. We then can make reference to 
-the figure that we have generated and reference it from the LATeX 
-file. We then regenerate the article (with a `build.sh` command inside 
-the `paper` folder) and see the new image added to the resulting PDF 
-file.
+root folder, with a sample LATeX file. We then can make reference to 
+figures that have been generated as part of an experiment and 
+reference them from the LATeX file. We then generate the article (all 
+paper templates have a `build.sh` command inside the `paper` folder) 
+and see the new images added to the resulting PDF file.
 
 # The Case for Popper {#sec:discussion}
 
@@ -377,7 +377,7 @@ wrong. The context of systems experiments is often very complex and
 that complexity is likely to increase in the future. Perfect 
 repeatability will be very difficult to achieve. Recent empirical 
 studies in computer systems [@hoefler_scientific_2015 ; 
-@collberg_repeatability_2015] have brought attention to the main 
+@collberg_repeatability_2016] have brought attention to the main 
 issues that permeate the current practice of our research communities, 
 where scenarios like the lack of information on how a particular 
 package was compiled, or which statistical functions were used make it 
@@ -422,7 +422,7 @@ system, changing a parameter of an experiment or running the same
 experiment on a new workload or compute platform. Although not usually 
 done, in some cases researchers keep a chronological record on how 
 experiments evolve over time (the analogy of the lab notebook in 
-experimental sciences). ](figures/exp_wflow.png){#fig:exp_workflow}
+experimental sciences).](figures/exp_wflow.png){#fig:exp_workflow}
 
 ![The same workflow as in @Fig:exp_workflow viewed through a DevOps 
 looking glass. The logos correspond to commonly used tools from the 
@@ -449,7 +449,7 @@ Popper is tool agnostic, so GitHub can be replaced with GitLab,
 Ansible with Puppet, Docker with VMs, etc.
 ](figures/wflow.png){#fig:review-workflow}
 
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
+![\[[source](https://github.com/systemslab/popper-paper/tree/login/experiments/gassyfs/visualize.ipynb)\] 
 Scalability of GassyFS as the number of nodes in the GASNet cluster 
 increases. The workload in question compiles Git.
 ](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
@@ -493,16 +493,13 @@ $ popper add gassyfs myexp
 ```
 
 ```{#lst:aver-assertion .sql caption="Assertion to check scalability behavior."}
-  when
-    workload=* and machine=*
-  expect
-    sublinear(nodes,time)
+when
+  workload=* and machine=*
+expect
+  sublinear(nodes,time)
 ```
 
-
 # Bibliography
-
-<!-- hanged biblio -->
 
 \noindent
 \vspace{-2em}
