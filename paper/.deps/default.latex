@@ -305,19 +305,17 @@ $if(titlebanner)$
 $endif$
 
 % copyright conference {
+$if(disable-copyright)$
+\makeatletter
+\def\@copyrightspace{\relax}
+\makeatother
+$else$
 $if(acm-sig-alternate)$
 \global\copyrightetc{Copyright \the\copyrtyr\ ACM \the\acmcopyr}
 \conferenceinfo{$conferencename$}{$conferenceinfo$}
 \CopyrightYear{$copyrightyear$}
 \crdata{$isbn$\ ...\$$15.00.\\
 $if(doi)$DOI: http://dx.doi.org/$doi$ $endif$}
-$endif$
-
-$if(ieeetran)$
-$if(disable-copyright)$
-\makeatletter
-\def\@copyrightspace{\relax}
-\makeatother
 $endif$
 $endif$
 % }
