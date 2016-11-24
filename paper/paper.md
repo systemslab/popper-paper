@@ -1,13 +1,35 @@
 ---
 title: "The Popper Convention: Making Reproducible Systems Evaluation Practical"
-titlebanner: "ASPLOS Submission \\#390 - Confidential Draft - Do Not Distribute!!"
 author:
-- name: "  "
-  affiliation: "  "
-  email: "  "
-#- name: "Ivo Jimenez, Michael Sevilla, Noah Watkins, Carlos Maltzahn"
+- name: "Ivo Jimenez$^u$, Michael Sevilla$^u$, Noah Watkins$^u$, 
+  Carlos Maltzahn$^u$, Jay Lofstead$^s$, Kathryn Mohror$^l$, Remzi 
+  Arpaci-Dusseau$^w$ and Andrea Arpaci-Dusseau$^w$"
+  affiliation: "$^u$_UC Santa Cruz $^s$Sandia National Labs 
+  $^l$Lawrence Livermore National Labs $^w$UW Madison_"
+#- name: "Ivo Jimenez"
 #  affiliation: "_UC Santa Cruz_"
-#  email: "`{ivo,msevilla,jayhawk,carlosm}@cs.ucsc.edu`"
+#  email: "`ivo@cs.ucsc.edu`"
+#- name: "Michael Sevilla"
+#  affiliation: "_UC Santa Cruz_"
+#  email: "`msevilla@cs.ucsc.edu`"
+#- name: "Noah Watkins"
+#  affiliation: "_UC Santa Cruz_"
+#  email: "`jayhawk@cs.ucsc.edu`"
+#- name: "Carlos Maltzahn"
+#  affiliation: "_UC Santa Cruz_"
+#  email: "`carlosm@cs.ucsc.edu`"
+#- name: "Jay Lofstead"
+#  affiliation: "_Sandia National Laboratories_"
+#  email: "`gflofst@sandia.gov`"
+#- name: "Kathryn Mohror"
+#  affiliation: "_Lawrence Livermore National Laboratory_"
+#  email: "`kathryn@llnl.gov`"
+#- name: "Andrea Arpaci-Dusseau"
+#  affiliation: "_UW-Madison_"
+#  email: "`dusseau@cs.wisc.edu`"
+#- name: "Remzi Arpaci-Dusseau"
+#  affiliation: "_UW-Madison_"
+#  email: "`remzi@cs.wisc.edu`"
 number-of-authors: 4
 abstract: |
   Independent validation of experimental results in the field of 
@@ -30,8 +52,8 @@ abstract: |
   getting results without relying on the original author's 
   intervention.
 documentclass: sigplanconf
+classoption: nocopyrightspace
 sigplanconf: true
-classoption: preprint
 fontsize: 10pt
 monofont-size: scriptsize
 numbersections: true
