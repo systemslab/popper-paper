@@ -106,6 +106,8 @@ how automated performance regression testing aids in maintaining the
 reproducibility integrity of experiments (@Sec:discussion discusses 
 more extensively these points).
 
+\ 
+
 # Experimental Practices {#sec:common-practice}
 
 In this section we examine common practices and identify desired 
@@ -701,7 +703,7 @@ comprehensive results.
 
 ## Torpor: Quantifying Cross-platform Performance Variability {#sec:torpor}
 
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/torpor)\] 
+![\[[source](https://github.com/systemslab/popper-paper/tree/reppar17/experiments/torpor)\] 
 Variability profile of a set of CPU-bound benchmarks. Each data point 
 in the histogram corresponds to the speedup of a stress-ng 
 microbenchmark that a node in CloudLab has with respect to one of our 
@@ -756,6 +758,11 @@ experiments with minimal 3rd party and effort requirements.
 
 ## GassyFS: Scalability of an In-memory File System {#sec:gassyfs}
 
+![\[[source](https://github.com/systemslab/popper-paper/tree/reppar17/experiments/gassyfs/visualize.ipynb)\] 
+Scalability of GassyFS as the number of nodes in the GASNet cluster 
+increases. The workload in question compiles Git.
+](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
+
 This use case illustrates how multi-node experiments can be easily 
 ported between multiple platforms. It also exemplifies how the 
 validation criteria of an experiment can be made explicit and be 
@@ -787,11 +794,6 @@ there are 64 flags for additional packages and 138 flags for
 additional features. To mount GassyFS, we use FUSE, which can be given 
 more than 30 different options, many of them taking multiple values.
 
-![\[[source](https://github.com/systemslab/popper-paper/tree/asplos17/experiments/gassyfs/visualize.ipynb)\] 
-Scalability of GassyFS as the number of nodes in the GASNet cluster 
-increases. The workload in question compiles Git.
-](experiments/gassyfs/git-multinode.png){#fig:gassyfs-git}
-
 In @Fig:gassyfs-git we show one of multiple experiments that evaluate 
 the performance of GassyFS. We note that while the performance numbers 
 obtained are relevant, they are not our main focus. Instead, we put 
@@ -819,10 +821,10 @@ this result.
     sublinear(nodes,time)
 ```
 
-The above expresses our expectation of GassyFS performing sublinearly 
-with respect to the number of nodes. After the experiment runs, Aver 
-is invoked to test the above statement against the experiment results 
-obtained.
+The above expresses our expectation of GassyFS performing 
+sublinearly with respect to the number of nodes. After the experiment 
+runs, Aver is invoked to test the above statement against the 
+experiment results obtained.
 
 ## Benefits and Limitations
 
