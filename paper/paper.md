@@ -220,14 +220,31 @@ the need for a new methodology that:
 
 ![The same workflow as in @Fig:exp_workflow viewed through a DevOps 
 looking glass. The logos correspond to commonly used tools from the 
-"DevOps toolkit". From left-to-right, top-to-bottom: git, mercurial, 
-subversion (code); docker, vagrant, spack, nix (packaging); git-lfs, 
-datapackages, artifactory, archiva (input data); bash, ansible, 
-puppet, slurm (execution); git-lfs, datapackages, icinga, nagios 
-(output data and runtime metrics); jupyter, paraview, travis, jenkins 
-(analysis, visualization and continuous integration); restructured 
-text, latex, asciidoctor and markdown (manuscript); gitlab, bitbucket 
-and github (experiment changes).}
+"DevOps toolkit". From left-to-right, top-to-bottom: 
+[git](http://git-scm.com), [mercurial](http://mercurial-scm.org), 
+[subversion](http://subversion.apache.org) (code); 
+[docker](http://docker.com), [vagrant](http://vagrantup.com), 
+[spack](https://github.com/LLNL/spack), [nix](https://nixos.org/nix/) 
+(packaging); [git-lfs](http://git-lfs.github.com), 
+[datapackages](http://frictionlessdata.io/data-packages/), 
+[artifactory](https://www.jfrog.com/artifactory/), 
+[archiva](https://archiva.apache.org) (input data); 
+[bash](https://www.gnu.org/software/bash/), 
+[ansible](http://ansible.com), [puppet](https://puppet.com), 
+[slurm](https://slurm.schedmd.com/) (execution); git-lfs, 
+datapackages, [icinga](https://www.icinga.com/), 
+[nagios](https://www.nagios.org/) (output data and runtime metrics); 
+[jupyter](http://jupyter.org), 
+[zeppelin](http://zeppelin.apache.org/), 
+[paraview](http://paraview.org), [gephi](https://gephi.org/)
+(analysis and visualization); 
+[restructuredtext](http://docutils.sourceforge.net/rst.html), 
+[latex](https://www.latex-project.org), 
+[asciidoc](http://asciidoctor.org) and 
+[markdown](http://daringfireball.net/projects/markdown/) (manuscript); 
+[gitlab](http://gitlab.com), [bitbucket](http://bitbucket.org) and 
+[github](http://github.com) (experiment changes and labnotebook 
+functionality).
 ](figures/devops_approach.png){#fig:devops-approach}
 
   * Is reproducible without incurring any extra work for the 
@@ -297,12 +314,15 @@ difficult. However, this does not exclude such research projects from
 being able to keep the article's associated assets under version 
 control.
 
-**Tools and services**: Git, Svn and Mercurial are popular VCS tools. 
-GitHub and BitBucket are web-based Git repository hosting services. 
-They offer all of the distributed revision control and source code 
-management (SCM) functionality of Git as well as adding their own 
-features. They give new users the ability to look at the entire 
-history of the project and its artifacts.
+**Tools and services**: [Git](http://git-scm.com), 
+[Svn](https://subversion.apache.org) and 
+[Mercurial](https://www.mercurial-scm.org) are popular VCS tools. 
+[GitHub](http://github.com), [GitLab](http://gitlab.com) and 
+[BitBucket](https://bitbucket.org) are web-based Git repository 
+hosting services. They offer all of the distributed revision control 
+and source code management (SCM) functionality of Git as well as 
+adding their own features. They give new users the ability to look at 
+the entire history of the project and its artifacts.
 
 ## Package Management
 
@@ -323,8 +343,9 @@ great use in computational sciences [@boettiger_introduction_2014].
 deployment of applications inside software containers by providing an 
 additional layer of abstraction and automation of 
 operating-system-level virtualization on Linux. Alternatives to Docker 
-are modern package managers such as Nix or Spack, or even virtual 
-machines.
+are modern package managers such as [Nix](https://nixos.org/nix/) or 
+[Spack](https://github.com/LLNL/spack), or, in the case of virtual 
+machines, [Vagrant](http://vagrantup.com).
 
 ## Multi-node Orchestration
 
@@ -335,10 +356,12 @@ Traditionally, this has been done with an ad-hoc bash script but for
 experiments that are continually tested there needs to be an automated 
 solution.
 
-**Tools and services**: Ansible is a configuration management utility 
-for configuring and managing computers, as well as deploying and 
-orchestrating multi-node applications. Similar tools include Puppet, 
-Chef, Salt, among others.
+**Tools and services**: [Ansible](http://ansible.com) is a 
+configuration management utility for configuring and managing 
+computers, as well as deploying and orchestrating multi-node 
+applications. Similar tools include [Puppet](https://puppet.com), 
+[Chef](https://www.chef.io), 
+[Salt](https://saltstack.com/salt-open-source), among others.
 
 ## Bare-metal-as-a-Service
 
@@ -346,11 +369,13 @@ For experiments that are sensitive to the inherent variability
 associated to executing on consolidated infrastructures (e.g. Amazon's 
 EC2), bare-metal as a service is an alternative.
 
-**Tools and services**: Cloudlab [@ricci_introducing_2014], Chameleon 
-and PRObE are NSF-sponsored infrastructures for research on cloud 
-computing that allows users to easily provision bare-metal machines to 
-execute multi-node experiments. Some cloud service providers such as 
-Amazon allow users to deploy applications on bare-metal instances.
+**Tools and services**: Cloudlab [@ricci_introducing_2014], 
+[Chameleon](http://chamaleoncloud.org), 
+[PRObE](https://www.nmc-probe.org) and [XSEDE](http://xsede.org) are 
+NSF-sponsored infrastructures for research on cloud computing that 
+allows users to easily provision bare-metal machines to execute 
+multi-node experiments. Some cloud service providers such as Amazon 
+allow users to deploy applications on bare-metal instances.
 
 ## Dataset Management
 
@@ -360,24 +385,29 @@ such as Git were not designed to store large binary files. A proper
 artifact repository client or dataset management tool can take care of 
 handling data dependencies.
 
-**Tools and services**: Examples are Apache Archiva, Git-LFS, 
-Datapackages or Artifactory.
+**Tools and services**: Examples are [Apache 
+Archiva](https://archiva.apache.org), 
+[Git-LFS](https://www.nmc-probe.org), 
+[Datapackages](http://frictionlessdata.io/data-packages/) or 
+[Artifactory](https://www.jfrog.com/artifactory).
 
 ## Data Analysis and Visualization
 
 Once an experiment runs, the next task is to analyze and visualize 
 results.
 
-**Tools and services**: Jupyter notebooks run on a web-based 
-application. It facilitates the sharing of documents containing live 
-code (in Julia, Python or R), equations, visualizations and 
-explanatory text. Other domain-specific visualization tools can also 
-fit into this category. Binder is an online service that allows one to 
-turn a GitHub repository into a collection of interactive Jupyter 
-notebooks so that readers don't need to deploy web servers themselves. 
-Alternatives to Jupyter are Gnuplot, Zeppelin and Beaker. Other 
-scientific visualization such as Paraview tools can also fit in this 
-category.
+**Tools and services**: [Jupyter](http://jupyter.org) notebooks run as 
+a web-based application. It facilitates the sharing of documents 
+containing live code (in Julia, Python or R). Other domain-specific 
+visualization tools can also fit into this category. 
+[Binder](http://mybinder.org) is service that allows one to turn a 
+GitHub repository into a collection of interactive Jupyter notebooks 
+so that readers don't need to deploy web servers themselves. 
+Alternatives to Jupyter are [Gnuplot](http://gnuplot.sourceforge.net), 
+[Zeppelin](http://zeppelin.apache.org) and 
+[Beaker](http://beakernotebook.com). Other scientific visualization 
+such as [Paraview](http://paraview.org) and [Gephi](https://gephi.org) 
+tools can also fit in this category.
 
 ## Performance Monitoring
 
@@ -391,9 +421,13 @@ and many of the graphs included in the article can come directly from
 running analysis scripts on top of this data.
 
 **Tools and services**: Many mature monitoring tools exist such as 
-Nagios, Ganglia, StatD, CollectD, among many others. For measuring 
-single-machine baseline performance, tools like Conceptual (network), 
-stress-ng (CPU, memory, file system) and many others exist.
+[Nagios](https://www.nagios.org), [Ganglia](http://ganglia.info), 
+[StatD](https://github.com/etsy/statsd), 
+[CollectD](https://collectd.org), among many others. For measuring 
+single-machine baseline performance, tools like 
+[Conceptual](https://github.com/lanl/coNCePTuaL) (network), 
+[stress-ng](http://kernel.ubuntu.com/~cking/stress-ng) (CPU, memory), 
+[fio](https://github.com/axboe/fio) and many others exist.
 
 ## Continuous Integration
 
@@ -404,10 +438,12 @@ associated with an article can also benefit from CI. If an
 experiment's findings can be codified in the form of a unit test, this 
 can be verified on every change to the article's repository.
 
-**Tools and services**: Travis CI is an open-source, hosted, 
-distributed continuous integration service used to build and test 
-software projects hosted at GitHub. Alternatives to Travis CI are 
-CircleCI, CodeShip. Other on-premises solutions exist such as Jenkins.
+**Tools and services**: [Travis CI](https://travis-ci.org/) is an 
+open-source, hosted, distributed continuous integration service used 
+to build and test software projects hosted at GitHub. Alternatives to 
+Travis CI are [CircleCI](https://circleci.com) and 
+[CodeShip](https://codeship.com). Other self-hosted solutions exist 
+such as [Jenkins](http://jenkins-ci.org).
 
 ## Automated Performance Regression Testing
 
@@ -417,10 +453,11 @@ problems. Performance regression testing is usually an ad-hoc activity
 but can be automated using high-level languages [@jimenez_aver_2016] 
 or statistical techniques [@nguyen_automated_2012].
 
-**Tools and services**: Aver [@jimenez_aver_2016] is an example of a 
-language and validation tool that allows authors to express and 
-corroborate statements about the runtime metrics gathered of an 
-experiment.
+**Tools and services**: Language-specific frameworks for validating 
+performance such as [ScalaMeter](https://scalameter.github.io) exist. 
+[Aver](http://github.com/ivotron/aver) is a generic language and 
+validation tool that allows users to express and corroborate 
+statements about runtime metrics gathered.
 
 # The Popper Convention: A DevOps Approach to Producing Academic Papers {#sec:popper}
 
@@ -561,7 +598,8 @@ platforms (e.g. TravisCI runs tests in VMs). However, when results are
 sensitive to the underlying hardware, it is preferable to leave this 
 out of the CI pipeline and make them part of the post-processing 
 routines of the experiment. In the example above, an `assertions.aver` 
-file contains validations in the Aver [@jimenez_aver_2016] language 
+file contains validations in the 
+[Aver](https://github.com/ivotron/aver) [@jimenez_aver_2016] language 
 that check the integrity of runtime performance metrics that claims 
 make reference to. Examples of these type of assertions are: "the 
 runtime of our algorithm is 10x better than the baseline when the 
@@ -577,22 +615,13 @@ similar test that can be codified using performance regression testing
 as mentioned in the above paragraph, we make the distinction since 
 this step can be executed before any experiment runs. If the baseline 
 performance cannot be reproduced, there is no point in executing the 
-experiment. For example, the results of an experiment that originally 
-ran on an environment consisting of HDDs, with a particular ratio of 
-storage to network bandwidth where the bottleneck resides in storage, 
-results will likely differ from those executed in another environment 
-where the bottleneck is in the network (e.g. because storage is 
-faster). Many of the commonly used orchestration tools incorporate 
+experiment. Many of the commonly used orchestration tools incorporate 
 functionality for obtaining "facts" about the environment, information 
 that is useful to have when corroborating assumptions; other 
 monitoring tools such as Nagios can capture raw system-level 
-performance; and existing frameworks such as baseliner are designed to 
+performance; and existing frameworks such as 
+[baseliner](https://github.com/ivotron/baseliner) are designed to 
 obtain baseline profiles that are associated to experimental results. 
-All these different sources of baseline performance characteristics 
-can serve as a "fingerprint" of the underlying platform and can be 
-given to tools such as Aver so that assertions about the environment 
-are executed before an experiment runs, as a way of sanitizing the 
-execution.
 
 ## Toolchain Agnosticism
 
