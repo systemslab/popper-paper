@@ -1,4 +1,5 @@
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+\usepackage[usenames,dvipsnames]{color}
 $if(fontfamily)$
 \usepackage{$fontfamily$}
 $else$
@@ -148,6 +149,7 @@ $endif$
             linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
             pdfborder={0 0 0}}
 \urlstyle{same}  % don't use monospace font for urls
+
 $if(substitute-hyperref)$
 \renewcommand*{\hyperref}[2][\ar]{\def\ar{#2}#2\autoref{#1}}
 \renewcommand*{\chapterautorefname}{Chapter}
